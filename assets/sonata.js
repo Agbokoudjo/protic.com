@@ -32,6 +32,8 @@ import {
 } from '@wlindabla/form_validator';
 import { config,select2 } from "./utils.js";
 
+import.meta.glob('./images/**/*', { eager: true });
+
     registerControllers(
     sonataApplication,
     import.meta.glob(

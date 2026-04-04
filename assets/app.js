@@ -10,6 +10,7 @@ window.$ = jQuery;
 
 const app = startStimulusApp();
 registerReactControllerComponents(import.meta.glob('./react/controllers/**/*.js(x)\?',{ eager: true })); 
+import.meta.glob('./images/**/*', { eager: true });
 
 window.addEventListener('DOMContentLoaded', () => {
     disableUserInteractions("iws-config");
