@@ -1,33 +1,29 @@
-{# templates/components/SiteSettings.html.twig #}
 {% set settings = this.settings %}
 <div {{ attributes }}>
     {% block content %}
-        {# ON PRÉPARE LES TÉLÉPHONES PROPREMENT #}
         {% set formattedPhones = [] %}
         {% if settings and settings.phonePrimary is not empty %}
             {% for p in settings.phonePrimary %}
-                {# On crée une chaîne de texte manuellement #}
                 {% set formattedPhones = formattedPhones|merge(['+' ~ p.countryCode ~ ' ' ~ p.nationalNumber]) %}
             {% endfor %}
         {% else %}
-            {# Valeurs par défaut si la BDD est vide #}
             {% set formattedPhones = ['+229 01 95 86 99 51', '+229 0162 013 868', '+229 0164 303 819'] %}
         {% endif %}
         {% include 'partials/_footer.html.twig' with {
             'footerData': {
                 'contact': {
-                    addresses   : settings.addresses  ?? 'Campus d\'Abomey-Calavi, K61-62',
-                    telephones: formattedPhones,
-                    emails   : settings.emailContact is not empty ? settings.emailContact : ['proticeditions@gmail.com', 'leseditionsprotic@gmail.com']
+                    addresses  : settings ? settings.addresses ?? ['Campus d\'Abomey-Calavi, K61-62'] : ['Campus d\'Abomey-Calavi, K61-62'],
+                    telephones : formattedPhones,
+                    emails     : settings and settings.emailContact is not empty ? settings.emailContact : ['proticeditions@gmail.com', 'leseditionsprotic@gmail.com']
                 },
                 'legal': {
-                    'rccm'  : settings.rccm ?? 'RB/ABC/21 A 32987',
-                    'ifu'   : settings.ifu ?? '0202112604781',
-                    'cnss'  : settings.cnss ?? '21312177',
-                    'compte': settings.bankAccount ?? '506070006684'
+                    'rccm'  : settings ? settings.legalInfos['rccm'] ?? 'RB/ABC/21 A 32987' : 'RB/ABC/21 A 32987',
+                    'ifu'   : settings ? settings.legalInfos['ifu'] ?? '0202112604781' : '0202112604781',
+                    'cnss'  : settings ? settings.legalInfos['cnss'] ?? '21312177' : '21312177',
+                    'compte': settings ? settings.legalInfos['compte'] ?? '506070006684' : '506070006684'
                 },
-                'membre': settings.membership ?? 'Membre de l\'APPEL-Bénin',
-                'LOGO_SRC': asset('assets/images/logo.png','app') 
+                'membre': 'Membre de l\'APPEL-Bénin',
+                'LOGO_SRC': asset('assets/images/logo.png', 'app')
             }
         } %}
     {% endblock %}
