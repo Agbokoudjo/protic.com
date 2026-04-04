@@ -34,7 +34,7 @@ final class SupportMailer implements SupportMailerInterface
         string $subject,
         string $htmlTemplate,
         ?array $context = null,
-        ?string $senderEmail,
+        ?string $senderEmail=null,
         ?string $replyToEmail = null,
         ?array $attachments = []
     ): void {

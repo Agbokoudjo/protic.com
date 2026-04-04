@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/assets/images/logo.png" alt="ProTIC Editions & Services" width="280"/>
+<img src="assets/images/logo.png" alt="ProTIC Editions & Services" width="280"/>
 
 # ProTIC Editions & Services
 
@@ -14,7 +14,7 @@
 [![Version](https://img.shields.io/badge/version-v1.0.0-FFD700)](https://github.com/Agbokoudjo/protic.com/releases)
 [![License](https://img.shields.io/badge/licence-Propriétaire-red)](./LICENSE)
 
-🌐 **[protic.com](https://protic.com)** — Abomey-Calavi, Bénin 🇧🇯
+🌐 **[proticeditions.com](https://proticeditions.com)** — Abomey-Calavi, Bénin 🇧🇯
 
 </div>
 
