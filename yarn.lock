@@ -1653,43 +1653,43 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@symfony/ux-autocomplete@npm:^2.34.0":
-  version: 2.34.0
-  resolution: "@symfony/ux-autocomplete@npm:2.34.0"
+"@symfony/ux-autocomplete@file:vendor/symfony/ux-autocomplete/assets::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 2.33.0
+  resolution: "@symfony/ux-autocomplete@file:vendor/symfony/ux-autocomplete/assets#vendor/symfony/ux-autocomplete/assets::hash=df1425&locator=root-workspace-0b6124%40workspace%3A."
   peerDependencies:
     "@hotwired/stimulus": ^3.0.0
     tom-select: ^2.2.2
-  checksum: 10c0/b88033dc4c8e067cff2028a597c5ce5d31ef638c0952a4e78b7c52ea37f19cbe7f510f448c10c185f8c71f45ff835883f370d8e7d293674b1246cbd32b9f3c19
+  checksum: 10c0/3e26ffeb423d8a91dd5e534ad76879f8fff7ec7c8cf725f51dae2bce3296a610f70de92c98a1fedf6dfaaf876c94c527d7382e9232296f34a91b5574fa06c4cd
   languageName: node
   linkType: hard
 
-"@symfony/ux-dropzone@npm:^2.34.0":
-  version: 2.34.0
-  resolution: "@symfony/ux-dropzone@npm:2.34.0"
+"@symfony/ux-dropzone@file:vendor/symfony/ux-dropzone/assets::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 2.33.0
+  resolution: "@symfony/ux-dropzone@file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=ba76f9&locator=root-workspace-0b6124%40workspace%3A."
   peerDependencies:
     "@hotwired/stimulus": ^3.0.0
-  checksum: 10c0/0ee6896db485d43e15d875773fc8f8b1f23a4fb87589ca80266c9f7c143339dd2cf32b5251b9ac1edc3c50fe275439a039629665620db13d8c6a367e7ee01cf5
+  checksum: 10c0/d1a1a99540e33dec92b07a6f1003c16ae942235ba6c60b988150063ac930df601d132bbc0abb1e183bd18a1705688375390f16f1058ca8a69921bcf9eab805ea
   languageName: node
   linkType: hard
 
-"@symfony/ux-react@npm:^2.34.0":
-  version: 2.34.0
-  resolution: "@symfony/ux-react@npm:2.34.0"
+"@symfony/ux-react@file:vendor/symfony/ux-react/assets::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 2.33.0
+  resolution: "@symfony/ux-react@file:vendor/symfony/ux-react/assets#vendor/symfony/ux-react/assets::hash=9a08f6&locator=root-workspace-0b6124%40workspace%3A."
   peerDependencies:
     "@hotwired/stimulus": ^3.0.0
     react: ^18.0 || ^19.0
     react-dom: ^18.0 || ^19.0
-  checksum: 10c0/486c853f963a3470363e5c6f986c4c04c2e8c5bc0fa1536ab4767cfe8c090458328a4c7a66faf08e4de82729d5701642ac40ba8fa8937dcf0ab59e1db3d8b6ef
+  checksum: 10c0/5cbb084bed90d93379cbaf4cfd54eed3060820a3765d983fc56c3642419702ab71b79a4443621e87817170d9699afad560916d984e257de53719093d15fddfcb
   languageName: node
   linkType: hard
 
-"@symfony/ux-turbo@npm:^2.34.0":
-  version: 2.34.0
-  resolution: "@symfony/ux-turbo@npm:2.34.0"
+"@symfony/ux-turbo@file:vendor/symfony/ux-turbo/assets::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 2.33.0
+  resolution: "@symfony/ux-turbo@file:vendor/symfony/ux-turbo/assets#vendor/symfony/ux-turbo/assets::hash=ea529d&locator=root-workspace-0b6124%40workspace%3A."
   peerDependencies:
     "@hotwired/stimulus": ^3.0.0
     "@hotwired/turbo": ^7.1.0 || ^8.0
-  checksum: 10c0/13faf0d69cf0978ba087d25ccbe1a8d0644eac202432082f1118f3c56dab2d3d86ab09c09e9ba1ca5fa197138efa7ab5c7600175722c84e2bec2afb223191606
+  checksum: 10c0/0bd1e260a57e6c1b2da9be2032aa205a0c373be426c9443249022f632fbae7c82e01b8645b6c40caedb75af0cc6ddfc830c459fe6a0df17d6c80003bfd050cab
   languageName: node
   linkType: hard
 
@@ -1899,6 +1899,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"anymatch@npm:~3.1.2":
+  version: 3.1.3
+  resolution: "anymatch@npm:3.1.3"
+  dependencies:
+    normalize-path: "npm:^3.0.0"
+    picomatch: "npm:^2.0.4"
+  checksum: 10c0/57b06ae984bc32a0d22592c87384cd88fe4511b1dd7581497831c56d41939c8a001b28e7b853e1450f2bf61992dfcaa8ae2d0d161a0a90c4fb631ef07098fbac
+  languageName: node
+  linkType: hard
+
 "aos@npm:^2.3.4":
   version: 2.3.4
   resolution: "aos@npm:2.3.4"
@@ -1976,6 +1986,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"binary-extensions@npm:^2.0.0":
+  version: 2.3.0
+  resolution: "binary-extensions@npm:2.3.0"
+  checksum: 10c0/75a59cafc10fb12a11d510e77110c6c7ae3f4ca22463d52487709ca7f18f69d886aa387557cc9864fbdb10153d0bdb4caacabf11541f55e89ed6e18d12ece2b5
+  languageName: node
+  linkType: hard
+
 "bootstrap-icons@npm:^1.13.1":
   version: 1.13.1
   resolution: "bootstrap-icons@npm:1.13.1"
@@ -2001,7 +2018,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"braces@npm:^3.0.3":
+"braces@npm:^3.0.3, braces@npm:~3.0.2":
   version: 3.0.3
   resolution: "braces@npm:3.0.3"
   dependencies:
@@ -2100,6 +2117,25 @@ __metadata:
     ansi-styles: "npm:^4.1.0"
     supports-color: "npm:^7.1.0"
   checksum: 10c0/4a3fef5cc34975c898ffe77141450f679721df9dde00f6c304353fa9c8b571929123b26a0e4617bde5018977eb655b31970c297b91b63ee83bb82aeb04666880
+  languageName: node
+  linkType: hard
+
+"chokidar@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "chokidar@npm:3.6.0"
+  dependencies:
+    anymatch: "npm:~3.1.2"
+    braces: "npm:~3.0.2"
+    fsevents: "npm:~2.3.2"
+    glob-parent: "npm:~5.1.2"
+    is-binary-path: "npm:~2.1.0"
+    is-glob: "npm:~4.0.1"
+    normalize-path: "npm:~3.0.0"
+    readdirp: "npm:~3.6.0"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  checksum: 10c0/8361dcd013f2ddbe260eacb1f3cb2f2c6f2b0ad118708a343a5ed8158941a39cb8fb1d272e0f389712e74ee90ce8ba864eece9e0e62b9705cb468a2f6d917462
   languageName: node
   linkType: hard
 
@@ -2375,7 +2411,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@npm:~2.3.3":
+"fsevents@npm:~2.3.2, fsevents@npm:~2.3.3":
   version: 2.3.3
   resolution: "fsevents@npm:2.3.3"
   dependencies:
@@ -2385,7 +2421,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@npm%3A~2.3.3#optional!builtin<compat/fsevents>":
+"fsevents@patch:fsevents@npm%3A~2.3.2#optional!builtin<compat/fsevents>, fsevents@patch:fsevents@npm%3A~2.3.3#optional!builtin<compat/fsevents>":
   version: 2.3.3
   resolution: "fsevents@patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"
   dependencies:
@@ -2453,7 +2489,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-parent@npm:^5.1.2":
+"glob-parent@npm:^5.1.2, glob-parent@npm:~5.1.2":
   version: 5.1.2
   resolution: "glob-parent@npm:5.1.2"
   dependencies:
@@ -2560,6 +2596,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-binary-path@npm:~2.1.0":
+  version: 2.1.0
+  resolution: "is-binary-path@npm:2.1.0"
+  dependencies:
+    binary-extensions: "npm:^2.0.0"
+  checksum: 10c0/a16eaee59ae2b315ba36fad5c5dcaf8e49c3e27318f8ab8fa3cdb8772bf559c8d1ba750a589c2ccb096113bb64497084361a25960899cb6172a6925ab6123d38
+  languageName: node
+  linkType: hard
+
 "is-core-module@npm:^2.16.1":
   version: 2.16.1
   resolution: "is-core-module@npm:2.16.1"
@@ -2583,7 +2628,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-glob@npm:^4.0.1":
+"is-glob@npm:^4.0.1, is-glob@npm:~4.0.1":
   version: 4.0.3
   resolution: "is-glob@npm:4.0.3"
   dependencies:
@@ -3029,6 +3074,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"normalize-path@npm:^3.0.0, normalize-path@npm:~3.0.0":
+  version: 3.0.0
+  resolution: "normalize-path@npm:3.0.0"
+  checksum: 10c0/e008c8142bcc335b5e38cf0d63cfd39d6cf2d97480af9abdbe9a439221fd4d749763bab492a8ee708ce7a194bb00c9da6d0a115018672310850489137b3da046
+  languageName: node
+  linkType: hard
+
 "object-inspect@npm:^1.13.3":
   version: 1.13.4
   resolution: "object-inspect@npm:1.13.4"
@@ -3036,7 +3088,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-map@npm:^7.0.2":
+"p-map@npm:^7.0.2, p-map@npm:^7.0.4":
   version: 7.0.4
   resolution: "p-map@npm:7.0.4"
   checksum: 10c0/a5030935d3cb2919d7e89454d1ce82141e6f9955413658b8c9403cfe379283770ed3048146b44cde168aa9e8c716505f196d5689db0ae3ce9a71521a2fef3abd
@@ -3089,7 +3141,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^2.3.1":
+"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.3.1":
   version: 2.3.2
   resolution: "picomatch@npm:2.3.2"
   checksum: 10c0/a554d1709e59be97d1acb9eaedbbc700a5c03dbd4579807baed95100b00420bc729335440ef15004ae2378984e2487a7c1cebd743cfdb72b6fa9ab69223c0d61
@@ -3152,6 +3204,15 @@ __metadata:
   version: 19.2.4
   resolution: "react@npm:19.2.4"
   checksum: 10c0/cd2c9ff67a720799cc3b38a516009986f7fc4cb8d3e15716c6211cf098d1357ee3e348ab05ad0600042bbb0fd888530ba92e329198c92eafa0994f5213396596
+  languageName: node
+  linkType: hard
+
+"readdirp@npm:~3.6.0":
+  version: 3.6.0
+  resolution: "readdirp@npm:3.6.0"
+  dependencies:
+    picomatch: "npm:^2.2.1"
+  checksum: 10c0/6fa848cf63d1b82ab4e985f4cf72bd55b7dcfd8e0a376905804e48c3634b7e749170940ba77b32804d5fe93b3cc521aa95a8d7e7d725f830da6d93f3669ce66b
   languageName: node
   linkType: hard
 
@@ -3326,10 +3387,10 @@ __metadata:
     "@popperjs/core": "npm:^2.11.8"
     "@rollup/plugin-inject": "npm:^5.0.5"
     "@symfony/stimulus-bridge": "npm:^4.0.1"
-    "@symfony/ux-autocomplete": "npm:^2.34.0"
-    "@symfony/ux-dropzone": "npm:^2.34.0"
-    "@symfony/ux-react": "npm:^2.34.0"
-    "@symfony/ux-turbo": "npm:^2.34.0"
+    "@symfony/ux-autocomplete": "file:vendor/symfony/ux-autocomplete/assets"
+    "@symfony/ux-dropzone": "file:vendor/symfony/ux-dropzone/assets"
+    "@symfony/ux-react": "file:vendor/symfony/ux-react/assets"
+    "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets"
     "@types/aos": "npm:^3.0.7"
     "@vitejs/plugin-react": "npm:^6.0.1"
     "@wlindabla/form_validator": "npm:^3.0.2"
@@ -3344,6 +3405,7 @@ __metadata:
     react-dom: "npm:^19.2.4"
     tom-select: "npm:^2.5.2"
     vite: "npm:^8.0.3"
+    vite-plugin-static-copy: "npm:^4.0.1"
     vite-plugin-symfony: "npm:^8.2.4"
   languageName: unknown
   linkType: soft
@@ -3695,6 +3757,20 @@ __metadata:
   bin:
     update-browserslist-db: cli.js
   checksum: 10c0/13a00355ea822388f68af57410ce3255941d5fb9b7c49342c4709a07c9f230bbef7f7499ae0ca7e0de532e79a82cc0c4edbd125f1a323a1845bf914efddf8bec
+  languageName: node
+  linkType: hard
+
+"vite-plugin-static-copy@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "vite-plugin-static-copy@npm:4.0.1"
+  dependencies:
+    chokidar: "npm:^3.6.0"
+    p-map: "npm:^7.0.4"
+    picocolors: "npm:^1.1.1"
+    tinyglobby: "npm:^0.2.15"
+  peerDependencies:
+    vite: ^6.0.0 || ^7.0.0 || ^8.0.0
+  checksum: 10c0/c3c44e921c86f1e3cef752319fe30fc836b28f0d504bf1c5563e025d740a061185e8c11704beb789ee2c4d7e59a2cc7c2d7b2efb2dd2eec3d4fab1355c69039c
   languageName: node
   linkType: hard
 

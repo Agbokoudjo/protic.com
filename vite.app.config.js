@@ -1,6 +1,9 @@
 import { defineConfig } from "vite";
 import symfonyPlugin from "vite-plugin-symfony";
 import react from "@vitejs/plugin-react";
+///home/pirate/Documents/www/protic.com/vite.app.config.js
+import { viteStaticCopy } from 'vite-plugin-static-copy';
+
 export default defineConfig({
     base: '/build/app/',
     plugins: [
@@ -9,6 +12,14 @@ export default defineConfig({
             refresh: false,
              stimulus: true ,
             viteDevServerHostname: "localhost"
+        }),
+        viteStaticCopy({
+            targets: [
+                {
+                    src: 'assets/images/*',
+                    dest: 'assets/images'
+                }
+            ]
         }),
     ],
     build: {

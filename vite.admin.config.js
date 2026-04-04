@@ -16,6 +16,14 @@ export default defineConfig({
            stimulus: true ,
             viteDevServerHostname: "localhost"
         }),
+        viteStaticCopy({
+        targets: [
+            {
+                src: 'assets/images/*',
+                dest: 'assets/images'
+            }
+        ]
+    }),
     ],
     build: {
         outDir: 'public/build/admin',
