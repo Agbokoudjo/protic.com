@@ -40,5 +40,13 @@ when@dev:
             - '^127\.0\.0\.1$'
             - '^protic\.local$'
             - '^.+\.ngrok-free\.app$'
+            - '^(www\.)?proticeditions\.com$'
         trusted_proxies: '127.0.0.1, 10.0.0.0/8, 172.16.0.0/12,154.72.114.130, 192.168.0.0/16,REMOTE_ADDR'
+        trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-prefix']
+
+when@prod:
+    framework:
+        trusted_hosts:
+            - '^(www\.)?proticeditions\.com$'
+        trusted_proxies: '127.0.0.1, REMOTE_ADDR'
         trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-prefix']
