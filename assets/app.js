@@ -4,6 +4,7 @@ import '@vitejs/plugin-react/preamble';
 import './styles/app.css';
 import 'bootstrap/dist/js/bootstrap.min.js'
 import { disableUserInteractions } from './utils';
+import { mountFooter } from "./react/lazy-mount.jsx"
 import jQuery from 'jquery';
 window.jQuery = jQuery;
 window.$ = jQuery;
@@ -14,4 +15,5 @@ import.meta.glob('./images/**/*', { eager: true });
 
 window.addEventListener('DOMContentLoaded', () => {
     disableUserInteractions("iws-config");
+    mountFooter();
 })

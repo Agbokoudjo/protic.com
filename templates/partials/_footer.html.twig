@@ -1,10 +1,8 @@
-{# templates/partials/_footer.html.twig #}
-{% set data_config = footerData|json_encode|e('html_attr')  %}
+{% set data_config = footerData|json_encode %}
 <div
     id="protic-footer-root"
-    data-config="{{ data_config }}"
+    data-config='{{ data_config }}'
     aria-label="Pied de page ProTIC"
-    {{ react_component('Footer', {config: footerData}, {permanent: true}) }}
 >
     {# ── Fallback statique (affiché si React ne se charge pas) ── #}
     <noscript>

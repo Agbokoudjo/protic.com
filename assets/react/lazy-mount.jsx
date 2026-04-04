@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import BooksGrid from "./controllers/BooksGrid";
 import CatalogueGrid from './controllers/CatalogueGrid';
+import Footer from "./controllers/Footer";
 /**
  * Map des composants disponibles pour le lazy mount
  * Ajouter ici chaque composant que vous voulez monter lazily
@@ -73,3 +74,30 @@ export const mountCatalogue = () => {
     createRoot(root).render(<CatalogueGrid itemsPerPage={perPage} />);
 };
 
+export const mountFooter = () => {
+    const root = document.getElementById('protic-footer-root');
+    if (!root) return;
+
+    const raw = root.getAttribute('data-config');
+    if (!raw) return;
+    let config;
+    try {
+        config = JSON.parse(raw);
+    } catch (e) {
+        console.error('[ProTIC Footer] Erreur de parsing data-config :', e);
+        return;
+    }
+
+    const observer = new IntersectionObserver(
+        ([entry], obs) => {
+            if (!entry.isIntersecting) return;
+            obs.disconnect();
+            createRoot(root).render(<Footer config={config} />);
+            /* Relance AOS pour les éléments nouvellement insérés */
+            if (window.AOS) window.AOS.refresh();
+        },
+        { rootMargin: '200px' } /* pré-charge 200px avant d'entrer dans le viewport */
+    );
+
+    observer.observe(root);
+};
