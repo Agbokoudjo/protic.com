@@ -7,7 +7,9 @@ namespace App\DataFixtures;
 use App\Entity\Faq;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\DependencyInjection\Attribute\WhenNot;
 
+#[WhenNot('prod')]
 class FaqFixtures extends Fixture
 {
     private const FAQS = [

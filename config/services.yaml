@@ -63,7 +63,7 @@ services:
         arguments:
             $fromAddresses: '%app.mail.from%'
 
-    #when@dev
+when@dev:
     App\DataFixtures\BookFixtures:
         arguments:
             $projectDir: '%kernel.project_dir%'
