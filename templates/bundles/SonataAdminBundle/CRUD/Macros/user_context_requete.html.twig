@@ -1,0 +1,327 @@
+{# ============================================ #}
+{# MACRO : Contexte Doctrine (Modifications)   #}
+{# ============================================ #}
+{% macro renderEntityContext(context) %}
+    <div class="entity-context">
+        {# En-tête Entité #}
+        <div class="mb-2">
+            <span class="badge bg-primary">
+                <i class="bi bi-database"></i> ENTITÉ
+            </span>
+            <code class="ms-1">{{ context.entity_class|split('\\')|last }}</code>
+            
+            {% if context.entity_id %}
+                <span class="badge bg-info ms-1">ID: {{ context.entity_id }}</span>
+            {% endif %}
+        </div>
+
+        {# Description lisible #}
+        {% if context.description %}
+            <div class="alert alert-info py-1 px-2 mb-2" style="font-size: 0.9rem;">
+                <i class="bi bi-info-circle"></i> {{ context.description }}
+            </div>
+        {% endif %}
+
+        {# Changements détaillés #}
+        {% if context.changes is defined and context.changes is not empty %}
+            <details class="mt-2">
+                <summary class="cursor-pointer text-primary">
+                    <i class="bi bi-list-ul"></i> 
+                    <strong>{{ context.changes|length }} modification(s)</strong>
+                </summary>
+                <div class="mt-2 ms-3">
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 30%">Champ</th>
+                                <th style="width: 35%">Ancienne valeur</th>
+                                <th style="width: 35%">Nouvelle valeur</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for field, change in context.changes %}
+                                <tr>
+                                    <td><code>{{ field }}</code></td>
+                                    {# ✅ GESTION DES DEUX FORMATS #}
+                                    {% if change is iterable and change.old is defined %}
+                                        <td>{{ _self.renderValue(change.old) }}</td>
+                                        <td><strong>{{ _self.renderValue(change.new) }}</strong></td>
+                                    {% else %}
+                                        {# FORMAT LEGACY : valeur simple #}
+                                        <td><em class="text-muted">—</em></td>
+                                        <td><strong>{{ _self.renderValue(change) }}</strong></td>
+                                    {% endif %}                               
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        {% endif %}
+
+        {# Classe complète (en petit) #}
+        {% if admin.isGranted('ROLE_SUPER_ADMIN') %}
+            <small class="text-muted d-block mt-2">
+            <i class="bi bi-code-slash"></i> {{ context.entity_class }}
+            </small>
+        {% endif %}
+        
+    </div>
+{% endmacro %}
+
+
+{# ============================================ #}
+{# MACRO : Contexte HTTP (Requête web)         #}
+{# ============================================ #}
+{% macro renderHttpContext(context) %}
+    <div class="http-context">
+        {# Status Code avec couleur #}
+        {% set statusClass = 'bg-secondary' %}
+        {% if context.status_code >= 200 and context.status_code < 300 %}
+            {% set statusClass = 'bg-success' %}
+        {% elseif context.status_code >= 300 and context.status_code < 400 %}
+            {% set statusClass = 'bg-info' %}
+        {% elseif context.status_code >= 400 and context.status_code < 500 %}
+            {% set statusClass = 'bg-warning text-dark' %}
+        {% elseif context.status_code >= 500 %}
+            {% set statusClass = 'bg-danger' %}
+        {% endif %}
+
+        <div class="mb-2">
+            <span class="badge bg-primary">
+                <i class="bi bi-globe"></i> HTTP
+            </span>
+            
+            {% if context.status_code %}
+                <span class="badge {{ statusClass }} ms-1">
+                    {{ context.status_code }}
+                </span>
+            {% endif %}
+
+            {% if context.is_ajax %}
+                <span class="badge bg-info ms-1">
+                    <i class="bi bi-lightning"></i> AJAX
+                </span>
+            {% endif %}
+        </div>
+
+        {# URI avec icône de lien #}
+        {% if context.uri %}
+            <div class="mb-2">
+                <small class="text-muted">
+                    <i class="bi bi-link-45deg"></i> URI:
+                </small>
+                <code class="d-block ms-3 text-break">{{ context.uri }}</code>
+            </div>
+        {% endif %}
+
+        {# Referer #}
+        {% if context.referer %}
+            <div class="mb-2">
+                <small class="text-muted">
+                    <i class="bi bi-arrow-left-circle"></i> Referer:
+                </small>
+                <code class="d-block ms-3 text-break">{{ context.referer|slice(0, 80) }}</code>
+            </div>
+        {% endif %}
+
+        {# Route params #}
+        {% if context.route_params is defined and context.route_params is not empty %}
+            <details class="mt-2">
+                <summary class="cursor-pointer text-primary">
+                    <i class="bi bi-signpost"></i> 
+                    <strong>Paramètres de route</strong>
+                </summary>
+                <div class="mt-2 ms-3">
+                    {% for key, val in context.route_params %}
+                        <div class="mb-1">
+                            <code>{{ key }}</code>: 
+                            <span class="text-primary">{{ val }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </details>
+        {% endif %}
+
+        {# Request Data (POST, PUT) #}
+        {% if context.request_data is defined and context.request_data is not empty %}
+            <details class="mt-2">
+                <summary class="cursor-pointer text-primary">
+                    <i class="bi bi-file-earmark-text"></i> 
+                    <strong>Données de la requête</strong>
+                </summary>
+                <div class="mt-2">
+                    <pre class="bg-light p-2 rounded" style="font-size: 0.85rem; max-height: 300px; overflow-y: auto;">{{ context.request_data|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+                </div>
+            </details>
+        {% endif %}
+
+        {# User Agent #}
+        {% if context.user_agent %}
+            <details class="mt-2">
+                <summary class="cursor-pointer text-secondary">
+                    <i class="bi bi-browser-chrome"></i> 
+                    <small>User Agent</small>
+                </summary>
+                <small class="text-muted d-block mt-1 ms-3">
+                    {{ context.user_agent }}
+                </small>
+            </details>
+        {% endif %}
+        {% if context.systeme_operational is defined %}
+            <details class="mt-2">
+                <summary class="cursor-pointer text-warning fw-bold">
+                    <i class="bi bi-browser-chrome"></i> 
+                    <small>SYSTEME D'EXPLOITATION</small>
+                </summary>
+                <small class="text-muted d-block mt-1 ms-3">
+                    {{ context.systeme_operational|upper }}
+                </small>
+            </details>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+
+{# ============================================ #}
+{# MACRO : Contexte Auth (Login/Logout)        #}
+{# ============================================ #}
+{% macro renderAuthContext(context) %}
+    <div class="auth-context">
+        <div class="mb-2">
+            <span class="badge bg-success">
+                <i class="bi bi-shield-lock"></i> AUTHENTIFICATION
+            </span>
+        </div>
+
+        {# Session ID #}
+        {% if context.session_id %}
+            <div class="mb-2">
+                <small class="text-muted">
+                    <i class="bi bi-key"></i> Session:
+                </small>
+                <code class="d-block ms-3">{{ context.session_id }}</code>
+            </div>
+        {% endif %}
+
+        {# Durée de session (Logout) #}
+        {% if context.session_duration_seconds is defined %}
+            <div class="mb-2">
+                <small class="text-muted">
+                    <i class="bi bi-clock"></i> Durée:
+                </small>
+                <strong class="d-block ms-3">
+                    {{ _self.formatDuration(context.session_duration_seconds) }}
+                </strong>
+            </div>
+        {% endif %}
+
+        {# Date de début de session #}
+        {% if context.session_started_at is defined %}
+            <div class="mb-2">
+                <small class="text-muted">
+                    <i class="bi bi-calendar-check"></i> Début:
+                </small>
+                <span class="d-block ms-3">{{ context.session_started_at }}</span>
+            </div>
+        {% endif %} 
+
+        {# Type de logout #}
+        {% if context.logout_type is defined %}
+            {% set logoutBadge = context.logout_type == 'voluntary' ? 'bg-primary' : 'bg-warning text-dark' %}
+            <div class="mb-2">
+                <span class="badge {{ logoutBadge }}">
+                    {{ context.logout_type == 'voluntary' ? 'Déconnexion volontaire' : 'Session expirée' }}
+                </span>
+            </div>
+        {% endif %}
+
+        {# Username tenté (échec de connexion) #}
+        {% if context.username_attempted is defined %}
+            <div class="alert alert-warning py-1 px-2 mb-2">
+                <i class="bi bi-exclamation-triangle"></i> 
+                <strong>Tentative:</strong> {{ context.username_attempted }}
+            </div>
+        {% endif %}
+
+        {# Raison de l'échec #}
+        {% if context.failure_reason is defined %}
+            <div class="alert alert-danger py-1 px-2 mb-2">
+                <i class="bi bi-x-circle"></i> 
+                {{ context.failure_reason }}
+            </div>
+        {% endif %}
+
+        {# User Agent #}
+        {% if context.user_agent %}
+            <details class="mt-2">
+                <summary class="cursor-pointer text-secondary">
+                    <i class="bi bi-browser-chrome"></i> 
+                    <small>User Agent</small>
+                </summary>
+                <small class="text-muted d-block mt-1 ms-3 text-break">
+                    {{ context.user_agent }}
+                </small>
+            </details>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+
+{# ============================================ #}
+{# MACRO : Contexte Générique (Fallback)       #}
+{# ============================================ #}
+{% macro renderGenericContext(context) %}
+    <div class="generic-context">
+        <div class="mb-2">
+            <span class="badge bg-secondary">
+                <i class="bi bi-info-circle"></i> CONTEXTE
+            </span>
+        </div>
+
+        <details open>
+            <summary class="cursor-pointer text-primary">
+                <strong>Détails ({{ context|length }} entrée(s))</strong>
+            </summary>
+            <div class="mt-2">
+                <pre class="bg-light p-2 rounded" style="font-size: 0.85rem; max-height: 400px; overflow-y: auto;">{{ context|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+            </div>
+        </details>
+    </div>
+{% endmacro %}
+
+{# ============================================ #}
+{# MACRO : Formater une durée en secondes      #}
+{# ============================================ #}
+{% macro formatDuration(seconds) %}
+    {% if seconds < 60 %}
+        {{ seconds }}s
+    {% elseif seconds < 3600 %}
+        {{ (seconds / 60)|round }}m {{ seconds % 60 }}s
+    {% else %}
+        {% set hours = (seconds / 3600)|round(0, 'floor') %}
+        {% set minutes = ((seconds % 3600) / 60)|round %}
+        {{ hours }}h {{ minutes }}m
+    {% endif %}
+{% endmacro %}
+
+{# ============================================ #}
+{# MACRO : Afficher une valeur                 #}
+{# ============================================ #}
+{% macro renderValue(value) %}
+    {% if value is null %}
+        <em class="text-muted">null</em>
+    {% elseif value is same as(true) %}
+        <span class="badge bg-success">true</span>
+    {% elseif value is same as(false) %}
+        <span class="badge bg-danger">false</span>
+    {% elseif value is iterable and value|length>0 %}
+        <span class="badge bg-secondary">
+            [{{ value|length }} élément(s)]
+        </span>
+    {% else %}
+        {{ value|slice(0, 50) }}
+        {% if value|length > 50 %}...{% endif %}
+    {% endif %}
+{% endmacro %}
+

@@ -1,0 +1,138 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{# 1. Le Select qui sert de base à TomSelect #}
+<select id="{{ id }}_autocomplete_input" 
+    class="form-control"
+    {%- if disabled %} disabled="disabled"{% endif %}
+    {%- if multiple %} multiple="multiple"{% endif %}
+    {%- for attribute, value in attr %} {{ attribute }}="{{ value }}" {% endfor -%}
+>
+    {# On affiche les valeurs déjà enregistrées (pour l'édition) #}
+    {% if value.ids is defined and value.labels is defined %}
+        {% for i, val in value.ids %}
+            <option value="{{ val }}" selected>{{ value.labels[i] }}</option>
+        {% endfor %}
+    {% else %}
+        {% for idx, val in value|filter((val, idx) => idx~'' != '_labels') %}
+            <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
+        {% endfor %}
+    {% endif %}
+</select>
+ 
+{# 2. Conteneur des inputs cachés (Géré dynamiquement par le JS TomSelect) #}
+<div id="{{ id }}_hidden_inputs_wrap">
+    {% if multiple -%}
+        {% for val in value.ids|default([]) %}
+            <input type="hidden" name="{{ full_name }}[]" {%- if disabled %} disabled="disabled"{% endif %} value="{{ val }}">
+        {% endfor %}
+    {% else -%}
+        <input type="hidden" name="{{ full_name }}" {%- if disabled %} disabled="disabled"{% endif %} value="{{ value.ids[0]|default('') }}">
+    {% endif -%}
+</div>
+
+{# 3. Actions (Bouton Ajouter +) - On ne touche pas à cette logique Sonata native #}
+{% if sonata_admin.field_description and sonata_admin.field_description.hasAssociationAdmin %}
+    <div id="field_actions_{{ id }}" class="field-actions mt-2">
+        {% set display_btn_add = sonata_admin.edit != 'admin' and sonata_admin.field_description.associationadmin.hasRoute('create')
+                                 and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+        {% if display_btn_add %}
+            <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create',
+                         sonata_admin.field_description.getOption('link_parameters', {}))
+                      }}"
+                onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                class="btn btn-outline-success btn-sm sonata-ba-action"
+                title="{{ btn_translation_domain is same as(false) ? btn_add : btn_add|trans({}, btn_translation_domain|default('SonataAdminBundle')) }}"
+            >
+                {{ux_icon('fa:plus-circle')}}
+                {{ btn_translation_domain is same as(false) ? btn_add : btn_add|trans({}, btn_translation_domain|default('SonataAdminBundle')) }}
+            </a>
+            {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
+            {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %} 
+        {% endif %}
+    </div>
+{% endif %}
+
+<script>
+    {% autoescape 'js' %}
+    document.addEventListener("DOMContentLoaded", function() {
+        const el = document.getElementById('{{ id }}_autocomplete_input');
+        const hiddenWrap = document.getElementById('{{ id }}_hidden_inputs_wrap');
+        
+        if (!el || el.tomselect) return;
+
+        const ts = new TomSelect(el, {
+            valueField: 'id',
+            labelField: 'label',
+            searchField: 'label',
+            placeholder: '{{ placeholder|e('js') }}',
+            maxItems: {{ multiple ? 'null' : 1 }},
+            plugins: ['dropdown_input', 'remove_button'],
+            shouldLoad: (query) => query.length >= {{ minimum_input_length }},
+            load: function(query, callback) {
+                const page = this.next_page || 1;
+                const params = new URLSearchParams({
+                    '{{ req_param_name_search }}': query,
+                    '{{ req_param_name_items_per_page }}': {{ items_per_page }},
+                    '{{ req_param_name_page_number }}': page,
+                    'field': '{{ name }}',
+                    {% if sonata_admin.admin %}
+                        'uniqid': '{{ sonata_admin.admin.uniqid }}',
+                        '_sonata_admin': '{{ sonata_admin.admin.baseCodeRoute|e('js') }}',
+                    {% elseif admin_code %}
+                        '_sonata_admin': '{{ admin_code|e('js') }}',
+                    {% endif %}
+                    {% if context == 'filter' %}'_context': 'filter'{% endif %}
+                });
+
+                fetch('{{ url ?: path(route.name, route.parameters|default([])) }}?' + params.toString())
+                    .then(response => response.json())
+                    .then(json => {
+                        callback(json.items);
+                        this.next_page = json.more ? page + 1 : null;
+                    }).catch(() => callback());
+            },
+            onChange: function(value) {
+                hiddenWrap.innerHTML = '';
+                const values = Array.isArray(value) ? value : [value];
+                values.forEach(v => {
+                    if (v) {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = '{{ full_name }}{{ multiple ? '[]' : '' }}';
+                        input.value = v;
+                        hiddenWrap.appendChild(input);
+                    }
+                });
+            },
+            render: {
+                option: (item, escape) => `<div class="py-2 px-3">${escape(item.label)}</div>`,
+                item: (item, escape) => `<div class="item">${escape(item.label)}</div>`,
+                no_results: (data, escape) => `<div class="no-results p-2">Aucun résultat pour "${escape(data.input)}"</div>`,
+                loading: () => `<div class="p-2">Chargement...</div>`
+            }
+        });
+
+        // Gestion du bouton "Ajouter" (+) de Sonata
+        {% if sonata_admin.field_description and btn_add %}
+            $(document).ajaxSuccess(function(event, xhr, settings) {
+                if (xhr.responseJSON && xhr.responseJSON.result === 'ok' && xhr.responseJSON.objectId) {
+                    const newItem = {
+                        id: xhr.responseJSON.objectId,
+                        label: new DOMParser().parseFromString(xhr.responseJSON.objectName, "text/html").documentElement.textContent
+                    };
+                    ts.addOption(newItem);
+                    ts.addItem(newItem.id);
+                }
+            });
+        {% endif %}
+    });
+    {% endautoescape %}
+</script>

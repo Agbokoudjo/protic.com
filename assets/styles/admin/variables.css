@@ -1,0 +1,50 @@
+/* ============================================================
+   ProTIC — Variables CSS globales
+   ============================================================ */
+:root {
+    /* Sidebar */
+    --sidebar-start        : #0a1628;
+    --sidebar-mid          : #1a3060;
+    --sidebar-end          : #2D3099;
+    --sidebar-border       : rgba(255, 215, 0, 0.12);
+    --sidebar-shadow       : rgba(0, 0, 0, 0.50);
+    --sidebar-text         : rgba(255, 255, 255, 0.72);
+    --sidebar-icon         : rgba(255, 215, 0, 0.80);
+    --sidebar-hover-bg     : rgba(255, 255, 255, 0.07);
+    --sidebar-active-bg    : rgba(255, 215, 0, 0.12);
+    --sidebar-active-text  : #FFD700;
+    --sidebar-active-border: #FFD700;
+
+    /* Header */
+    --header-bg-start      : #1e293b;
+    --header-bg-end        : #162038;
+    --header-border        : rgba(255, 215, 0, 0.20);
+    --header-shadow        : rgba(0, 0, 0, 0.40);
+    --header-text          : rgba(255, 255, 255, 0.88);
+    --header-text-muted    : rgba(255, 255, 255, 0.55);
+    --header-text-hover    : #FFD700;
+
+    /* Main */
+    --main-bg              : #0a1628;
+    --main-bg-surface      : #0d1f3c;
+    --main-text            : rgba(255, 255, 255, 0.88);
+    --main-text-muted      : rgba(255, 255, 255, 0.45);
+
+    /* Cards */
+    --card-bg              : #1e293b;
+    --card-border          : rgba(255, 255, 255, 0.08);
+    --card-shadow          : rgba(0, 0, 0, 0.30);
+
+    /* Accents */
+    --gold                 : #FFD700;
+    --gold-dark            : #e6c200;
+    --gold-glow            : rgba(255, 215, 0, 0.25);
+    --blue-primary         : #2D3099;
+    --blue-mid             : #1a3060;
+    --blue-dark            : #0a1628;
+
+    /* Surfaces */
+    --surface-1            : #1e293b;
+    --surface-2            : #263348;
+    --surface-3            : #2d3d56;
+}

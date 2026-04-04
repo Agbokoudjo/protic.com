@@ -1,0 +1,108 @@
+<nav class="navbar protic-navbar navbar-expand-lg" id="protic-navbar" aria-label="Navigation principale">
+    <div class="container-fluid px-4 px-lg-5">
+
+        {# ── Toggler mobile — déclenche l'offcanvas ── #}
+        <button
+            class="navbar-toggler protic-navbar__toggler ms-auto"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#navOffcanvas"
+            aria-controls="navOffcanvas"
+            aria-expanded="false"
+            aria-label="Ouvrir le menu">
+            <span class="protic-navbar__toggler-bar"></span>
+            <span class="protic-navbar__toggler-bar"></span>
+            <span class="protic-navbar__toggler-bar"></span>
+        </button>
+
+        {# ── Liens desktop (lg+) ── #}
+        <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarDesktop">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item">
+                    <a class="protic-nav-link {% if app.request.attributes.get('_route') == 'app_home' %}is-active{% endif %}"
+                       href="{{path('app_home')}}">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="protic-nav-link {% if app.request.attributes.get('_route') starts with 'app_catalogue' %}is-active{% endif %}"
+                       href="{{path('app_catalogue')}}">Catalogue</a>
+                </li>
+                <li class="nav-item">
+                    <a class="protic-nav-link {% if app.request.attributes.get('_route') starts with 'app_services' %}is-active{% endif %}"
+                       href="#">Nos Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="protic-nav-link {% if app.request.attributes.get('_route') == 'app_about' %}is-active{% endif %}"
+                       href="{{path('app_about')}}">À propos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="protic-nav-link {% if app.request.attributes.get('_route') == 'app_contact' %}is-active{% endif %}"
+                       href="{{path('app_contact')}}">Contact</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+{# ══════════════════════════════════════════
+   OFFCANVAS — menu mobile (slide depuis droite)
+══════════════════════════════════════════ #}
+<div class="offcanvas offcanvas-end protic-offcanvas"
+     tabindex="-1"
+     id="navOffcanvas"
+     aria-labelledby="navOffcanvasLabel">
+
+    <div class="offcanvas-header protic-offcanvas__header">
+        <div class="d-flex align-items-center gap-2">
+            <img src="{{ asset('assets/images/logo.png','app') }}" alt="ProTIC" height="40">
+        </div>
+        <button type="button"
+                class="protic-offcanvas__close"
+                data-bs-dismiss="offcanvas"
+                aria-label="Fermer le menu">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+    <div class="offcanvas-body protic-offcanvas__body">
+        <ul class="list-unstyled protic-offcanvas__links">
+            <li>
+                <a class="protic-offcanvas__link {% if app.request.attributes.get('_route') == 'app_home' %}is-active{% endif %}"
+                   href="#" data-bs-dismiss="offcanvas">
+                    <i class="bi bi-house-door"></i> Accueil
+                </a>
+            </li>
+            <li>
+                <a class="protic-offcanvas__link {% if app.request.attributes.get('_route') starts with 'app_catalogue' %}is-active{% endif %}"
+                   href="#" data-bs-dismiss="offcanvas">
+                    <i class="bi bi-book"></i> Catalogue
+                </a>
+            </li>
+            <li>
+                <a class="protic-offcanvas__link {% if app.request.attributes.get('_route') starts with 'app_services' %}is-active{% endif %}"
+                   href="#" data-bs-dismiss="offcanvas">
+                    <i class="bi bi-briefcase"></i> Nos Services
+                </a>
+            </li>
+            <li>
+                <a class="protic-offcanvas__link {% if app.request.attributes.get('_route') == 'app_about' %}is-active{% endif %}"
+                   href="#" data-bs-dismiss="offcanvas">
+                    <i class="bi bi-info-circle"></i> À propos
+                </a>
+            </li>
+            <li>
+                <a class="protic-offcanvas__link {% if app.request.attributes.get('_route') == 'app_contact' %}is-active{% endif %}"
+                   href="#" data-bs-dismiss="offcanvas">
+                    <i class="bi bi-envelope"></i> Contact
+                </a>
+            </li>
+        </ul>
+
+        <div class="mt-auto pt-4 border-top border-white border-opacity-10">
+            <a href="{{ path('app_admin_user_login') }}" class="protic-btn-admin w-100 justify-content-center">
+                <i class="bi bi-shield-lock protic-btn-admin__icon"></i>
+                <span class="protic-btn-admin__label">Administration</span>
+            </a>
+        </div>
+    </div>
+</div>

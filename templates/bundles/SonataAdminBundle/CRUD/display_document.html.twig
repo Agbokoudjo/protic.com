@@ -1,0 +1,42 @@
+{% macro render_document(field_description,object,cacheKey,cache_ttl,tags_name,defaultPath = null) %}
+    {% set html_id = 'ea-lightbox-document' ~ '-'%}
+        {% set fieldName = field_description.fieldName %}
+        {% set labelFieldname = field_description.options['label'] ?? fieldName  %}
+        {% if field_description.type == 'Vich\\UploaderBundle\\Form\\Type\\VichFileType' %}
+              {% set  documentUrl = vich_uploader_asset(object,fieldName)  %}
+        {% else %}
+            {% set  documentUrl = asset(defaultPath)  %}
+	    {% endif %}
+         {{ dump(documentUrl)}}
+        {% if documentUrl is not null %}
+            <div class="document-viewer-wrapper" style="position: relative; border: 1px solid #ddd; border-radius: 4px;">
+                <a href="{{ documentUrl }}" 
+                   class="ea-lightbox-thumbnail-document btn btn-info btn-xs btn-infos text-white mb-3 fw-bolder" 
+                   data-document-url="{{ documentUrl }}"
+                   style="position: absolute; top: 5px; right: 5px; z-index: 10; text-decoration: none;">
+                    <i class="fa fa-expand"></i> 
+                    {{ 'action_dowload_support_media' |trans({'%media_type%' : 'document'}, 'SonataAdminBundle',app.locale) }}
+                </a>
+                <iframe 
+                    src="{{ documentUrl }}" 
+                    style="width: 100%; height:auto; border: none; display: block;margin-top:90px;" 
+                    title="{{ labelFieldname }}"
+                    id="{{ html_id }}"
+                    allowfullscreen
+                    webkitallowfullscreen>
+                    <p style="text-align: center; padding: 20px;">
+                         {{ 'no_support_media' |trans({'%media_type%' : 'document'}, 'SonataAdminBundle',app.locale) }}
+                    <a href="{{ documentUrl }}" target="_blank">
+                        {{ 'action_dowload_support_media' |trans({'%media_type%' : 'document'}, 'SonataAdminBundle',app.locale) }}
+                    </a>.
+                    </p>
+            </iframe>
+            </div>
+        {% else %}
+            <a href="#"></a>
+        {% endif %}
+         <div id="{{ html_id }}" class="ea-lightbox">
+            {# {% include "bundles/SonataAdminBundle/CRUD/show_pdf.html.twig" %} #}
+         </div>
+        
+{% endmacro %}

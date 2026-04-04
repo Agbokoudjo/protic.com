@@ -3,14 +3,42 @@ framework:
         failure_transport: failed
 
         transports:
-            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            # 1. Transport pour les EMAILS (Utilise Redis)
+            email_transport:
+                dsn: '%env(MESSENGER_TRANSPORT_EMAIL_DSN)%'
+                options:
+                    lazy: true
+                    group: 'symfony_email_protic'
+                
+            # 2. Transport pour les TÂCHES LOURDES (Utilise Beanstalkd)
+            async_app_transport:
+                dsn: '%env(MESSENGER_TRANSPORT_APP_DSN)%'
+                retry_strategy:
+                    max_retries: 4
+                    multiplier: 2
+              
             async:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    # ssl:
+                    #     allow_self_signed: true
+                    #     capture_peer_cert: true
+                    #     capture_peer_cert_chain: true
+                    #     disable_compression: true
+                    #     SNI_enabled: true
+                    #     verify_peer: true
+                    #     verify_peer_name: true
                 retry_strategy:
-                    max_retries: 3
+                    max_retries: 4
                     multiplier: 2
-            failed: 'doctrine://default?queue_name=failed'
-            # sync: 'sync://'
+            failed: 
+                dsn: '%env(MESSENGER_TRANSPORT_FAILED_DSN)%'
+                options:
+                    # Permet de séparer les messages échoués des autres clés Redis
+                    group: 'failed'
+                    delete_after_ack: true
+                    lazy: true
+
 
         default_bus: messenger.bus.default
 
@@ -18,9 +46,7 @@ framework:
             messenger.bus.default: []
 
         routing:
-            Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+            Symfony\Component\Mailer\Messenger\SendEmailMessage: email_transport
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
-
-            # Route your messages to the transports
-            # 'App\Message\YourMessage': async
+            App\Queue\Message\ServiceMethodMessage: async_app_transport

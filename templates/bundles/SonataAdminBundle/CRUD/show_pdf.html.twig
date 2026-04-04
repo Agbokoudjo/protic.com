@@ -1,0 +1,6 @@
+{{ include('bundles/SonataAdminBundle/CRUD/pdf_preview.html.twig', {
+    filename: object.manuscriptFilename,
+    author:   object.fullName,
+    subject:  object.subject,
+    date:     object.submittedAt|date('d/m/Y'),
+}) }} 

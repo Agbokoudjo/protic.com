@@ -1,6 +1,10 @@
 twig:
     file_name_pattern: '*.twig'
-
+    globals:
+        NAME_SITE: "ProTIC Editions & Services"
+        CACHE_IMG_TWIG: 200
+        CACHE_DOCUMENT_TWIG: 200
+        TRANSLATION_HASH: d933fef3e25b3b2e42487045235ce13fa73c1df0b1e05d2eeb3c7a21a5f4d34e
 when@test:
     twig:
         strict_variables: true

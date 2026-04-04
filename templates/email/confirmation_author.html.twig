@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre demande a bien été reçue — ProTIC Editions</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #f0f4f8; font-family: 'Segoe UI', Arial, sans-serif; }
+        table, td { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+
+        .email-wrapper   { background-color: #f0f4f8; padding: 32px 16px; }
+        .email-container { max-width: 620px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(13,31,78,0.10); }
+
+        /* Header */
+        .email-header {
+            background: linear-gradient(135deg, #06122e 0%, #0d1f4e 55%, #1a3a8f 100%);
+            padding: 40px 40px 32px; text-align: center;
+        }
+        .header-logo-text { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: 0.02em; }
+        .header-logo-sub  { font-size: 12px; color: rgba(255,255,255,0.50); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px; }
+
+        /* Cercle check */
+        .check-circle {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: rgba(52,211,153,0.18); border: 2px solid rgba(52,211,153,0.45);
+            display: inline-flex; align-items: center; justify-content: center;
+            margin: 22px auto 0; font-size: 30px; line-height: 1;
+        }
+        .header-title {
+            font-size: 22px; font-weight: 800; color: #fff;
+            margin-top: 14px; line-height: 1.3;
+        }
+        .header-sub {
+            font-size: 14px; color: rgba(255,255,255,0.65);
+            margin-top: 8px; line-height: 1.6;
+        }
+
+        /* Body */
+        .email-body { padding: 36px 40px; }
+
+        .greeting {
+            font-size: 16px; color: #1f2937; line-height: 1.6; margin-bottom: 20px;
+        }
+        .greeting strong { color: #1a3a8f; }
+
+        /* Section title */
+        .section-title {
+            font-size: 11px; font-weight: 700; color: #1a3a8f;
+            text-transform: uppercase; letter-spacing: 0.10em;
+            border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;
+            margin: 28px 0 16px;
+        }
+
+        /* Récap table */
+        .recap-table { width: 100%; border-collapse: collapse; }
+        .recap-row td { padding: 9px 0; vertical-align: top; border-bottom: 1px solid #f3f4f6; font-size: 14px; }
+        .recap-row:last-child td { border-bottom: none; }
+        .recap-label { width: 38%; color: #6b7280; font-weight: 600; padding-right: 12px; }
+        .recap-value { color: #1f2937; }
+
+        /* Steps */
+        .steps-wrap { margin-top: 8px; }
+        .step-item {
+            display: flex; align-items: flex-start; gap: 14px;
+            padding: 14px 0; border-bottom: 1px solid #f3f4f6;
+            font-size: 14px;
+        }
+        .step-item:last-child { border-bottom: none; }
+        .step-num {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: #1a3a8f; color: #fff; font-size: 13px; font-weight: 700;
+            display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .step-num--gold { background: #FFD700; color: #1a1f3c; }
+        .step-title   { font-weight: 700; color: #1f2937; margin-bottom: 3px; font-size: 14px; }
+        .step-desc    { color: #6b7280; font-size: 13px; line-height: 1.55; }
+
+        /* Garanties */
+        .guarantees-box {
+            background: #eff6ff; border: 1px solid #bfdbfe;
+            border-radius: 10px; padding: 20px 22px; margin-top: 24px;
+        }
+        .guarantee-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 13px; color: #1e3a5f; line-height: 1.55; margin-bottom: 10px;
+        }
+        .guarantee-item:last-child { margin-bottom: 0; }
+        .guarantee-item__check { color: #16a34a; font-weight: 800; flex-shrink: 0; }
+
+        /* Contact rapide */
+        .contact-box {
+            background: #f8fafc; border: 1px solid #e5e7eb;
+            border-radius: 10px; padding: 20px 22px; margin-top: 20px;
+            font-size: 13px; color: #374151; line-height: 1.75;
+        }
+        .contact-box a { color: #1a3a8f; font-weight: 600; text-decoration: none; }
+        .contact-box a:hover { text-decoration: underline; }
+
+        /* CTA */
+        .cta-wrap { text-align: center; margin-top: 32px; }
+        .cta-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1a3a8f, #2d5be3);
+            color: #ffffff !important; text-decoration: none;
+            font-size: 14px; font-weight: 700; padding: 14px 32px;
+            border-radius: 8px; letter-spacing: 0.02em;
+        }
+
+        /* Footer */
+        .email-footer {
+            background: #0d1f4e; padding: 24px 40px; text-align: center;
+        }
+        .email-footer p { font-size: 11px; color: rgba(255,255,255,0.40); line-height: 1.8; }
+        .email-footer strong { color: rgba(255,255,255,0.65); }
+        .email-footer a { color: #FFD700; text-decoration: none; }
+
+        /* Divider doré */
+        .gold-divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FFD700 30%, #FFD700 70%, transparent);
+        }
+    </style>
+</head>
+<body>
+
+<div class="email-wrapper">
+<div class="email-container">
+
+    {# ══════════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════════ #}
+    <div class="email-header">
+        <div class="header-logo-text">ProTIC</div>
+        <div class="header-logo-sub">Editions &amp; Services</div>
+        <div class="check-circle">✅</div>
+        <div class="header-title">Votre demande a bien été reçue !</div>
+        <div class="header-sub">
+            Nous vous répondrons dans les <strong style="color:#FFD700;">48 heures</strong>
+            à l'adresse <strong style="color:#FFD700;">{{ submission.email }}</strong>
+        </div>
+    </div>
+
+    {# Barre dorée #}
+    <div class="gold-divider"></div>
+
+    {# ══════════════════════════════════════════
+       BODY
+    ══════════════════════════════════════════ #}
+    <div class="email-body">
+
+        <p class="greeting">
+            Bonjour <strong>{{ submission.fullName }}</strong>,<br><br>
+            Merci de faire confiance à <strong>ProTIC Editions &amp; Services</strong>
+            pour votre projet éditorial. Votre demande a bien été transmise à notre équipe
+            qui l'examinera avec le plus grand soin.
+        </p>
+
+        {# ── Récapitulatif de la soumission ── #}
+        <div class="section-title">📋 Récapitulatif de votre demande</div>
+        <table class="recap-table">
+            <tr class="recap-row">
+                <td class="recap-label">Référence</td>
+                <td class="recap-value">
+                    <strong>#{{ submission.id }}</strong>
+                    <span style="font-size:12px;color:#9ca3af;margin-left:8px;">
+                        (conservez ce numéro pour tout suivi)
+                    </span>
+                </td>
+            </tr>
+            <tr class="recap-row">
+                <td class="recap-label">Objet</td>
+                <td class="recap-value"><strong>{{ submission.subject }}</strong></td>
+            </tr>
+            <tr class="recap-row">
+                <td class="recap-label">Date d'envoi</td>
+                <td class="recap-value">
+                    {{ submission.submittedAt|date('d/m/Y à H:i', 'Africa/Porto-Novo') }}
+                </td>
+            </tr>
+            <tr class="recap-row">
+                <td class="recap-label">Manuscrit joint</td>
+                <td class="recap-value">
+                    {% if submission.manuscriptFilename %}
+                        ✅ <span style="color:#16a34a;font-weight:600;">Fichier reçu</span>
+                        <span style="font-size:12px;color:#6b7280;margin-left:6px;">
+                            ({{ submission.manuscriptFilename }})
+                        </span>
+                    {% else %}
+                        ⬜ <span style="color:#9ca3af;">Aucun fichier joint</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+
+        {# ── Prochaines étapes ── #}
+        <div class="section-title">Que se passe-t-il maintenant ?</div>
+        <div class="steps-wrap">
+            <div class="step-item">
+                <span class="step-num">1</span>
+                <div>
+                    <div class="step-title">Examen de votre dossier</div>
+                    <div class="step-desc">Notre équipe éditoriale analyse votre projet dans un délai de 48h ouvrées.</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <span class="step-num">2</span>
+                <div>
+                    <div class="step-title">Prise de contact</div>
+                    <div class="step-desc">Un conseiller ProTIC vous contacte par email ou téléphone pour discuter de votre projet.</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <span class="step-num">3</span>
+                <div>
+                    <div class="step-title">Proposition éditoriale</div>
+                    <div class="step-desc">Nous vous soumettons une offre personnalisée : conception, mise en page, impression et distribution.</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <span class="step-num step-num--gold">4</span>
+                <div>
+                    <div class="step-title">Publication de votre œuvre</div>
+                    <div class="step-desc">Votre livre est publié, déposé légalement et distribué à l'échelle nationale.</div>
+                </div>
+            </div>
+        </div>
+
+        {# ── Garanties ── #}
+        <div class="guarantees-box">
+            <div class="guarantee-item">
+                <span class="guarantee-item__check">✓</span>
+                <span>Réponse garantie sous <strong>48 heures ouvrées</strong></span>
+            </div>
+            <div class="guarantee-item">
+                <span class="guarantee-item__check">✓</span>
+                <span>Accompagnement personnalisé de A à Z</span>
+            </div>
+            <div class="guarantee-item">
+                <span class="guarantee-item__check">✓</span>
+                <span>Dépôt légal à la Bibliothèque Nationale du Bénin inclus</span>
+            </div>
+            <div class="guarantee-item">
+                <span class="guarantee-item__check">✓</span>
+                <span>Membre officiel de l'<strong>APPEL-Bénin</strong></span>
+            </div>
+        </div>
+
+        {# ── Contact direct ── #}
+        <div class="contact-box">
+            <strong style="color:#1a3a8f;">Besoin d'une réponse plus rapide ?</strong><br>
+            📞 Appelez-nous directement au
+            <a href="tel:+22995869951">+229 01 95 86 99 51</a> ou au
+            <a href="tel:+22962013868">+229 01 62 013 868</a><br>
+            ✉️ <a href="mailto:proticeditions@gmail.com">proticeditions@gmail.com</a><br>
+            📍 Campus d'Abomey-Calavi, K61-62 Rectorat annexe, Bénin<br>
+            🕐 Lun – Ven : 08h00 – 17h00 &nbsp;|&nbsp; Samedi : 09h00 – 13h00
+        </div>
+
+        {# ── CTA ── #}
+        <div class="cta-wrap">
+            <a href="{{ absolute_url('app_home') }}" class="cta-btn">
+                Retour sur notre site →
+            </a>
+        </div>
+
+    </div>
+
+    <div class="email-footer">
+        <p>
+            Vous recevez cet email car vous avez soumis une demande sur le site ProTIC.<br>
+            Si cette demande ne vient pas de vous,
+            <a href="mailto:proticeditions@gmail.com">contactez-nous immédiatement</a>.<br><br>
+            <strong>© {{ "now"|date("Y") }} ProTIC Editions &amp; Services</strong> —
+            Campus d'Abomey-Calavi, K61-62, Bénin<br>
+            Développé par <strong>INTERNATIONALES WEB APPS &amp; SERVICES</strong>
+        </p>
+    </div>
+
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+vich_uploader:
+    db_driver: orm
+    metadata:
+        type: attribute
+    mappings:
+        avatars:
+            uri_prefix: /uploads/avatars
+            upload_destination: '%kernel.project_dir%/public/uploads/avatars'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_update: true
+            delete_on_remove: true
+
+        cover_image_book:
+            uri_prefix: /uploads/cover_image_book
+            upload_destination: '%kernel.project_dir%/public/uploads/cover_image_book'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_update: true
+            delete_on_remove: true
+
+        manuscript_file:
+            uri_prefix: /manuscripts
+            upload_destination: '%kernel.project_dir%/var/uploads/manuscripts'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_update: true
+            delete_on_remove: true

@@ -1,0 +1,4 @@
+app_admin_category: "Modification de la catégorie %name%"
+edit__app_admin_author: "Modification de l'auteur %name%"
+edit__app_admin_book: "Modifier le livre %name%"
+create__app.admin.global_setting: "Modifier les informations de l'entreprise %name% "

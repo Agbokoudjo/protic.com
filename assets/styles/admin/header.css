@@ -1,0 +1,120 @@
+@keyframes header-shimmer {
+    0%   { transform: translateX(-150%); opacity: 0; }
+    20%  { opacity: 1; }
+    80%  { opacity: 0.6; }
+    100% { transform: translateX(400%); opacity: 0; }
+}
+
+@keyframes header-orb-breathe {
+    0%, 100% { opacity: 0.40; transform: scale(1); }
+    50%       { opacity: 0.80; transform: scale(1.08); }
+}
+
+@keyframes header-line-pulse {
+    0%, 100% { opacity: 0.25; }
+    50%       { opacity: 0.70; }
+}
+
+#app-header .container-fluid {
+    padding-left: auto !important;
+    padding-right: 16px !important;
+     position: relative !important;
+    z-index: 2 !important;
+}
+
+#app-header {
+    background: linear-gradient(
+        135deg,
+        #dde4f0 0%,
+        #e8edf7 40%,
+        #dfe6f2 70%,
+        #d8e0ee 100%
+    ) !important;
+
+   
+    color: #1a2235 !important;
+
+    border-bottom: none !important;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05),
+                0 2px 12px rgba(0,0,0,0.40) !important;
+  padding: 15px 20px;
+  height: 60px;
+  min-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky !important;
+    top: 0;
+    z-index: 1050; /* Doit être au-dessus de tout */
+    width: 100%;
+}
+
+/* Le premier nav-item (bouton toggle) */
+#app-header .navbar-nav:first-child {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+#app-header .navbar-nav:first-child .nav-item {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+#app-header .navbar-nav:first-child .nav-link {
+    padding-left: 2px !important;
+    padding-right: 4px !important;
+}
+
+#app-header .container-fluid,
+#app-header .navbar-nav,
+#app-header form,
+#app-header > * {
+  
+    z-index: 2 !important;
+}
+
+/* ── Toggle sidebar ──────────────────────────────────────── */
+/* Rendre les éléments visibles sur fond clair */
+#app-header .sidebar-toggle,
+#app-header .btn-sidebar {
+    color: #1a2235 !important;
+}
+#app-header .sidebar-toggle:hover { color: #2D3099 !important; }
+
+#app-header .form-control-navbar {
+    background: rgba(255,255,255,0.60) !important;
+    border: 1px solid rgba(45,48,153,0.15) !important;
+    color: #1a2235 !important;
+    border-radius: 10px !important;
+     height: 36px !important;
+       font-size: 13px !important;
+    transition: all 0.25s ease !important;
+}
+#app-header .form-control-navbar::placeholder {
+    color: rgba(26,34,53,0.40) !important;
+}
+
+#app-header .form-control-navbar:focus {
+    background: rgba(255,255,255,0.09) !important;
+    border-color: rgba(255,215,0,0.40) !important;
+    box-shadow: 0 0 0 3px rgba(255,215,0,0.08) !important;
+    outline: none !important;
+}
+#app-header .btn-navbar {
+    background: rgba(255,255,255,0.50) !important;
+    border: 1px solid rgba(45,48,153,0.12) !important;
+    color: #1a2235 !important;
+    height: 36px !important;
+}
+#app-header .btn-navbar:hover {
+    color: #FFD700 !important;
+    background: rgba(255,215,0,0.08) !important;
+}
+
+/* ── Nav links ───────────────────────────────────────────── */
+#app-header .navbar-nav .nav-link {
+     color: rgba(26,34,53,0.65) !important;
+    transition: color 0.25s ease !important;
+}
+#app-header .navbar-nav .nav-link:hover {  color: #2D3099 !important; }
+

@@ -1,0 +1,16 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% import 'bundles/SonataAdminBundle/CRUD/Macros/custom_array_render.html.twig' as render %}
+
+{% block field %}
+    {% set icon = 'fa-envelope' %}
+    {% if field_description.fieldName == 'phonePrimary' %}
+        {% set icon = 'fa-phone' %}
+    {% endif %}
+   
+    {% if value is iterable and value|length > 0 %}
+        {{ render.render_badges(value, icon) }}
+    {% else %}
+        <span class="text-muted"><i>Aucun</i></span>
+    {% endif %}
+{% endblock %}

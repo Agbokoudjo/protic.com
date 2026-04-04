@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Nouvelle soumission — ProTIC Editions</title>
+    <!--[if mso]>
+    <noscript>
+        <xml><o:OfficeDocumentSettings>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings></xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        /* ── Reset email ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; }
+        img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+        body { background-color: #f0f4f8; font-family: 'Segoe UI', Arial, sans-serif; }
+
+        /* ── Wrapper ── */
+        .email-wrapper   { background-color: #f0f4f8; padding: 32px 16px; }
+        .email-container { max-width: 620px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(13,31,78,0.10); }
+
+        /* ── Header ── */
+        .email-header {
+            background: linear-gradient(135deg, #06122e 0%, #0d1f4e 55%, #1a3a8f 100%);
+            padding: 36px 40px 28px;
+            text-align: center;
+        }
+        .email-header__logo-text {
+            font-size: 26px; font-weight: 800; color: #ffffff; letter-spacing: 0.02em;
+        }
+        .email-header__logo-sub {
+            font-size: 12px; color: rgba(255,255,255,0.55); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px;
+        }
+        .email-header__badge {
+            display: inline-block; margin-top: 18px;
+            background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.35);
+            color: #FFD700; font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+            text-transform: uppercase; padding: 5px 14px; border-radius: 20px;
+        }
+        .email-header__title {
+            font-size: 20px; font-weight: 700; color: #ffffff;
+            margin-top: 14px; line-height: 1.3;
+        }
+
+        /* ── Alert bar ── */
+        .email-alert {
+            background: #fef3c7; border-left: 4px solid #FFD700;
+            padding: 14px 24px; font-size: 13px; color: #92400e; line-height: 1.6;
+        }
+        .email-alert strong { color: #78350f; }
+
+        /* ── Body ── */
+        .email-body { padding: 32px 40px; }
+
+        /* ── Section title ── */
+        .section-title {
+            font-size: 11px; font-weight: 700; color: #1a3a8f;
+            text-transform: uppercase; letter-spacing: 0.10em;
+            border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;
+            margin-bottom: 16px; margin-top: 28px;
+        }
+        .section-title:first-child { margin-top: 0; }
+
+        /* ── Info rows ── */
+        .info-table { width: 100%; border-collapse: collapse; }
+        .info-row td { padding: 9px 0; vertical-align: top; border-bottom: 1px solid #f3f4f6; font-size: 14px; }
+        .info-row:last-child td { border-bottom: none; }
+        .info-label { width: 38%; color: #6b7280; font-weight: 600; padding-right: 12px; }
+        .info-value { color: #1f2937; }
+
+        /* ── Message box ── */
+        .message-box {
+            background: #f8fafc; border: 1px solid #e5e7eb;
+            border-left: 4px solid #1a3a8f; border-radius: 0 8px 8px 0;
+            padding: 18px 20px; font-size: 14px; color: #374151;
+            line-height: 1.75; white-space: pre-wrap; word-break: break-word;
+        }
+
+        /* ── File badge ── */
+        .file-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #eff6ff; border: 1px solid #bfdbfe;
+            border-radius: 8px; padding: 10px 16px;
+            font-size: 13px; color: #1e40af; font-weight: 600;
+            margin-top: 8px;
+        }
+        .file-badge__icon { font-size: 18px; }
+        .no-file { font-size: 13px; color: #9ca3af; font-style: italic; }
+
+        /* ── CTA button ── */
+        .cta-wrap { text-align: center; margin-top: 32px; }
+        .cta-btn {
+            display: inline-block; background: linear-gradient(135deg, #1a3a8f, #2d5be3);
+            color: #ffffff !important; text-decoration: none;
+            font-size: 14px; font-weight: 700; padding: 14px 32px;
+            border-radius: 8px; letter-spacing: 0.02em;
+        }
+
+        /* ── Meta bar ── */
+        .email-meta {
+            background: #f8fafc; border-top: 1px solid #e5e7eb;
+            padding: 16px 40px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+        }
+        .meta-item { font-size: 11px; color: #9ca3af; }
+        .meta-item strong { color: #6b7280; }
+
+        /* ── Footer ── */
+        .email-footer {
+            background: #0d1f4e; padding: 24px 40px; text-align: center;
+        }
+        .email-footer p { font-size: 11px; color: rgba(255,255,255,0.40); line-height: 1.7; }
+        .email-footer strong { color: rgba(255,255,255,0.65); }
+        .email-footer a { color: #FFD700; text-decoration: none; }
+
+        /* ── Status badge ── */
+        .status-badge {
+            display: inline-block; font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            padding: 3px 10px; border-radius: 20px;
+        }
+        .status-pending  { background: #fef9c3; color: #854d0e; border: 1px solid #fde68a; }
+        .status-approved { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .status-rejected { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    </style>
+</head>
+<body>
+
+<div class="email-wrapper">
+<div class="email-container">
+    <div class="email-header">
+        <div class="email-header__logo-text">ProTIC</div>
+        <div class="email-header__logo-sub">Editions &amp; Services</div>
+        <div class="email-header__badge">🔔 Nouvelle soumission reçue</div>
+        <div class="email-header__title">
+            {{ submission.subject }}
+        </div>
+    </div>
+
+    <div class="email-alert">
+        <strong>⚡ Action requise :</strong>
+        Une nouvelle soumission de manuscrit a été reçue le
+        <strong>{{ submission.submittedAt|date('d/m/Y à H:i', 'Africa/Porto-Novo') }}</strong>.
+        Veuillez examiner la demande et contacter l'auteur dans les <strong>48 heures</strong>.
+    </div>
+
+    <div class="email-body">
+
+        {# ── Informations auteur ── #}
+        <div class="section-title">👤 Informations de l'auteur</div>
+        <table class="info-table">
+            <tr class="info-row">
+                <td class="info-label">Nom complet</td>
+                <td class="info-value"><strong>{{ submission.fullName }}</strong></td>
+            </tr>
+            <tr class="info-row">
+                <td class="info-label">Email</td>
+                <td class="info-value">
+                    <a href="mailto:{{ submission.email }}" style="color:#1a3a8f;font-weight:600;">
+                        {{ submission.email }}
+                    </a>
+                </td>
+            </tr>
+            <tr class="info-row">
+                <td class="info-label">Téléphone</td>
+                <td class="info-value">
+                    {% if submission.phone is not null %}
+                        
+                        <a href="tel:+{{ value.countryCode }}{{ value.nationalNumber }}" style="color:#1a3a8f;">
+                           +{{ value.countryCode }} {{ value.nationalNumber }}
+                        </a>
+                    {% else %}
+                        <span style="color:#9ca3af;font-style:italic;">Non renseigné</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr class="info-row">
+                <td class="info-label">Pays</td>
+                <td class="info-value">
+                    {% if submission.country %}
+                        {{ submission.country|u.truncate(2)|country_name('fr')|upper }}
+                    {% else %}
+                        <span style="color:#9ca3af;font-style:italic;">Non renseigné</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+
+        {# ── Détails de la demande ── #}
+        <div class="section-title">📋 Détails de la demande</div>
+        <table class="info-table">
+            <tr class="info-row">
+                <td class="info-label">Objet</td>
+                <td class="info-value"><strong>{{ submission.subject }}</strong></td>
+            </tr>
+            <tr class="info-row">
+                <td class="info-label">Statut</td>
+                <td class="info-value">
+                    {% set statusMap = {
+                        'pending'  : { label: 'En attente',  css: 'status-pending'  },
+                        'approved' : { label: 'Approuvée',   css: 'status-approved' },
+                        'rejected' : { label: 'Refusée',     css: 'status-rejected' },
+                    } %}
+                    {% set s = statusMap[submission.status] ?? { label: submission.status, css: 'status-pending' } %}
+                    <span class="status-badge {{ s.css }}">{{ s.label }}</span>
+                </td>
+            </tr>
+            <tr class="info-row">
+                <td class="info-label">Date de soumission</td>
+                <td class="info-value">
+                    {{ submission.submittedAt|date('l d MMMM Y à HH:mm', 'Africa/Porto-Novo', locale='fr') }}
+                </td>
+            </tr>
+        </table>
+
+        {# ── Message de l'auteur ── #}
+        <div class="section-title">💬 Message de l'auteur</div>
+        <div class="message-box">{{ submission.message|nl2br }}</div>
+
+        {# ── Bouton CTA ── #}
+        <div class="cta-wrap">
+            <a href="{{absolute_url('sonata_admin_dashboard') }}" class="cta-btn">
+                Gérer cette soumission →
+            </a>
+        </div>
+
+    </div>
+
+    <table width="100%" style="background:#f8fafc;border-top:1px solid #e5e7eb;">
+        <tr>
+            <td style="padding:14px 40px;">
+                <table width="100%">
+                    <tr>
+                        <td class="meta-item" style="font-size:11px;color:#9ca3af;">
+                            <strong>ID soumission :</strong> #{{ submission.id }}
+                        </td>
+                        <td class="meta-item" style="font-size:11px;color:#9ca3af;text-align:right;">
+                            <strong>Serveur :</strong>
+                            {{ submission.submittedAt|date('d/m/Y H:i:s', 'Africa/Porto-Novo') }}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <div class="email-footer">
+        <p>
+            Cet email est généré automatiquement par le système ProTIC.<br>
+            Ne pas répondre directement à cet email —
+            utilisez <a href="mailto:{{ submission.email }}">{{ submission.email }}</a>
+            pour contacter l'auteur.<br><br>
+            <strong>© {{ "now"|date("Y") }} ProTIC Editions &amp; Services</strong> —
+            Campus d'Abomey-Calavi, K61-62, Bénin<br>
+            Développé par <strong>INTERNATIONALES WEB APPS &amp; SERVICES</strong>
+        </p>
+    </div>
+
+    {# ── Manuscrit joint ── #}
+        <div class="section-title">📎 Manuscrit joint</div>
+        {# {% if submission.manuscriptFilename %} #}
+            <div class="file-badge">
+                <span class="file-badge__icon">📄</span>
+                <div>
+                    {# <div>{{ submission.manuscriptFilename }}</div> #}
+                    <div style="font-size:11px;font-weight:400;color:#3b82f6;margin-top:2px;">
+                        Fichier joint à cet email
+                    </div>
+                </div>
+            </div>
+        {# {% else %}
+            <p class="no-file">Aucun fichier manuscrit joint à cette soumission.</p>
+        {% endif %} #}
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% macro renderImage(object,image) %}
+    {% if object.avatarName is not empty and object.avatarName is not null %}
+        {% set html_id = 'ea-lightbox-' ~ '-'  %}
+        <a href="#" class="image-ea-lightbox-thumbnail"
+            data-ea-lightbox-content-selector="#{{ html_id }}">
+            <img src="{{vich_uploader_asset(object,image) }}"
+                class="img-fluid ea-lightbox-thumbnail-image rounded-circle shadow"
+                id="{{"ea-lightbox-thumbnail-" ~ object.id}}"
+                style="width:100px;height:auto;"
+            > 
+	    </a>
+        <div id="{{ html_id }}" class="ea-lightbox">
+            <img src="{{vich_uploader_asset(object,image) }}">
+        </div>
+    {% else %}
+        <img src="{{asset('assets/images/sonatauser/profile.jpg','admin')}}"
+                class="rounded-circle shadow thumbnail-image img-fluid "
+                alt="User Image"
+                />
+    {% endif %}
+{% endmacro %} 

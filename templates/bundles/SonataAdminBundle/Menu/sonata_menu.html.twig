@@ -1,0 +1,175 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'knp_menu.html.twig' %} 
+{# Utilisez knp_menu_base.html.twig comme base, car knp_menu.html.twig est la version générique que vous modifiez #}
+
+{# Importe la macro 'attributes' du template parent knp_menu.html.twig #}
+{% import 'knp_menu.html.twig' as knp_menu_base %}
+
+{% macro attributes(attributes) %}
+    {{ knp_menu_base.attributes(attributes) }} {# On peut réutiliser la macro du parent pour la gestion des attributs #}
+{% endmacro %}
+
+{# Bloc root : la balise <ul> principale #}
+{% block root %}
+    {# Ces attributs sont corrects et correspondent à AdminLTE 4 #}
+    {%- set listAttributes = item.childrenAttributes|merge({
+        class: 'nav sidebar-menu flex-column',
+        'data-lte-toggle': 'treeview',
+        role: 'navigation', 
+        'aria-label': 'Main navigation',
+        'data-accordion': 'false',
+        id: 'navigation'
+    }) -%}
+    {# Le 'request' n'est pas utilisé directement dans le rendu HTML ici, on peut le laisser si nécessaire ailleurs #}
+    {%- set request = item.extra('request') ?: app.request -%}
+    {{ block('list') -}}
+{% endblock %}
+
+{% block list %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+        {% import _self as knp_menu %}
+        <ul{{ knp_menu.attributes(listAttributes) }}>
+            {{ block('children') }}
+        </ul>
+    {% endif %}
+{% endblock %}
+{# Bloc item : la balise <li> #}
+{% block item %}
+     {%- if item.displayed -%}
+        {# Vérification des rôles : logique existante #}
+        {%- set display = item.extra('roles') is empty or is_granted(sonata_config.getOption('role_super_admin')) or item.extra('roles')|filter(role => is_granted(role))|length > 0 -%}
+    {%- endif -%}
+
+    {% if item.displayed and display|default %}
+        {# Applique les classes CSS nécessaires pour les items et leur état (actif, sous-menu ouvert) #}
+        {%- set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] %}
+        {%- if matcher.isCurrent(item) %}
+            {%- set classes = classes|merge(['active']) %} {# Classe active pour l'élément courant #}
+        {%- elseif matcher.isAncestor(item, options.matchingDepth) %}
+            {%- set classes = classes|merge(['active']) %} {# Classe active pour les ancêtres (pour que le parent reste ouvert) #}
+        {%- endif %}
+
+        {%- if item.actsLikeFirst %}
+            {%- set classes = classes|merge([options.firstClass]) %}
+        {%- endif %}
+        {%- if item.actsLikeLast %}
+            {%- set classes = classes|merge([options.lastClass]) %}
+        {%- endif %}
+
+        {%- if item.hasChildren and options.depth is not same as(0) %}
+            {# Ajoute 'menu-open' si l'élément parent est actif (pour ouvrir le sous-menu) #}
+            {% if classes|filter(c => c == 'active')|length > 0 %}
+                {%- set classes = classes|merge(['menu-open']) %}
+            {% endif %}
+            {%- set classes = classes|merge(['nav-item']) %} {# Les éléments avec enfants sont des nav-item #}
+        {% else %}
+            {%- set classes = classes|merge(['nav-item']) %} {# Les éléments sans enfants sont aussi des nav-item #}
+        {%- endif %}
+
+        {%- set attributes = item.attributes %}
+        {%- if classes is not empty %}
+            {%- set attributes = attributes|merge({class: classes|join(' ')}) %}
+        {%- endif %}
+
+        {% import _self as knp_menu_custom %} {# Important pour appeler la macro attributes définie dans ce fichier #}
+
+        {# Rend la balise <li> #}
+        <li{{ knp_menu_custom.attributes(attributes) }}>
+            {# Décide si c'est un lien ou un span (même si AdminLTE utilise souvent <a> pour les deux) #}
+            {%- if item.uri is not empty and (not matcher.isCurrent(item) or options.currentAsLink) %}
+                {{ block('linkElement') }}
+            {%- else %}
+                {{ block('spanElement') }}
+            {%- endif %}
+
+            {# Rend la liste des enfants (le sous-menu) #}
+            {%- set childrenClasses = item.childrenAttribute('class') is not empty ? [item.childrenAttribute('class')] : [] %}
+            {# Classes pour le sous-menu AdminLTE #}
+            {%- set childrenClasses = childrenClasses|merge(['nav', 'nav-treeview']) %}
+            {# Si l'élément parent est ouvert (menu-open), ajoute active au sous-menu #}
+            {% if classes|filter(c => c == 'menu-open')|length > 0 %}
+                {%- set childrenClasses = childrenClasses|merge(['active']) %}
+            {% endif %}
+            {%- set childrenClasses = childrenClasses|merge(['menu_level_' ~ item.level]) %}
+            {%- set listAttributes = item.childrenAttributes|merge({class: childrenClasses|join(' ')}) %}
+            {{ block('list') }}
+        </li>
+     {% endif %}
+{% endblock %}
+
+{# Bloc linkElement : génère un lien pour les éléments cliquables #}
+{% block linkElement %}
+    {% import _self as knp_menu_custom %}
+    {%- set translation_domain = item.extra('translation_domain','messages') -%}
+
+    {# Gère l'icône, en utilisant votre logique existante #}
+    {%- if item.extra('on_top') is defined and not item.extra('on_top') -%}
+        {%- set icon = item.extra('icon')|default(item.level > 1 ? 'nav-icon bi bi-circle' : '')|custom_parse_icon -%}
+    {%- else -%}
+        {%- set icon = item.extra('icon')|custom_parse_icon -%}
+    {%- endif -%}
+    {%- set is_link = true -%}
+    {# La balise <a> est ici, avec les classes AdminLTE #}
+    <a href="{{ item.uri }}" class="nav-link {{ matcher.isCurrent(item) ? ' active' : '' }}" {{ knp_menu_custom.attributes(item.linkAttributes) }}>
+        {{ icon|raw }} {# Affichage de l'icône principale #}
+        <p class="linkElement">
+            {# Affichage du label #}
+            {{ block('label') }}
+            {# Ajout du badge si présent #}
+            {% if item.extra('badge') is not empty %}
+                <span class="nav-badge badge text-bg-{{ item.extra('badge_color', 'secondary') }} me-3">{{ item.extra('badge') }}</span>
+            {% endif %}
+
+            {# Ajout de la flèche si l'élément a des enfants ET qu'il ne doit PAS rester ouvert #}
+            {%- if item.hasChildren and options.depth is not same as(0) and (item.extra('keep_open') is not defined or not item.extra('keep_open')) -%}
+                <i class="nav-arrow bi bi-chevron-right"></i>
+            {%- endif -%}
+        </p>
+    </a>
+{% endblock %}
+
+{# Bloc spanElement : gère les éléments qui ne sont pas des liens directs, mais peuvent être des titres ou des éléments de menu "parents" #}
+{% block spanElement %}
+    {% import _self as knp_menu_custom %}
+    {%- set translation_domain = item.extra('translation_domain','messages') -%}
+
+    {# AdminLTE utilise souvent un <a> même pour les éléments non cliquables qui ouvrent un sous-menu #}
+    <a href="#" class="nav-link{{ matcher.isCurrent(item) ? ' active' : '' }}"{{ knp_menu_custom.attributes(item.labelAttributes) }}>
+        {%- set icon = item.extra('icon')|default('')|custom_parse_icon -%}
+        {{ icon|raw }} {# Affichage de l'icône principale #}
+        <p class="spanElement">
+            {# Affichage du label #}
+              {{ block('label') }}
+            {# Ajout du badge si présent #}
+            {% if item.extra('badge') is not empty %}
+                <span class="nav-badge badge text-bg-{{ item.extra('badge_color', 'secondary') }} me-3">{{ item.extra('badge') }}</span>
+            {% endif %}
+
+            {# Ajout de la flèche si l'élément a des enfants ET qu'il ne doit PAS rester ouvert #}
+            {%- if item.hasChildren and options.depth is not same as(0) and (item.extra('keep_open') is not defined or not item.extra('keep_open')) -%}
+                <i class="nav-arrow bi bi-chevron-right"></i>
+            {%- endif -%}
+        </p>
+    </a>
+{% endblock %}
+
+{# Bloc label : Simplifié pour ne contenir que la logique du texte du label #}
+{% block label %}
+    {# Ce bloc n'affichera que le texte, l'icône est gérée dans linkElement/spanElement #}
+    {%- if options.allow_safe_labels and item.getExtra('safe_label', false) -%}
+        {{ item.label|raw }}
+    {%- else -%}
+        {%- set translation_domain = item.extra('translation_domain','messages') -%}
+        {{ item.label|trans(item.extra('label_translation_parameters', {}), translation_domain) }}
+    {%- endif -%}
+{% endblock %}

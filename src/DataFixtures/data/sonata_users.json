@@ -1,0 +1,222 @@
+[
+  {
+    "username": "franck_agbokoudjo",
+    "email": "franck.agbokoudjo@protic.bj",
+    "plainPassword": "Admin@2025!",
+    "phone": "+22901672518",
+    "country": "BEN",
+    "roles": ["ROLE_SUPER_ADMIN"],
+    "enabled": true,
+    "profile": "super_admin",
+    "avatar_url": "https://picsum.photos/seed/franck/200/200"
+  },
+  {
+    "username": "aminata_diallo",
+    "email": "aminata.diallo@protic.bj",
+    "plainPassword": "Admin@2025!",
+    "phone": "+221781234567",
+    "country": "SEN",
+    "roles": ["ROLE_ADMIN"],
+    "enabled": true,
+    "profile": "admin",
+    "avatar_url": "https://picsum.photos/seed/aminata/200/200"
+  },
+  {
+    "username": "kofi_mensah",
+    "email": "kofi.mensah@protic.bj",
+    "plainPassword": "Editor@2025!",
+    "phone": "+22891234567",
+    "country": "GHA",
+    "roles": ["ROLE_ADMIN", "ROLE_EDITOR"],
+    "enabled": true,
+    "profile": "editor",
+    "avatar_url": "https://picsum.photos/seed/kofi/200/200"
+  },
+  {
+    "username": "marie_claire_fondjo",
+    "email": "mc.fondjo@protic.bj",
+    "plainPassword": "Editor@2025!",
+    "phone": "+23767891234",
+    "country": "CMR",
+    "roles": ["ROLE_ADMIN", "ROLE_EDITOR"],
+    "enabled": true,
+    "profile": "editor",
+    "avatar_url": "https://picsum.photos/seed/marie/200/200"
+  },
+  {
+    "username": "oumar_diop",
+    "email": "oumar.diop@protic.bj",
+    "plainPassword": "Moderator@2025!",
+    "phone": "+221779876543",
+    "country": "SEN",
+    "roles": ["ROLE_ADMIN", "ROLE_MODERATOR"],
+    "enabled": true,
+    "profile": "moderator",
+    "avatar_url": "https://picsum.photos/seed/oumar/200/200"
+  },
+  {
+    "username": "ibrahima_sow",
+    "email": "ibrahima.sow@protic.bj",
+    "plainPassword": "Moderator@2025!",
+    "phone": "+224621234567",
+    "country": "GIN",
+    "roles": ["ROLE_ADMIN", "ROLE_MODERATOR"],
+    "enabled": true,
+    "profile": "moderator",
+    "avatar_url": "https://picsum.photos/seed/ibrahima/200/200"
+  },
+  {
+    "username": "fatou_ndiaye",
+    "email": "fatou.ndiaye@protic.bj",
+    "plainPassword": "Editor@2025!",
+    "phone": "+221709876543",
+    "country": "SEN",
+    "roles": ["ROLE_ADMIN", "ROLE_EDITOR"],
+    "enabled": true,
+    "profile": "editor",
+    "avatar_url": "https://picsum.photos/seed/fatou/200/200"
+  },
+  {
+    "username": "jean_baptiste_ouedraogo",
+    "email": "jb.ouedraogo@protic.bj",
+    "plainPassword": "Admin@2025!",
+    "phone": "+22670123456",
+    "country": "BFA",
+    "roles": ["ROLE_ADMIN"],
+    "enabled": true,
+    "profile": "admin",
+    "avatar_url": "https://picsum.photos/seed/jean/200/200"
+  },
+  {
+    "username": "esther_komlanvi",
+    "email": "esther.komlanvi@protic.bj",
+    "plainPassword": "Moderator@2025!",
+    "phone": "+22892345678",
+    "country": "TGO",
+    "roles": ["ROLE_ADMIN", "ROLE_MODERATOR"],
+    "enabled": true,
+    "profile": "moderator",
+    "avatar_url": "https://picsum.photos/seed/esther/200/200"
+  },
+  {
+    "username": "moussa_traore",
+    "email": "moussa.traore@protic.bj",
+    "plainPassword": "Editor@2025!",
+    "phone": "+22376543210",
+    "country": "MLI",
+    "roles": ["ROLE_ADMIN", "ROLE_EDITOR"],
+    "enabled": true,
+    "profile": "editor",
+    "avatar_url": "https://picsum.photos/seed/moussa/200/200"
+  },
+  {
+    "username": "rachida_benali",
+    "email": "rachida.benali@protic.bj",
+    "plainPassword": "Admin@2025!",
+    "phone": "+213550123456",
+    "country": "DZA",
+    "roles": ["ROLE_ADMIN"],
+    "enabled": true,
+    "profile": "admin",
+    "avatar_url": "https://picsum.photos/seed/rachida/200/200"
+  },
+  {
+    "username": "pierre_ndong",
+    "email": "pierre.ndong@protic.bj",
+    "plainPassword": "Moderator@2025!",
+    "phone": "+24106789012",
+    "country": "GAB",
+    "roles": ["ROLE_ADMIN", "ROLE_MODERATOR"],
+    "enabled": true,
+    "profile": "moderator",
+    "avatar_url": "https://picsum.photos/seed/pierre/200/200"
+  },
+  {
+    "username": "nadia_oumarou",
+    "email": "nadia.oumarou@protic.bj",
+    "plainPassword": "Editor@2025!",
+    "phone": "+22796123456",
+    "country": "NER",
+    "roles": ["ROLE_ADMIN", "ROLE_EDITOR"],
+    "enabled": true,
+    "profile": "editor",
+    "avatar_url": "https://picsum.photos/seed/nadia/200/200"
+  },
+  {
+    "username": "emmanuel_koffi",
+    "email": "emmanuel.koffi@protic.bj",
+    "plainPassword": "Admin@2025!",
+    "phone": "+22890987654",
+    "country": "TGO",
+    "roles": ["ROLE_ADMIN"],
+    "enabled": true,
+    "profile": "admin",
+    "avatar_url": "https://picsum.photos/seed/emmanuel/200/200"
+  },
+  {
+    "username": "sylvie_kouassi",
+    "email": "sylvie.kouassi@protic.bj",
+    "plainPassword": "Moderator@2025!",
+    "phone": "+2250708901234",
+    "country": "CIV",
+    "roles": ["ROLE_ADMIN", "ROLE_MODERATOR"],
+    "enabled": true,
+    "profile": "moderator",
+    "avatar_url": "https://picsum.photos/seed/sylvie/200/200"
+  },
+  {
+    "username": "carlos_mendes",
+    "email": "carlos.mendes@protic.bj",
+    "plainPassword": "Editor@2025!",
+    "phone": "+2389812345",
+    "country": "CPV",
+    "roles": ["ROLE_ADMIN", "ROLE_EDITOR"],
+    "enabled": true,
+    "profile": "editor",
+    "avatar_url": "https://picsum.photos/seed/carlos/200/200"
+  },
+  {
+    "username": "abdou_rahmane_sow",
+    "email": "abdou.sow@protic.bj",
+    "plainPassword": "Admin@2025!",
+    "phone": "+221766543210",
+    "country": "SEN",
+    "roles": ["ROLE_ADMIN"],
+    "enabled": false,
+    "profile": "admin",
+    "avatar_url": "https://picsum.photos/seed/abdou/200/200"
+  },
+  {
+    "username": "mireille_zannou",
+    "email": "mireille.zannou@protic.bj",
+    "plainPassword": "Editor@2025!",
+    "phone": "+22997654321",
+    "country": "BEN",
+    "roles": ["ROLE_ADMIN", "ROLE_EDITOR"],
+    "enabled": true,
+    "profile": "editor",
+    "avatar_url": "https://picsum.photos/seed/mireille/200/200"
+  },
+  {
+    "username": "theodore_bassole",
+    "email": "theodore.bassole@protic.bj",
+    "plainPassword": "Moderator@2025!",
+    "phone": "+22625678901",
+    "country": "BFA",
+    "roles": ["ROLE_ADMIN", "ROLE_MODERATOR"],
+    "enabled": true,
+    "profile": "moderator",
+    "avatar_url": "https://picsum.photos/seed/theodore/200/200"
+  },
+  {
+    "username": "rose_mumbua",
+    "email": "rose.mumbua@protic.bj",
+    "plainPassword": "Editor@2025!",
+    "phone": "+254733456789",
+    "country": "KEN",
+    "roles": ["ROLE_ADMIN", "ROLE_EDITOR"],
+    "enabled": true,
+    "profile": "editor",
+    "avatar_url": "https://picsum.photos/seed/rose/200/200"
+  }
+]

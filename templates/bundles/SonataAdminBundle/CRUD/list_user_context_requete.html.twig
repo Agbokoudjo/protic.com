@@ -1,0 +1,25 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+{% import 'bundles/SonataAdminBundle/CRUD/Macros/user_context_requete.html.twig' as user_context_request %}
+{% block field %}
+    {# Récupération sécurisée du contexte #}
+    {% set context = value|default({}) %}
+
+    {% if context is empty %}
+        <span class="badge bg-secondary">Aucun contexte</span>
+    {% else %}
+        {# Détection du type de contexte #}
+        {% if context.entity_class is defined %}
+            {# CONTEXTE DOCTRINE (Modifications entité) #}
+            {{ user_context_request.renderEntityContext(context) }}
+        {% elseif context.uri is defined %}
+            {# CONTEXTE HTTP (Requête web) #}
+            {{ user_context_request.renderHttpContext(context) }}
+        {% elseif context.session_id is defined %}
+            {# CONTEXTE AUTHENTICATION (Login/Logout) #}
+            {{ user_context_request.renderAuthContext(context) }}
+        {% else %}
+            {# CONTEXTE GÉNÉRIQUE #}
+            {{user_context_request.renderGenericContext(context) }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

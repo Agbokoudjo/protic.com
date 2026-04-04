@@ -1,0 +1,81 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% import 'bundles/SonataAdminBundle/CRUD/Macros/image.html.twig' as image_render_profile  %}
+{% block user_block %}
+{% set user = app.user  %}
+  {% set _logout_uri = url('sonata_user_admin_security_logout') %}
+   {% set _logout_text = 'user_block_logout'|trans({}, 'SonataUserBundle') %}
+   <a href="#" class="nav-link dropdown-toggle text-decoration-none" data-bs-toggle="dropdown">
+        {{_self.img_cache(user,'user-image')}}
+        <span class="d-none d-md-inline user-identify">{{user.username}}</span>
+          </i> <i class="fas fa-caret-down" aria-hidden="true"></i>
+    </a>  
+    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+         <li class="user-header text-bg-primary">
+            {{_self.img_cache(user,'user-image-modale')}}
+            <p>{{user.username}} <br> 
+            <button class="btn"> {{ user.rolePrincipal|trans({},'role',app.locale) }}</button>
+               {# createdAt vient de Doctrine: \DateTimeImmutable stocké en UTC #}
+                {% set createdAt = user.createdAt|date('c','UTC') %}
+                <small>
+                   {{ 'member.since'|trans({},'user',app.locale) }}
+                    <span 
+                        {{ stimulus_controller('date',{'date':createdAt,'locale':app.locale}) }}
+                    ></span>
+                </small>
+            </p>
+        </li>
+        <li class="user-body">
+            <div class="row">
+                <div class="col-4 text-center">
+                    <a href="#">Followers</a>
+                </div>
+                <div class="col-4 text-center">
+                    <a href="#">Sales</a>
+                </div>
+                <div class="col-4 text-center">
+                    <a href="#">Friends</a>
+                </div>
+            </div>
+        </li>
+         <li class="user-footer">
+            <a href="#" 
+                data-bs-toggle="tooltip" 
+                 data-bs-placement="top" 
+                 title="{{user.profile}}"
+                class="btn btn-default btn-flat">
+                <i class="fas fa-user"></i>
+                 {{ 'user_block_profile'|trans({}, 'SonataUserBundle') }}
+            </a>
+            <a href="{{ _logout_uri }}" class="btn btn-default btn-flat float-end">
+                <i class="fas fa-sign-out-alt fa-fw"></i>
+                    {{ _logout_text }}
+            </a>
+        </li>
+    </ul>         
+{% endblock %}
+
+{% macro img_cache (user,imgClassCss) %}
+    {% set  date_object = user.updatedAt|date('Y-m-d H-i-s')  %}
+    {% set  idobject = user.id ~ '-' ~ user.username  ~ '-' ~ date_object ~ '-' %}
+    {% cache 'image-user-'~ idobject ttl(CACHE_IMG_TWIG) tags('image'~ idobject) %} 
+         {% if user.avatarName is not empty and user.avatarName is not null %}
+            <img src="{{vich_uploader_asset(user,'avatarFile') }}"
+                class="rounded-circle shadow {{imgClassCss}}"
+            >
+         {% else %}
+            <img src="{{asset('bundles/sonatauser/default_avatar.png')}}"
+                class="rounded-circle shadow {{imgClassCss}}"
+                alt="User Image"
+                />
+         {% endif %}
+    {% endcache %} 
+{% endmacro %}

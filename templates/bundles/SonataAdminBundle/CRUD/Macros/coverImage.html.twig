@@ -1,0 +1,21 @@
+{% macro renderImage(object,image) %}
+    {% if object.coverImage is not empty and object.coverImage is not null %}
+        {% set html_id = 'ea-lightbox-' ~ '-'  %}
+        <a href="#" class="image-ea-lightbox-thumbnail"
+            data-ea-lightbox-content-selector="#{{ html_id }}">
+            <img src="{{vich_uploader_asset(object,image) }}"
+                class="img-fluid ea-lightbox-thumbnail-image"
+                id="{{"ea-lightbox-thumbnail-" ~ object.id}}"
+                style="width:100px;height:auto;"
+            > 
+	    </a>
+        <div id="{{ html_id }}" class="ea-lightbox">
+            <img src="{{vich_uploader_asset(object,image) }}">
+        </div>
+    {% else %}
+        <img src="{{asset('uploads/cover_image_book/default_coverImage.png')}}"
+                class="shadow"
+                alt="User Image"
+                />
+    {% endif %}
+{% endmacro %} 

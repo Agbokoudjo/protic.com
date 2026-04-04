@@ -1,0 +1,4 @@
+app_admin_category: "Création d'une nouvelle catégorie de livre"
+create__app_admin_author: "Création d'un nouvel auteur"
+create__app_admin_book: "Ajout d'un nouvel ouvrage"
+create__app.admin.global_setting: "Nouvelle configuration"

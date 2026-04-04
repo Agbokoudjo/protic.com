@@ -1,0 +1,24 @@
+<header class="protic-header" id="protic-header">
+    <div class="container-fluid px-4 px-lg-5 h-100 d-flex align-items-center justify-content-between">
+
+        {# ── Logo ── #}
+        <a href="{{ path('app_home') }}" class="protic-header__logo-link" aria-label="ProTIC – Accueil">
+            <img
+                src="{{ asset('assets/images/logo.png','app') }}"
+                alt="Logo ProTIC Editions & Services"
+                class="protic-header__logo-img"
+                width="180"
+                height="60"
+            >
+        </a>
+
+        {# ── Bouton Administration (style glassmorphism) ── #}
+        <a href="{{ path('app_admin_user_login') }}"
+           class="protic-btn-admin"
+           aria-label="Accéder à l'administration">
+            <i class="bi bi-shield-lock protic-btn-admin__icon"></i>
+            <span class="protic-btn-admin__label">Administration</span>
+        </a>
+
+    </div>
+</header>

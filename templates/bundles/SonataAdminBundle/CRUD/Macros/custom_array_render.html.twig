@@ -1,0 +1,48 @@
+{% macro render_badges(value, icon = null) %}
+    {% if value is iterable %}
+        {% for item in value %}
+            {# On vérifie que l'item n'est pas un tableau vide et est affichable #}
+            {% if item is not empty and item is not iterable %}
+                <span class="badge bg-primary mb-2" style="margin-right: 5px;">
+                    {% if icon %}<i class="fas {{ icon }}"></i> {% endif %}
+                    {% if item.countryCode is defined  and item.nationalNumber is defined %}
+                        {# Formatage manuel : +229 195869951 #}
+                        +{{ item.countryCode }} {{ item.nationalNumber }}
+                    {% else %}
+                        {# Pour les emails ou autres strings #}
+                        {{ item }}
+                    {% endif %}
+                </span><br/>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% macro render_list(value, icon = 'fa-check-circle') %}
+    <ul class="list-unstyled" style="margin-bottom: 0;">
+        {% for item in value %}
+            <li style="margin-bottom: 3px;">
+                <i class="fas {{ icon }} text-info" style="font-size: 0.8em; margin-right: 5px;"></i>
+                {{ item }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
+
+{% macro render_dictionary(value) %}
+    <div class="row">
+        {% for key, val in value %}
+            <div class="col-sm-6 col-md-4" style="margin-bottom: 10px;">
+                <div style="padding: 10px; border: 1px solid #ebedef; border-left: 4px solid #00a65a; background: #fff; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <strong style="display: block; font-size: 0.75em; text-transform: uppercase; color: #7f8c8d; margin-bottom: 5px;">
+                        {{ key|replace({'_': ' '})|upper }}
+                    </strong>
+                    <span style="font-family: 'Courier New', monospace; font-weight: bold; color: #2c3e50; font-size: 1.1em;">
+                        {{ val }}
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

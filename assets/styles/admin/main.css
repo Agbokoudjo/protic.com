@@ -1,0 +1,1331 @@
+@keyframes wave-float-1 {
+    0%, 100% { transform: translateY(0) scaleX(1); }
+    50%       { transform: translateY(-14px) scaleX(1.01); }
+}
+@keyframes wave-float-2 {
+    0%, 100% { transform: translateY(0) scaleX(1); }
+    50%       { transform: translateY(10px) scaleX(0.99); }
+}
+@keyframes wave-float-3 {
+    0%, 100% { transform: translateY(0); }
+    33%       { transform: translateY(-8px); }
+    66%       { transform: translateY(6px); }
+}
+@keyframes orb-float {
+    0%, 100% { transform: translate(0, 0); }
+    33%       { transform: translate(8px, -12px); }
+    66%       { transform: translate(-6px, 6px); }
+}
+
+#app-main {
+   background: transparent !important;
+  padding: 24px 28px;
+  min-height: calc(100vh - 70px);
+  height: 100%;
+  min-width: 100%;
+  line-height: 1.6;
+}
+
+/* ── Vague 1 — grande vague lumineuse (bas de l'image) ────── */
+#app-main .main-wave-1 {
+    position: fixed;
+    bottom: -80px;
+    left: -5%;
+    width: 110%;
+    height: 70vh;
+    background: linear-gradient(
+        180deg,
+        transparent              0%,
+        rgba(22, 55, 130, 0.15) 20%,
+        rgba(28, 70, 160, 0.35) 45%,
+        rgba(32, 80, 175, 0.55) 65%,
+        rgba(25, 62, 148, 0.75) 82%,
+        rgba(15, 38,  90, 0.90) 100%
+    );
+    border-radius: 60% 60% 0 0 / 40% 40% 0 0;
+    animation: wave-float-1 14s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ── Vague 2 — couche plus lumineuse au centre ────────────── */
+#app-main .main-wave-2 {
+    position: fixed;
+    bottom: -90px;
+    left: -12%;
+    width: 124%;
+    height: 55vh;
+    background: linear-gradient(
+        180deg,
+        transparent              0%,
+        rgba(30, 75, 170, 0.12) 18%,
+        rgba(38, 90, 195, 0.32) 45%,
+        rgba(42, 98, 210, 0.52) 68%,
+        rgba(30, 72, 168, 0.70) 85%,
+        rgba(18, 45, 108, 0.88) 100%
+    );
+    border-radius: 68% 68% 0 0 / 48% 48% 0 0;
+    animation: wave-float-2 18s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+
+#app-main .main-wave-3 {
+    position: fixed;
+    bottom: -40px;
+    left: -5%;
+    width: 110%;
+    height: 38vh;
+    background: linear-gradient(
+        180deg,
+        transparent              0%,
+        rgba(45, 100, 210, 0.10) 12%,
+        rgba(52, 115, 228, 0.28) 40%,
+        rgba(48, 108, 220, 0.48) 65%,
+        rgba(35,  82, 185, 0.68) 85%,
+        rgba(20,  50, 118, 0.85) 100%
+    );
+    border-radius: 54% 54% 0 0 / 34% 34% 0 0;
+    animation: wave-float-3 22s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+#app-main .main-orb-1 {
+    position: fixed;
+    bottom: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw;
+    height: 50vh;
+    border-radius: 50%;
+    background: radial-gradient(ellipse,
+        rgba(55, 115, 230, 0.22) 0%,
+        rgba(40,  88, 195, 0.14) 40%,
+        transparent              70%
+    );
+    animation: orb-float 16s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Orbe haut gauche ─────────────────────────────────────── */
+#app-main .main-orb-2 {
+    position: fixed;
+    top: 8%;
+    left: 15%;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+        rgba(30, 65, 155, 0.16) 0%,
+        transparent 65%
+    );
+    animation: orb-float 20s ease-in-out infinite 4s;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Orbe haut droit ──────────────────────────────────────── */
+#app-main .main-orb-3 {
+    position: fixed;
+    top: 10%;
+    right: 10%;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+        rgba(35, 70, 165, 0.14) 0%,
+        transparent 65%
+    );
+    animation: orb-float 24s ease-in-out infinite 8s;
+    pointer-events: none;
+    z-index: 0;
+}
+
+
+#app-main .main-bg-layer {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        #080e1c 0%,
+        #0a1220 15%,
+        #0c1628 30%,
+        #0e1c35 50%,
+        #112040 65%,
+        #1a3070 80%,
+        #1e3d8a 90%,
+        #2040a0 100%
+    ) !important;
+    pointer-events: none;
+    z-index: 0;
+}
+
+#app-main .main-wave-1,
+#app-main .main-wave-2,
+#app-main .main-wave-3,
+#app-main .main-bg-layer,
+#app-main .main-orb-1,
+#app-main .main-orb-2,
+#app-main .main-orb-3 {
+    position: fixed !important;
+    z-index: -1 !important;
+}
+
+#app-main .app-content-header,
+#app-main .app-content,
+#app-main #app-content,
+#app-main .content-header,
+#app-main .container-fluid,
+#app-main .sonata-ba-content,
+#app-main .sonata-ba-list,
+#app-main .sonata-ba-form,
+#app-main .sonata-ba-show,
+#app-main .row,
+#app-main .card {
+    position: relative !important;
+}
+
+#app-main .card, 
+#app-main .box, 
+#app-main .box-body, 
+#app-main .card-body,
+#app-main .table-responsive {
+    overflow: visible !important;
+}
+
+/* ── Cards glassmorphism ─────────────────────────────────── */
+#app-main .card {
+    background: rgba(20, 35, 65, 0.75) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 14px !important;
+    box-shadow:
+        0 4px 24px rgba(0,0,0,0.35),
+        0 1px 0 rgba(255,255,255,0.04) inset !important;
+    color: rgba(255,255,255,0.88) !important;
+}
+
+#app-main .card.card-accent { border-top: 3px solid #FFD700 !important; }
+
+.sonata-filter-form .advanced-filter select{
+    z-index:109999 ;
+}
+
+#app-main .card .card-header {
+    background: rgba(255,255,255,0.03) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+    color: rgba(255,255,255,0.90) !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    padding: 14px 18px !important;
+    border-radius: 14px 14px 0 0 !important;
+}
+#app-main .card .card-header i { color: #FFD700 !important; }
+#app-main .card .card-body {
+    background: transparent !important;
+    color: rgba(255,255,255,0.82) !important;
+}
+
+/* ── Formulaires ─────────────────────────────────────────── */
+/* ── 7. INPUTS — fond et texte visibles ───────────────────────── */
+#app-main .sonata-ba-form .form-control,
+#app-main .sonata-ba-form input,
+#app-main .sonata-ba-form textarea,
+#app-main .sonata-ba-form select {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: 10px !important;
+    color: rgba(255, 255, 255, 0.92) !important;
+    font-size: 14px !important;
+    padding: 10px 14px !important;
+    transition: all 0.25s ease !important;
+    width: 100% !important;
+    margin-bottom: 20px !important;
+}
+
+/* ── 9. FOCUS INPUT ───────────────────────────────────────────── */
+#app-main .sonata-ba-form .form-control:focus,
+#app-main .sonata-ba-form input:focus,
+#app-main .sonata-ba-form textarea:focus,
+#app-main .sonata-ba-form select:focus {
+    border-color: rgba(255, 215, 0, 0.55) !important;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.10) !important;
+    background: rgba(255, 255, 255, 0.10) !important;
+    outline: none !important;
+    color: #ffffff !important;
+}
+
+/* ── 8. PLACEHOLDERS LISIBLES ─────────────────────────────────── */
+#app-main .sonata-ba-form .form-control::placeholder,
+#app-main .sonata-ba-form input::placeholder,
+#app-main .sonata-ba-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.38) !important;
+    font-style: italic !important;
+    font-size: 13px !important;
+}
+
+/* Firefox */
+#app-main .sonata-ba-form .form-control::-moz-placeholder,
+#app-main .sonata-ba-form input::-moz-placeholder {
+    color: rgba(255, 255, 255, 0.38) !important;
+    opacity: 1 !important;
+}
+
+/* ── 10. TEXTE D'AIDE (help text) ─────────────────────────────── */
+#app-main .sonata-ba-form .help-block,
+#app-main .sonata-ba-form .form-text,
+#app-main .sonata-ba-form small.text-muted {
+    color: rgba(255, 255, 255, 0.38) !important;
+    font-size: 11px !important;
+    margin-top: 4px !important;
+    font-style: italic !important;
+}
+
+/* ── 6. LABELS ────────────────────────────────────────────────── */
+#app-main .sonata-ba-form label,
+#app-main .sonata-ba-form .control-label,
+.box-solid.box-solid-with .sonata-ba-collapsed-fields p {
+    color: rgba(255, 255, 255, 0.80) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    margin-bottom: 6px !important;
+    display: block !important;
+}
+
+/* ── Boutons ─────────────────────────────────────────────── */
+#app-main .btn-primary {
+    background: linear-gradient(135deg, #1a3060, #2D3099) !important;
+    border: 1px solid rgba(255,215,0,0.20) !important;
+    color: #fff !important; border-radius: 10px !important;
+    font-weight: 600 !important; transition: all 0.25s ease !important;
+}
+
+/* ── 11. BOUTONS D'ACTION ─────────────────────────────────────── */
+
+/* Créer / Mettre à jour */
+button[name="btn_create"],
+button[name="btn_update"] {
+    background: linear-gradient(135deg, #0f766e, #14b8a6) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    padding: 10px 22px !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 4px 14px rgba(20, 184, 166, 0.35) !important;
+}
+button[name="btn_create"]:hover,
+button[name="btn_update"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(20, 184, 166, 0.50) !important;
+}
+
+/* Créer et retourner à la liste */
+button[name="btn_create_and_list"],
+button[name="btn_update_and_list"] {
+    background: linear-gradient(135deg, #c2410c, #f97316) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    padding: 10px 22px !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35) !important;
+}
+button[name="btn_create_and_list"]:hover,
+button[name="btn_update_and_list"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.50) !important;
+}
+
+/* Créer et ajouter un autre */
+button[name="btn_create_and_create"],
+button[name="btn_update_and_update"] {
+    background: linear-gradient(135deg, #1d4ed8, #3b82f6) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    padding: 10px 22px !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35) !important;
+}
+button[name="btn_create_and_create"]:hover,
+button[name="btn_update_and_update"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.50) !important;
+}
+
+/* ── 12. ZONE DES BOUTONS (form-actions) ──────────────────────── */
+#app-main .sonata-ba-form .form-actions,
+#app-main .sonata-ba-form .sonata-ba-form-actions {
+    background: rgba(10, 18, 36, 0.60) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-radius: 0 0 14px 14px !important;
+    padding: 16px 20px !important;
+    display: flex !important;
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+    position: relative !important;
+    z-index: 50 !important;
+}
+
+.navbar-container-header .navbar-nav.element-action {
+  gap: 1rem; 
+}
+/* ── 1. NAVBAR HEADER TITRE — fond sombre au lieu de blanc ───── */
+.app-content-header.content-header .navbar-container-header {
+    background: rgba(10, 18, 36, 0.85) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.15) !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    margin-bottom: 16px !important;
+    position: relative !important;
+    /* Il doit être plus haut que la .card de la liste (600 > 10) */
+    z-index: 700 !important;
+} 
+
+/* ── 2. TITRES DE PAGE (create / edit / show) ─────────────────── */
+.title-create,
+.title-edit,
+.title-show {
+    color: #FFD700 !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    font-style: italic !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.25) !important;
+}
+
+/* ── 3. CARDS DES SECTIONS (Informations Générales, Icône…) ────── */
+#app-main .sonata-ba-form .card,
+#app-main .sonata-ba-form .box {
+    background: rgba(15, 28, 55, 0.82) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-top: 2px solid rgba(255, 215, 0, 0.35) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.40) !important;
+    position: relative !important;
+    z-index: 50 !important;
+}
+
+/* ── 4. HEADER DES CARDS (titre de section) ───────────────────── */
+#app-main .sonata-ba-form .card .card-header,
+#app-main .sonata-ba-form .box .box-header {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.12) !important;
+    border-radius: 13px 13px 0 0 !important;
+    padding: 14px 18px !important;
+}
+
+#app-main .sonata-ba-form .card .card-header .card-title,
+#app-main .sonata-ba-form .box .box-header .box-title {
+    color: #FFD700 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    padding-left: 0 !important;
+    padding-top: 0 !important;
+}
+
+#app-main .sonata-ba-form .card .card-header i,
+#app-main .sonata-ba-form .box .box-header i {
+    color: #FFD700 !important;
+    margin-right: 8px !important;
+}
+
+/* ── 5. BODY DES CARDS ────────────────────────────────────────── */
+#app-main .sonata-ba-form .card .card-body,
+#app-main .sonata-ba-form .box .box-body {
+    background: transparent !important;
+    padding: 20px 20px 8px !important;
+}
+
+.skip-links{
+    display:none;
+}
+
+/* Amélioration des badges */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+
+/* ── 6. Flash messages (alertes) ─────────────────────────────── */
+#app-main .alert,
+#app-main [data-flash-messages] {
+    position: relative !important;
+    z-index: 500 !important;
+}
+
+/* ── 7. Dropdowns, select2, tooltips ─────────────────────────── */
+.dropdown-menu {
+    z-index: 9998 !important;
+}
+.select2-container,
+.select2-dropdown {
+    z-index: 9998 !important;
+}
+.tooltip,
+.popover {
+    z-index: 9997 !important;
+}
+
+/* ── 8. Modales Bootstrap ─────────────────────────────────────── */
+.modal           { z-index: 9995 !important; }
+.modal-backdrop  { z-index: 9994 !important; }
+
+.dropdown-menu     { z-index: 9998 !important; }
+.select2-container,
+.select2-dropdown  { z-index: 9998 !important; }
+
+.sonata-ba-form .tab-content{
+  margin-top:20px ;
+}
+
+.container-div-error-message {
+    padding: 0.7rem;
+    border-radius: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+.container-div-error-message {
+    background: #ffe6e6;
+    color: #b50000;
+    border: 1px solid #e5a4a4;
+    border-radius: 6px; 
+    transition: all 0.5s;
+    text-align: center; 
+    margin-top: 20px; 
+    padding: 10px;
+    width:100% ;
+}
+
+.sonata-ba-form-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Ajoute un espace entre les boutons */
+  }
+
+  /* Style de base pour tous les boutons du formulaire */
+.sonata-ba-form-actions .btn {
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ======================================= */
+/* 1. BOUTON PRINCIPAL "AJOUTER"           */
+/* ======================================= */
+@keyframes pulse-glow-create {
+    0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+.app-content-header a.btn-create {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 8px 20px !important;
+    border-radius: 6px !important;
+    font-weight: bold !important;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    animation: pulse-glow-create 2s infinite; /* Ton animation de pulsation */
+}
+
+.app-content-header a.btn-create:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3) !important;
+}
+
+/* ======================================= */
+/* 2. BOUTON "FILTRES"                     */
+/* ======================================= */
+.app-content-header .sonata-actions.sonata-filter-container a.sonata-ba-action-filter {
+    background-color: #1e293b !important; /* Bleu nuit gris */
+    border: 1px solid #334155 !important;
+    color: #f1f5f9 !important;
+    padding: 8px 16px !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.app-content-header .sonata-actions.sonata-filter-container a.sonata-ba-action-filter:hover {
+    background-color: #334155 !important;
+    border-color: #475569 !important;
+}
+
+/* ======================================= */
+/* 3. LE MENU DROPDOWN DES FILTRES         */
+/* ======================================= */
+/* C'est la partie qui s'affiche quand on clique sur "Filtres" */
+.app-content-header .sonata-actions.sonata-filter-container .dropdown-menu {
+    background: #0f172a !important; /* Très sombre */
+    border: 1px solid #1e3a8a !important; /* Bordure bleue nuit */
+    border-radius: 8px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    padding: 8px 0 !important;
+    min-width: 250px !important;
+    margin-top: 10px !important;
+    top: 100% !important;
+    left: auto !important;
+
+    /* Positionnement de sécurité */
+    position: absolute !important;
+   right: 0 !important; /* Aligné à droite du bouton Filtres */
+   
+    z-index: 10000 !important; /* Hors catégorie */
+}
+/* On s'assure que le menu s'affiche bien au-dessus du tableau */
+.sonata-filter-container {
+    position: relative !important;
+    z-index: 10600 !important; 
+}
+.sonata-filter-container.open .dropdown-menu,
+.sonata-filter-container.show .dropdown-menu {
+    display: block !important;
+}
+/* Chaque ligne de filtre dans le menu */
+.dropdown-menu .sonata-toggle-filter {
+    color: #e2e8f0 !important;
+    padding: 10px 18px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.dropdown-menu .sonata-toggle-filter:hover {
+    background: rgba(37, 99, 235, 0.1) !important;
+    border-left: 3px solid #3b82f6; /* Petite barre bleue à gauche au survol */
+    color: #60a5fa !important;
+}
+
+.sonata-filter-container .dropdown-item {
+    color: rgba(255, 255, 255, 0.8) !important;
+    padding: 10px 20px !important;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+/* L'icône de remplacement iCheck */
+/* .sonata-filter-container .filter-icon {
+    margin-right: 15px;
+    font-size: 1.2rem;
+    width: 20px;
+    text-align: center;
+}*/
+
+/* Quand le filtre est activé/coché */
+.sonata-filter-container .dropdown-item.active {
+    background-color: rgba(255, 215, 0, 0.1) !important;
+    color: #FFD700 !important; /* Texte Doré */
+}
+
+.sonata-filter-container .dropdown-item.active .filter-icon {
+    color: #FFD700 !important; /* Coche Dorée */
+}
+
+/* État Actif (quand le filtre est déjà affiché) */
+.dropdown-menu .sonata-toggle-filter.active {
+    background: rgba(56, 189, 248, 0.05) !important;
+}
+
+.dropdown-menu .sonata-toggle-filter.active i {
+    color: #38bdf8 !important; /* L'icône devient Cyan brillant */
+}
+
+/* Barre de défilement pour les longs menus */
+.dropdown-menu-scrollable::-webkit-scrollbar {
+    width: 6px;
+}
+.dropdown-menu-scrollable::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 10px;
+}
+
+/* Style des boutons au survol */
+.sonata-ba-form-actions .btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* Espace entre l'icône et le texte */
+.sonata-ba-form-actions .btn i {
+  margin-right: 20px;
+}
+
+/* * Gestion de la responsivité pour les écrans mobiles 
+ */
+@media (max-width: 768px) {
+  .sonata-ba-form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Ajoute un espace entre les boutons */
+  }
+   .sonata-ba-form-actions .btn {
+    width: 100%;
+    margin-bottom: 0; /* Important pour éviter les marges supplémentaires */
+  }
+}
+
+/* -- 2a. Variables Bootstrap 5 — neutraliser striped/hover -- */
+#app-main .table {
+    --bs-table-striped-bg:    transparent !important;
+    --bs-table-hover-bg:      transparent !important;
+    --bs-table-bg:            transparent !important;
+    --bs-table-border-color:  rgba(255,255,255,0.06) !important;
+    --bs-table-color:         rgba(255,255,255,0.82) !important;
+    --bs-table-striped-color: rgba(255,255,255,0.82) !important;
+    --bs-table-hover-color:   rgba(255,255,255,0.92) !important;
+    color: rgba(255,255,255,0.82) !important;
+     overflow-x: auto ;
+    box-shadow: 0 1px 3px #FFD700;
+
+    width: 100%;
+    min-width:100% ;
+  margin-bottom: 1.2rem;
+   border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* -- 2b. Alternance sombre sur les lignes -- */
+#app-main .sonata-ba-list tbody tr:nth-child(odd) {
+    background: rgba(15, 28, 58, 0.55) !important;
+}
+#app-main .sonata-ba-list tbody tr:nth-child(even) {
+    background: rgba(10, 20, 42, 0.35) !important;
+}
+
+/* -- 2c. Hover -- */
+#app-main .sonata-ba-list tbody tr:hover > td,
+#app-main .table-hover > tbody > tr:hover > td {
+    background: rgba(255, 215, 0, 0.06) !important;
+    color: rgba(255,255,255,0.95) !important;
+}
+
+/* --- Neutralisation du vieux style Sonata --- */
+#app-main .sonata-ba-list-row-selected > td {
+    /* On retire l'ombre jaune qui créait le décalage */
+    box-shadow: none !important;
+    
+    /* On remplace le jaune par un bleu très léger plus professionnel */
+    background-color: rgba(60, 141, 188, 0.08) !important;
+    
+    /* On assure une transition douce */
+    transition: background-color 0.2s ease;
+}
+
+/* Optionnel : Une petite bordure gauche bleue plus fine si tu aimes l'effet */
+#app-main .sonata-ba-list-row-selected > td:first-child {
+    border-left: 3px solid #3c8dbc !important;
+}
+
+/* -- 2e. Cellules -- */
+#app-main .sonata-ba-list tbody td {
+    border: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+    color: rgba(255,255,255,0.82) !important;
+    padding: 12px 16px !important;
+    vertical-align: middle !important;
+    background: transparent !important;
+}
+
+
+/* -- 2f. En-têtes -- */
+#app-main .sonata-ba-list thead th {
+    background: rgba(255, 215, 0, 0.08) !important;
+    color: #FFD700 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    border: none !important;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.20) !important;
+    padding: 13px 16px !important;
+    position: sticky !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+
+
+#app-main .sonata-ba-list thead th a {
+    color: #FFD700 !important;
+    text-decoration: none !important;
+}
+#app-main .sonata-ba-list thead th a:hover { color: #fff !important; }
+
+/* -- 2g. Bordures tableau -- */
+#app-main .table-bordered > :not(caption) > * > * {
+    border-width: 0 0 1px !important;
+    border-color: rgba(255,255,255,0.05) !important;
+}
+/* ======================================= */
+/* ACTIONS BUTTON STYLES (Le bouton principal ...) */
+/* ======================================= */
+.table .list-actions .btn-object-item-actions {
+    /* Fond transparent par défaut pour rester discret */
+    background-color: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.6) !important; /* Texte/Points gris clair */
+    border-radius: 6px;
+    padding: 4px 10px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+/* Effet au survol du bouton principal */
+.table .list-actions .btn-object-item-actions:hover,
+.table .list-actions .btn-object-item-actions:focus {
+    background-color: #3c8dbc !important; /* Bleu primaire au survol */
+    border-color: #3c8dbc !important;
+    color: #ffffff !important; /* Points deviennent blancs */
+    box-shadow: 0 0 5px rgba(60, 141, 188, 0.5);
+}
+
+/* Stylisation des trois points (...) ou de l'icône */
+.table .list-actions .btn-object-item-actions i,
+.table .list-actions .btn-object-item-actions span {
+    letter-spacing: 2px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* ======================================= */
+/* DROPDOWN MENU (Le menu qui s'ouvre)    */
+/* ======================================= */
+.list-actions .dropdown-menu {
+    /* Fond sombre assorti à ton interface Parrot/Sonata */
+    background-color: #1e222d !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px;
+    padding: 10px;
+    min-width: 160px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* Style commun pour les liens d'action à l'intérieur */
+.list-actions ul li.dropdown-item-action a {
+    display: block !important;
+    padding: 8px 15px !important;
+    margin-bottom: 6px !important;
+    border-radius: 4px !important;
+    text-align: left !important; /* Aligné à gauche pour la lisibilité */
+    text-decoration: none !important;
+    transition: transform 0.15s ease, filter 0.15s ease;
+    font-weight: 500 !important;
+}
+
+/* On retire la marge sur le dernier bouton */
+.list-actions ul li.dropdown-item-action a:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Effet au survol commun à tous les boutons colorés */
+.list-actions ul li.dropdown-item-action a:hover {
+    filter: brightness(1.2) !important; /* Légère brillance au survol */
+    transform: translateX(4px) !important; /* Petit décalage interactif */
+    color: #ffffff !important; /* Force le texte blanc */
+}
+
+/* ======================================= */
+/* COULEURS SPÉCIFIQUES PAR RÔLE (view/edit/delete) */
+/* ======================================= */
+
+/* --- 1. Bouton AFFICHER (Info - Bleu Cyan) --- */
+.list-actions ul li.dropdown-item-action a.view_link {
+    background-color: #00c0ef !important; /* Cyan AdminLTE */
+    color: #ffffff !important;
+}
+
+/* --- 2. Bouton ÉDITER (Warning - Orange) --- */
+.list-actions ul li.dropdown-item-action a.edit_link {
+    background-color: #f39c12 !important; /* Orange AdminLTE */
+    color: #ffffff !important;
+}
+
+/* --- 3. Bouton SUPPRIMER (Danger - Rouge) --- */
+.list-actions ul li.dropdown-item-action a.delete_link {
+    background-color: #dd4b39 !important; /* Rouge AdminLTE */
+    color: #ffffff !important;
+}
+/* 1. ON FORCE LE CENTRAGE ABSOLU DANS LA COLONNE BATCH */
+.sonata-ba-list-field-batch {
+    width: 40px !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+}
+
+/* 2. LE STYLE DE LA CHECKBOX (MODERNE & PROPRE) */
+.sonata-ba-list-field-batch input[type="checkbox"] {
+    /* On reset tout le style par défaut du navigateur */
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    
+    /* Dimensions fixes pour ne plus que ça bouge */
+    width: 20px !important;
+    height: 20px !important;
+    cursor: pointer !important;
+    margin: 0 auto !important;
+    display: block !important; /* Block + margin:auto = centrage parfait */
+    
+    /* Design */
+    background-color: #ffffff !important;
+    border: 2px solid #d2d6de !important;
+    border-radius: 3px !important;
+    position: relative !important;
+    transition: all 0.15s ease-in-out;
+}
+
+/* 3. EFFET AU SURVOL ET COCHAGE */
+.sonata-ba-list-field-batch input[type="checkbox"]:hover {
+    border-color: #3c8dbc !important;
+}
+
+.sonata-ba-list-field-batch input[type="checkbox"]:checked {
+    background-color: #3c8dbc !important;
+    border-color: #3c8dbc !important;
+}
+
+/* 4. L'ICÔNE DE COCHE (DESSINÉE EN CSS PUR) */
+.sonata-ba-list-field-batch input[type="checkbox"]:checked::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 6px !important;
+    top: 2px !important;
+    width: 5px !important;
+    height: 10px !important;
+    border: solid white !important;
+    border-width: 0 2px 2px 0 !important;
+    transform: rotate(45deg) !important;
+    display: block !important;
+}
+
+/* 5. STYLE DE LA LIGNE SÉLECTIONNÉE (VANILLA JS COMPATIBLE) */
+tr.sonata-ba-list-row-selected {
+    background-color: rgba(60, 141, 188, 0.1) !important; /* Bleu très léger */
+}
+
+#app-main .sonata-ba-list,
+#app-main .table-bordered {
+    border-color: rgba(255,255,255,0.07) !important;
+}
+
+
+.app-footer {
+    position: relative; z-index: 2;
+    background: rgba(10,18,36,0.92) !important;
+    border-top: 1px solid rgba(255,255,255,0.05) !important;
+    color: rgba(255,255,255,0.32) !important;
+    font-size: 12px !important; padding: 12px 24px !important;
+    backdrop-filter: blur(8px) !important;
+}
+.app-footer a {
+    color: rgba(255,215,0,0.55) !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
+}
+.app-footer a:hover { color: #FFD700 !important; }
+
+/* ── Alerts ──────────────────────────────────────────────── */
+#app-main .alert-success {
+    background: rgba(22,163,74,0.12) !important;
+    border-color: rgba(22,163,74,0.28) !important;
+    color: #86efac !important; border-radius: 12px !important;
+}
+#app-main .alert-danger {
+    background: rgba(220,38,38,0.12) !important;
+    border-color: rgba(220,38,38,0.28) !important;
+    color: #fca5a5 !important; border-radius: 12px !important;
+}
+#app-main .alert-warning {
+    background: rgba(255,215,0,0.08) !important;
+    border-color: rgba(255,215,0,0.22) !important;
+    color: #FFD700 !important; border-radius: 12px !important;
+}
+
+#app-main .btn-success {
+    background: rgba(22,163,74,0.75) !important;
+    border-color: rgba(22,163,74,0.50) !important;
+    border-radius: 10px !important;
+}
+#app-main .btn-danger {
+    background: rgba(220,38,38,0.75) !important;
+    border-color: rgba(220,38,38,0.50) !important;
+    border-radius: 10px !important;
+}
+#app-main .btn-warning {
+    background: rgba(255,215,0,0.88) !important;
+    border-color: rgba(255,215,0,0.60) !important;
+    color: #0a1628 !important;
+    border-radius: 10px !important; font-weight: 700 !important;
+}
+
+/* Aspect visuel général du pied */
+.box-footer {
+  background: transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border-radius: 0 0 8px 8px;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  padding: 1.5rem 2rem !important;
+  font-weight: 800;
+}
+
+.box-footer .form-inline.clearfix {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+
+.box-footer .pull-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.box-footer .pull-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* Sélecteur de nombre d’éléments par page */
+.box-footer .form-select {
+  background-color: #1e293b;
+  color: #FFD700;
+  border-color: rgba(255, 255, 255, 0.1);
+  font-weight: 500;
+}
+.box-footer .btn-batch-submit{
+    color:#ffe6e6 ;
+}
+
+/* Masquer l'ancien select de manière propre */
+.ts-hidden-accessible {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+}
+
+/* Conteneur principal (Wrapper) */
+.ts-wrapper.form-control {
+    background-color: #1a252f !important; /* Bleu nuit assorti à tes cartes */
+    border: 1px solid rgba(225, 177, 44, 0.3) !important;
+    border-radius: 8px !important;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2) !important;
+}
+.ts-wrapper.form-control:focus{
+     border-color: #e1b12c !important; /* Or ProTIC */
+        box-shadow: 0 0 10px rgba(225, 177, 44, 0.15) !important;
+}
+/* L'item sélectionné (ex: "Angola") */
+.ts-wrapper.single .ts-control .item {
+    color: #f5f6fa !important;
+    font-weight: 500;
+}
+
+/* Le bouton de suppression (plugin remove_button) */
+.ts-wrapper .plugin-remove_button .item .remove {
+    border-left: 1px solid rgba(0,0,0,0.1) !important;
+    color: inherit !important;
+}
+
+.ts-dropdown {
+    background: #1a252f !important;
+    border: 1px solid #e1b12c !important;
+    border-radius: 0 0 8px 8px !important;
+    color: #f5f6fa !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+}
+
+.ts-dropdown .option{
+    padding: 12px 15px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+}
+
+.ts-dropdown .option.active {
+    background-color: #e1b12c !important; /* Fond Or */
+    color: #1a252f !important; /* Texte sombre pour contraste */
+}
+
+/* ======================================= */
+/* VUE "AFFICHER" (SHOW VIEW) PROTIC       */
+/* ======================================= */
+
+/* 1. Conteneur Global et Cartes (Box) */
+.sonata-ba-view .box {
+    background: rgba(15, 28, 58, 0.4) !important; /* Bleu nuit transparent */
+    border: 1px solid rgba(255, 215, 0, 0.1) !important; /* Bordure dorée très subtile */
+    border-top: 3px solid #FFD700 !important; /* Ligne d'accent OR */
+    border-radius: 8px !important;
+    backdrop-filter: blur(10px); /* Effet de flou moderne */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+/* 2. En-têtes des groupes */
+.sonata-ba-view .box-header {
+    background: rgba(255, 215, 0, 0.05) !important;
+    padding: 15px 20px !important;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.1) !important;
+}
+
+.sonata-ba-view .box-title {
+    color: #FFD700 !important; /* Titre en OR */
+    font-size: 0.9rem !important;
+    letter-spacing: 2px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+}
+
+/* 3. Structure du Tableau de détails */
+.sonata-ba-view table.table {
+    margin: 0 !important;
+    background: transparent !important;
+}
+
+/* Styles des Labels (Colonnes de gauche) */
+.sonata-ba-view table.table th {
+    background: rgba(0, 0, 0, 0.2) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    width: 30%;
+    padding: 16px 20px !important;
+    font-size: 0.8rem !important;
+    text-transform: uppercase !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    font-weight: 600 !important;
+}
+
+/* Styles des Valeurs (Colonnes de droite) */
+.sonata-ba-view table.table td {
+    color: #ffffff !important;
+    padding: 16px 20px !important;
+    font-size: 0.95rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    background: transparent !important;
+}
+
+/* 4. Gestion des listes (Livres associés) */
+.sonata-ba-view ul {
+    padding-left: 15px;
+    margin: 0;
+}
+
+.sonata-ba-view ul li {
+    list-style-type: none;
+    padding: 5px 0;
+}
+
+.sonata-ba-view ul li a {
+    color: #3c8dbc !important; /* Bleu lien */
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.sonata-ba-view ul li a:hover {
+    color: #FFD700 !important;
+    padding-left: 5px;
+}
+
+/* 5. Nettoyage des icônes flottantes si elles te gênent */
+/* Si les emojis/icônes de fond sont des images, on peut les tamiser */
+.sonata-ba-view img.floating-icon {
+    opacity: 0.1 !important;
+    filter: grayscale(1);
+}
+
+.sonata-actions .dropdown-menu.sonata-ba-show-actions-dropdown-menu {
+    background-color: #1a1a1a !important;
+    border: 1px solid #FFD700 !important;
+}
+.sonata-actions .dropdown-menu.sonata-ba-show-actions-dropdown-menu > li > a {
+    color: white !important;
+    padding: 10px 20px !important;
+    width: 100%;
+    text-align: center;
+    margin-bottom:20px ;
+    display: block;
+}
+.sonata-actions .dropdown-menu.sonata-ba-show-actions-dropdown-menu > li > a:hover {
+    background-color: #FFD700 !important;
+    color: black !important;
+}
+
+/* --- Conteneur des actions de filtrage --- */
+.filter-actions {
+    padding-top: 25px !important;
+    border-left: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+/* --- Bouton "Filtrer" (Primary) --- */
+.filter-actions .btn-primary {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important;
+    border: 1px solid #FFD700 !important;
+    color: #FFD700 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 20px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.filter-actions .btn-primary:hover {
+    background: #FFD700 !important;
+    color: #0f1c3a !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+/* --- Bouton "Effacer" (Default/Reset) --- */
+.filter-actions .btn-default {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-weight: 600 !important;
+    padding: 8px 20px !important;
+    transition: all 0.3s ease;
+}
+
+.filter-actions .btn-default:hover {
+    background: rgba(255, 50, 50, 0.2) !important;
+    border-color: #ff4d4d !important;
+    color: #ff4d4d !important;
+}
+
+/* --- Lien "Filtres avancés" --- */
+.filter-actions a[stimulus-action*="toggleAdvanced"] {
+    display: inline-block;
+    margin-top: 15px;
+    color: #3c8dbc !important;
+    font-size: 0.85rem;
+    text-decoration: none !important;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.filter-actions a[stimulus-action*="toggleAdvanced"]:hover {
+    color: #FFD700 !important;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.filter-actions i {
+    margin-right: 5px;
+}
+
+
+/* ======================================= */
+/* PAGER LINKS STYLES                      */
+/* ======================================= */
+.box-footer div#pagination-container{
+  margin-top: 20px;
+}
+/* Style du conteneur de pagination */
+.box-footer .pagination {
+  margin: 2rem 0;
+}
+
+.pagination .page-link {
+    background: var(--card-bg);
+    border: 1px solid rgba(110, 231, 255, 0.1);
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+    background: rgba(110, 231, 255, 0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.pagination .page-link.active {
+    background: var(--accent-2);
+    border-color: var(--accent-2);
+    color: var(--text);
+}
+
+.navbar-right li.single-action a{
+    background-color:transparent ;
+    color:#fff;
+    border: 2px solid #fff ;
+}

@@ -1,0 +1,160 @@
+
+
+#app-sidebar {
+ background: linear-gradient(
+        160deg,
+        var(--sidebar-start) 0%,
+        var(--sidebar-mid)   45%,
+        var(--sidebar-end)   100%
+    ) !important;
+  color: var(--sidebar-text) !important;
+  border-right: 1px solid var(--sidebar-border) !important;
+  box-shadow: 2px 0 12px var(--sidebar-shadow) !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  /* Scrollbar pour Firefox */
+  scrollbar-width: thin; /* mince */
+  overflow-x: hidden;
+} 
+
+/* ── Scrollbar personnalisée ─────────────────────────────── */
+#app-sidebar #sidebar-wrapper::-webkit-scrollbar { width: 3px; }
+#app-sidebar #sidebar-wrapper::-webkit-scrollbar-track { background: transparent; }
+#app-sidebar #sidebar-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255, 215, 0, 0.20);
+    border-radius: 2px;
+}
+#app-sidebar #sidebar-wrapper::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 215, 0, 0.40);
+}
+
+/* ── Logo / Brand ────────────────────────────────────────── */
+#app-sidebar .sidebar-brand,
+#app-sidebar #sidebar-brand {
+    position: relative !important;
+    z-index: 1 !important;
+    border-bottom: 1px solid var(--sidebar-border) !important;
+    background: rgba(0, 0, 0, 0.20) !important;
+   /* padding: 14px 16px !important;*/
+    display: flex !important;
+    align-items: center !important;
+    height: 60px;
+}
+#app-sidebar .brand-image,
+#app-sidebar #logo-image {
+    width: 100% !important;
+    height: 100% !important;
+    filter: drop-shadow(0 2px 6px rgba(255, 215, 0, 0.20)) !important;
+}
+
+/* ── Wrapper contenu sidebar ─────────────────────────────── */
+#app-sidebar .sidebar-wrapper,
+#app-sidebar #sidebar-wrapper {
+    position: relative !important;
+    z-index: 1 !important;
+    overflow-y: auto !important;
+}
+
+/* ── Section headers ─────────────────────────────────────── */
+#app-sidebar .nav-header,
+#app-sidebar .sidebar-header {
+    color: rgba(255, 215, 0, 0.45) !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.8px !important;
+    padding: 18px 16px 6px !important;
+}
+
+/* ── Nav items ───────────────────────────────────────────── */
+#app-sidebar .nav-item > .nav-link {
+    color: var(--sidebar-text) !important;
+    padding: 10px 15px !important;
+    transition: background-color 0.25s ease,
+                color 0.25s ease,
+                border-left 0.20s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    border-left: 3px solid transparent !important;
+    border-radius: 0 8px 8px 0 !important;
+    margin: 2px 8px 2px 0 !important;
+    font-size: 13px !important;
+}
+
+/* ── Icônes nav ──────────────────────────────────────────── */
+#app-sidebar .nav-item > .nav-link i,
+#app-sidebar .nav-item > .nav-link .nav-icon,
+#app-sidebar .nav-item > .nav-link svg {
+    color: var(--sidebar-icon) !important;
+    margin-right: 10px !important;
+    font-size: 1em !important;
+    width: 20px !important;
+    text-align: center !important;
+    flex-shrink: 0 !important;
+    transition: color 0.25s ease !important;
+}
+
+/* ── Hover ───────────────────────────────────────────────── */
+#app-sidebar .nav-item > .nav-link:hover {
+    background-color: var(--sidebar-hover-bg) !important;
+    color: #ffffff !important;
+    border-left: 3px solid var(--sidebar-active-border) !important;
+}
+#app-sidebar .nav-item > .nav-link:hover i,
+#app-sidebar .nav-item > .nav-link:hover .nav-icon {
+    color: #FFD700 !important;
+}
+
+/* ── Active ──────────────────────────────────────────────── */
+#app-sidebar .nav-item > .nav-link.active {
+    background-color: var(--sidebar-active-bg) !important;
+    color: var(--sidebar-active-text) !important;
+    border-left: 3px solid var(--sidebar-active-border) !important;
+    font-weight: 600 !important;
+}
+#app-sidebar .nav-item > .nav-link.active i,
+#app-sidebar .nav-item > .nav-link.active .nav-icon {
+    color: #FFD700 !important;
+}
+
+/* ── Sous-menus ──────────────────────────────────────────── */
+#app-sidebar .nav-treeview {
+    background: rgba(0, 0, 0, 0.20) !important;
+    border-left: 1px solid rgba(255, 215, 0, 0.08) !important;
+    margin-left: 16px !important;
+}
+#app-sidebar .nav-treeview .nav-link {
+    padding-left: 28px !important;
+    font-size: 12px !important;
+    color: rgba(255, 255, 255, 0.52) !important;
+    border-left: 2px solid transparent !important;
+    border-radius: 0 6px 6px 0 !important;
+}
+#app-sidebar .nav-treeview .nav-link:hover {
+    color: #FFD700 !important;
+    background: rgba(255, 215, 0, 0.06) !important;
+    border-left: 2px solid rgba(255, 215, 0, 0.40) !important;
+}
+#app-sidebar .nav-treeview .nav-link.active {
+    color: #FFD700 !important;
+    border-left: 2px solid #FFD700 !important;
+}
+
+/* ── Arrow treeview ──────────────────────────────────────── */
+#app-sidebar .nav-arrow,
+#app-sidebar .right {
+    color: rgba(255, 215, 0, 0.50) !important;
+    transition: transform 0.25s ease !important;
+}
+#app-sidebar .nav-item.menu-open > .nav-link .nav-arrow,
+#app-sidebar .nav-item.menu-open > .nav-link .right {
+    transform: rotate(90deg) !important;
+}
+
+/* ── Menu ouvert / actif ─────────────────────────────────── */
+#app-sidebar .nav-item.menu-open > .nav-link {
+    background: rgba(255, 215, 0, 0.08) !important;
+    color: rgba(255, 255, 255, 0.90) !important;
+}

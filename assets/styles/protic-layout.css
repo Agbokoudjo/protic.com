@@ -1,0 +1,296 @@
+/* ══════════════════════════════════════════
+   ProTIC — Layout CSS
+   Header · Navbar · Offcanvas · Footer
+   Palette : bleu profond #0d1f4e → #1a3a8f
+══════════════════════════════════════════ */
+
+/* ── Variables ── */
+:root {
+    --protic-blue-deep   : #0d1f4e;
+    --protic-blue-mid    : #1a3a8f;
+    --protic-blue-light  : #2d5be3;
+    --protic-white       : #ffffff;
+    --protic-white-70    : rgba(255,255,255,0.70);
+    --protic-white-40    : rgba(255,255,255,0.40);
+    --protic-white-15    : rgba(255,255,255,0.15);
+    --protic-white-08    : rgba(255,255,255,0.08);
+    --protic-glass-bg   : rgba(255,255,255,0.10);
+    --protic-glass-bdr  : rgba(255,255,255,0.28);
+    --protic-header-h    : 72px;
+    --protic-nav-h       : 52px;
+    --protic-transition  : 0.25s ease;
+}
+
+/* ── Body ── */
+.protic-body {
+    background: var(--protic-blue-deep);
+    color: var(--protic-white);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+.protic-header {
+    height: var(--protic-header-h);
+    background: linear-gradient(135deg, #06122e 0%, #0d1f4e 50%, #152d6e 100%);
+    border-bottom: 1px solid var(--protic-white-15);
+    position: sticky;
+    top: 0;
+    z-index: 1040;
+}
+
+.protic-header__logo-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: opacity var(--protic-transition);
+}
+.protic-header__logo-link:hover { opacity: 0.85; }
+
+.protic-header__logo-img {
+    max-height: 54px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* ── Bouton Administration (glassmorphism) ── */
+.protic-btn-admin {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 22px;
+    border-radius: 8px;
+    border: 1px solid var(--protic-glass-bdr);
+    background: var(--protic-glass-bg);
+    color: var(--protic-white);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: background var(--protic-transition), border-color var(--protic-transition);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: pointer;
+}
+.protic-btn-admin:hover {
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.50);
+    color: var(--protic-white);
+}
+.protic-btn-admin__icon { font-size: 1rem; }
+
+/* ══════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════ */
+.protic-navbar {
+    height: var(--protic-nav-h);
+    background: linear-gradient(90deg, #0a1840 0%, #1a3a8f 60%, #152d6e 100%);
+    border-bottom: 1px solid var(--protic-white-08);
+    position: sticky;
+    top: var(--protic-header-h);
+    z-index: 1030;
+}
+
+/* Liens desktop */
+.protic-nav-link {
+    display: inline-block;
+    color: var(--protic-white-70);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: color var(--protic-transition), background var(--protic-transition);
+    letter-spacing: 0.01em;
+}
+.protic-nav-link:hover,
+.protic-nav-link.is-active {
+    color: var(--protic-white);
+    background: var(--protic-white-15);
+}
+.protic-nav-link.is-active {
+    border-bottom: 2px solid var(--protic-blue-light);
+}
+
+/* Toggler hamburger custom */
+.protic-navbar__toggler {
+    background: transparent;
+    border: 1px solid var(--protic-glass-bdr);
+    border-radius: 6px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+.protic-navbar__toggler:focus { box-shadow: 0 0 0 2px var(--protic-white-40); outline: none; }
+.protic-navbar__toggler-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--protic-white);
+    border-radius: 2px;
+    transition: transform var(--protic-transition), opacity var(--protic-transition);
+}
+
+/* ══════════════════════════════════════════
+   OFFCANVAS — menu mobile
+══════════════════════════════════════════ */
+.protic-offcanvas {
+    background: linear-gradient(160deg, #06122e 0%, #0d1f4e 100%);
+    border-left: 1px solid var(--protic-white-15);
+    width: 280px !important;
+    color: var(--protic-white);
+}
+
+.protic-offcanvas__header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--protic-white-15);
+}
+
+.protic-offcanvas__close {
+    background: var(--protic-glass-bg);
+    border: 1px solid var(--protic-glass-bdr);
+    color: var(--protic-white);
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: auto;
+    transition: background var(--protic-transition);
+}
+.protic-offcanvas__close:hover { background: var(--protic-white-15); }
+
+.protic-offcanvas__body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.protic-offcanvas__links { margin: 0; padding: 0; }
+
+.protic-offcanvas__link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--protic-white-70);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    transition: color var(--protic-transition), background var(--protic-transition);
+}
+.protic-offcanvas__link:hover,
+.protic-offcanvas__link.is-active {
+    color: var(--protic-white);
+    background: var(--protic-white-15);
+}
+.protic-offcanvas__link.is-active { border-left: 3px solid var(--protic-blue-light); }
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+.protic-footer {
+    background: linear-gradient(180deg, #06122e 0%, #03091a 100%);
+    border-top: 1px solid var(--protic-white-15);
+    padding: 64px 0 0;
+    color: var(--protic-white-70);
+    font-size: 0.875rem;
+}
+
+/* Grille 4 colonnes → 2 → 1 */
+.protic-footer__grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
+    gap: 40px;
+    padding-bottom: 48px;
+}
+
+@media (max-width: 1024px) {
+    .protic-footer__grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 576px) {
+    .protic-footer__grid { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* Brand */
+.protic-footer__logo { max-width: 160px; height: auto; margin-bottom: 16px; }
+.protic-footer__tagline { line-height: 1.7; margin-bottom: 12px; }
+.protic-footer__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: var(--protic-white-70);
+    border: 1px solid var(--protic-white-15);
+    border-radius: 20px;
+    padding: 4px 12px;
+}
+
+/* Colonnes */
+.protic-footer__col-title {
+    color: var(--protic-white);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--protic-white-15);
+}
+
+/* Liens nav footer */
+.protic-footer__links { list-style: none; margin: 0; padding: 0; }
+.protic-footer__links li { margin-bottom: 8px; }
+.protic-footer__link {
+    color: var(--protic-white-70);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color var(--protic-transition);
+}
+.protic-footer__link:hover { color: var(--protic-white); }
+
+/* Contact */
+.protic-footer__contact-list { list-style: none; margin: 0; padding: 0; }
+.protic-footer__contact-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+.protic-footer__contact-list a {
+    color: var(--protic-white-70);
+    text-decoration: none;
+    transition: color var(--protic-transition);
+}
+.protic-footer__contact-list a:hover { color: var(--protic-white); }
+.protic-footer__contact-list svg { flex-shrink: 0; margin-top: 2px; }
+
+/* Légal */
+.protic-footer__legal { list-style: none; margin: 0; padding: 0; }
+.protic-footer__legal li {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+.protic-footer__legal span { font-size: 0.75rem; color: var(--protic-white-40); }
+.protic-footer__legal strong { color: var(--protic-white-70); font-size: 0.8rem; }
+
+/* Copyright bar */
+.protic-footer__bottom {
+    border-top: 1px solid var(--protic-white-08);
+    padding: 16px 0;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--protic-white-40);
+}
+.protic-footer__bottom strong { color: var(--protic-white-70); }

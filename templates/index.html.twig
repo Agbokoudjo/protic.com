@@ -1,0 +1,662 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ProTIC Editions & Services — Maison d'édition béninoise{% endblock %}
+
+{% block meta_description %}
+ProTIC Editions &amp; Services, maison d'édition béninoise à Abomey-Calavi. Publication, impression et distribution de livres au Bénin et en Afrique de l'Ouest. Roman, poésie, essai, théâtre, conte, didactique.
+{% endblock %}
+
+{% block head_extra %}
+{# ── SEO — Open Graph ── #}
+<meta property="og:title"       content="ProTIC Editions & Services — Maison d'édition béninoise">
+<meta property="og:description" content="Publiez votre livre au Bénin avec ProTIC. Conception, dépôt légal, impression et distribution nationale.">
+<meta property="og:image"       content="{{ asset('assets/images/og-home.png','app') }}">
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="{{ app.request.uri }}">
+<meta name="keywords" content="maison édition Bénin, publier livre Bénin, édition Abomey-Calavi, ProTIC éditions, impression livre Afrique, auteur béninois, dépôt légal Bénin, littérature africaine">
+<link rel="canonical" href="{{ app.request.uri }}">
+
+{{ vite_entry_link_tags('home') }}
+{% endblock %}
+
+{% block main %}
+
+<section class="protic-hero" id="hero" aria-label="Accueil ProTIC Editions">
+
+    {# Fond Three.js canvas — injecté via JS #}
+    <canvas id="hero-canvas" class="protic-hero__canvas" aria-hidden="true"></canvas>
+
+    {# Overlay dégradé bleu #}
+    <div class="protic-hero__overlay" aria-hidden="true"></div>
+    <div class="protic-hero__bg carousel slide"
+         role="img"
+         data-bs-ride="carousel"
+         aria-label="Bibliothèque africaine moderne — ProTIC Editions Bénin">
+         <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{{ asset('assets/images/hero-bg.png','app') }}" class="d-block w-100 img-fluid" alt="Bibliothèque africaine moderne — Maison d'édition ProTIC Bénin Abomey-Calavi">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ asset('assets/images/hero-bg4.png','app') }}" class="img-fluid d-block w-100" alt="Bibliothèque africaine moderne — Maison d'édition ProTIC Bénin Abomey-Calavi">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ asset('assets/images/hero-bg-2.png','app') }}" class="img-fluid d-block w-100" alt="Bibliothèque africaine moderne — Maison d'édition ProTIC Bénin Abomey-Calavi" loading="lazy">
+            </div>
+        </div>
+    </div>
+
+    <div class="container protic-hero__inner">
+        <div class="protic-hero__badge"
+             data-aos="fade-down"
+             data-aos-duration="600">
+            <i class="bi bi-patch-check-fill"></i>
+            Maison d'édition béninoise — Membre APPEL-Bénin depuis 2010
+        </div>
+
+        {# H1 — mot-clé principal #}
+        <h1 class="protic-hero__title"
+            data-aos="fade-right"
+            data-aos-duration="800"
+            data-aos-delay="150">
+            Des livres pour <span class="protic-hero__highlight">comprendre</span>,<br>
+            pour <span class="protic-hero__highlight">agir</span>
+            et pour <span class="protic-hero__highlight">voyager</span>
+        </h1>
+
+        <p class="protic-hero__sub"
+           data-aos="fade-right"
+           data-aos-duration="800"
+           data-aos-delay="300">
+            {{NAME_SITE}} accompagne les <strong>auteurs béninois</strong>,
+            enseignants et chercheurs dans la <strong>publication</strong>,
+            l'<strong>impression</strong> et la <strong>distribution de livres</strong>
+            en Afrique de l'Ouest et à sur le plan international.
+        </p>
+
+        <div class="protic-hero__btns"
+             data-aos="fade-up"
+             data-aos-duration="700"
+             data-aos-delay="450">
+            <a href="#" class="btn protic-btn-primary">
+                <i class="bi bi-grid"></i> Découvrir le catalogue
+            </a>
+            <a href="#" class="btn protic-btn-glass">
+                <i class="bi bi-briefcase"></i> Nos services
+            </a>
+        </div>
+
+        {# Floating books décoratifs #}
+        <div class="protic-hero__floats" aria-hidden="true">
+            <span class="protic-float protic-float--1">📖</span>
+            <span class="protic-float protic-float--2">📚</span>
+            <span class="protic-float protic-float--3">📕</span>
+        </div>
+
+    </div>
+
+    {# Scroll indicator #}
+    <div class="protic-hero__scroll" aria-hidden="true">
+        <span></span>
+    </div>
+
+</section>
+
+<section class="protic-stats" aria-label="Chiffres clés ProTIC Editions">
+    <div class="container protic-stats__grid">
+
+        <div class="protic-stat" data-aos="fade-up" data-aos-delay="0">
+            <span class="protic-stat__num" data-target="120">0</span><span class="protic-stat__plus">+</span>
+            <span class="protic-stat__label">Livres publiés</span>
+        </div>
+        <div class="protic-stats__divider" aria-hidden="true"></div>
+
+        <div class="protic-stat" data-aos="fade-up" data-aos-delay="100">
+            <span class="protic-stat__num" data-target="85">0</span><span class="protic-stat__plus">+</span>
+            <span class="protic-stat__label">Auteurs accompagnés</span>
+        </div>
+        <div class="protic-stats__divider" aria-hidden="true"></div>
+
+        <div class="protic-stat" data-aos="fade-up" data-aos-delay="200">
+            <span class="protic-stat__num" data-target="15">0</span>
+            <span class="protic-stat__label">Années d'expérience</span>
+        </div>
+        <div class="protic-stats__divider" aria-hidden="true"></div>
+
+        <div class="protic-stat" data-aos="fade-up" data-aos-delay="300">
+            <span class="protic-stat__num" data-target="6">0</span>
+            <span class="protic-stat__label">Genres littéraires</span>
+        </div>
+
+    </div>
+</section>
+
+
+{# ══════════════════════════════════════════
+   §3 — DERNIÈRES PARUTIONS (React)
+   IMAGE IA : voir prompt §3 (couvertures livres)
+   Ce composant React récupère les livres via API
+══════════════════════════════════════════ #}
+<section class="protic-section" id="parutions" aria-labelledby="parutions-title">
+    <div class="container">
+
+        <div class="protic-section__header" data-aos="fade-up">
+            <span class="protic-section__tag">Nouveautés</span>
+            <h2 id="parutions-title">Dernières Parutions</h2>
+            <p>Découvrez les <strong>œuvres récemment publiées</strong> par nos auteurs béninois</p>
+        </div>
+
+        {# Point d'injection React — composant BooksGrid #}
+        <div id="home-books-root"
+             data-aos="fade-up"
+             data-aos-delay="200"
+             data-limit="6"
+             data-component="BooksGrid"
+             style="min-height: 400px"
+             data-mode="home"
+             aria-label="Grille des dernières parutions">
+        </div>
+
+        <div class="protic-section__footer" data-aos="fade-up">
+            <a href="{{path('app_catalogue')}}" class="btn protic-btn-primary">
+                Voir tout le catalogue <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+    </div>
+</section>
+
+
+{# ══════════════════════════════════════════
+   §4 — GENRES LITTÉRAIRES
+   IMAGE IA : voir prompt §4 (icônes genre ou image)
+══════════════════════════════════════════ #}
+<section class="protic-section protic-section--dark" id="genres" aria-labelledby="genres-title">
+    <div class="container">
+
+        <div class="protic-section__header" data-aos="fade-up">
+            <span class="protic-section__tag">Notre catalogue</span>
+            <h2 id="genres-title">Genres Littéraires</h2>
+            <p>Six univers pour <strong>explorer la littérature africaine</strong></p>
+        </div>
+
+        <div class="protic-genres__grid">
+            {% set genres = [
+                { icon: 'bi-book',          label: 'Roman',      slug: 'roman',      desc: 'Fiction, récit, narration' },
+                { icon: 'bi-pencil',        label: 'Poésie',     slug: 'poesie',     desc: 'Vers, rimes, lyrisme' },
+                { icon: 'bi-people',        label: 'Théâtre',    slug: 'theatre',    desc: 'Pièces, dialogues, scènes' },
+                { icon: 'bi-moon-stars',    label: 'Conte',      slug: 'conte',      desc: 'Folklore, tradition orale' },
+                { icon: 'bi-search',        label: 'Essai',      slug: 'essai',      desc: 'Analyse, réflexion, critique' },
+                { icon: 'bi-mortarboard',   label: 'Didactique', slug: 'didactique', desc: 'Manuels, pédagogie, scolaire' },
+            ] %}
+
+            {% for g in genres %}
+            <a href="#"
+               class="protic-genre-card"
+               data-aos="zoom-in"
+               data-aos-duration="600"
+               data-aos-delay="{{ loop.index0 * 80 }}"
+               aria-label="Catalogue {{ g.label }}">
+                <i class="bi {{ g.icon }} protic-genre-card__icon"></i>
+                <span class="protic-genre-card__label">{{ g.label }}</span>
+                <span class="protic-genre-card__desc">{{ g.desc }}</span>
+            </a>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+
+<section class="protic-section" id="processus" aria-labelledby="processus-title">
+    <div class="container">
+
+        <div class="protic-section__header" data-aos="fade-up">
+            <span class="protic-section__tag">Comment ça marche</span>
+            <h2 id="processus-title">Publiez votre livre en 4 étapes</h2>
+            <p>Un processus simple et accompagné du <strong>manuscrit</strong> à la <strong>distribution</strong></p>
+        </div>
+
+        <div class="protic-steps__grid">
+
+            {% set steps = [
+                {
+                    num  : '1',
+                    image: 'assets/images/step-1-manuscrit.png',
+                    alt  : 'Auteur béninois déposant son manuscrit — ProTIC Editions Abomey-Calavi',
+                    title: 'Dépôt du manuscrit',
+                    text : "Soumettez votre manuscrit en ligne ou déposez-le directement à notre siège d'Abomey-Calavi.",
+                    color: 'blue',
+                    aos  : 'fade-up-right',
+                },
+                {
+                    num  : '2',
+                    image: 'assets/images/step-2-conception.png',
+                    alt  : 'Graphiste ProTIC réalisant la mise en page et conception du livre',
+                    title: 'Conception & mise en page',
+                    text : 'Notre équipe prend en charge la conception graphique, la mise en page et la correction.',
+                    color: 'blue',
+                    aos  : 'fade-up',
+                },
+                {
+                    num  : '3',
+                    image: 'assets/images/step-3-depot-legal.png',
+                    alt  : 'Dépôt légal officiel à la Bibliothèque Nationale du Bénin — ProTIC',
+                    title: 'Dépôt légal',
+                    text : 'Nous gérons toutes les formalités administratives auprès de la Bibliothèque Nationale du Bénin.',
+                    color: 'blue',
+                    aos  : 'fade-up',
+                },
+                {
+                    num  : '4',
+                    image: 'assets/images/step-4-distribution.png',
+                    alt  : 'Impression et distribution nationale de livres au Bénin — ProTIC Editions',
+                    title: 'Impression & distribution',
+                    text : "Votre livre est imprimé et distribué à l'échelle nationale et internationale.",
+                    color: 'gold',
+                    aos  : 'fade-up-left',
+                },
+            ] %}
+
+            {% for s in steps %}
+            <article class="protic-step protic-step--{{ s.color }} protic-step--img"
+                     data-aos="{{ s.aos }}"
+                     data-aos-duration="700"
+                     data-aos-delay="{{ loop.index0 * 150 }}"
+                     data-aos-easing="ease-out-cubic">
+
+                <div class="protic-step__img-wrap">
+                    <img
+                        src="{{ asset(s.image,'app') }}"
+                        alt="{{ s.alt }}"
+                        class="protic-step__img img-fluid"
+                        loading="lazy"
+                        width="400"
+                        height="280"
+                    >
+                    <div class="protic-step__img-overlay" aria-hidden="true"></div>
+                </div>
+
+                {# ── Contenu au-dessus de l'image ── #}
+                <div class="protic-step__content">
+
+                    {# Numéro d'étape #}
+                    <div class="protic-step__num">{{ s.num }}</div>
+
+                    {# Texte #}
+                    <div class="protic-step__body">
+                        <h3 class="protic-step__title">{{ s.title }}</h3>
+                        <p class="protic-step__text">{{ s.text }}</p>
+                    </div>
+
+                </div>
+
+            </article>
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section>
+
+<section class="protic-section protic-section--dark protic-about" id="apropos" aria-labelledby="apropos-title">
+    <div class="container protic-about__grid">
+
+        {# Texte gauche #}
+        <div class="protic-about__text">
+
+            <span class="protic-section__tag"
+                  data-aos="fade-right" data-aos-duration="500">À propos</span>
+
+            <h2 id="apropos-title"
+                data-aos="fade-right" data-aos-duration="700" data-aos-delay="100">
+                ProTIC, votre partenaire éditorial<br>
+                <strong>au Bénin depuis 2010</strong>
+            </h2>
+
+            <p data-aos="fade-right" data-aos-duration="600" data-aos-delay="200">
+                Notre conviction est que le <strong>livre occupe une place essentielle</strong>
+                dans notre société. Qu'il s'agisse de se former professionnellement ou de
+                lutter contre les inégalités, l'accès aux travaux des écrivains et chercheurs est indispensable.
+            </p>
+
+            <p data-aos="fade-right" data-aos-duration="600" data-aos-delay="300">
+                Du <strong>Roman</strong> à la <strong>Poésie</strong>, en passant par le
+                <strong>Théâtre</strong>, le <strong>Conte</strong>, l'<strong>Essai</strong>
+                et les ouvrages <strong>didactiques</strong>, notre mission est de promouvoir
+                le livre ,puis les auteurs béninois et sur le plan international.
+            </p>
+
+            <div class="protic-about__badges">
+                {% for badge in ['Membre APPEL-Bénin', 'Bibliothèque Nationale', 'Distribution nationale'] %}
+                <span class="protic-badge"
+                      data-aos="zoom-in"
+                      data-aos-duration="400"
+                      data-aos-delay="{{ 400 + loop.index0 * 100 }}"
+                      data-aos-easing="ease-out-back">
+                    <i class="bi bi-check-circle-fill"></i> {{ badge }}
+                </span>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="protic-about__cards">
+
+            {% set acards = [
+                {
+                    image : 'assets/images/about-card-conception.png',
+                    alt   : 'Conception graphique et mise en page professionnelle — ProTIC Editions Bénin',
+                    title : 'Conception graphique',
+                    sub   : 'Maquettes et mise en page professionnelles',
+                },
+                {
+                    image : 'assets/images/about-card-admin.png',
+                    alt   : 'Dépôt légal et formalités administratives — Bibliothèque Nationale Bénin',
+                    title : 'Formalités admin.',
+                    sub   : 'Dépôt légal et distribution',
+                },
+                {
+                    image : 'assets/images/about-card-diffusion.png',
+                    alt   : 'Distribution nationale et internationale de livres — ProTIC Editions',
+                    title : 'Diffusion',
+                    sub   : 'Distribution nationale et internationale',
+                },
+                {
+                    image : 'assets/images/about-card-impression.png',
+                    alt   : 'Impression haute qualité de livres au Bénin — ProTIC Editions Services',
+                    title : 'Impression',
+                    sub   : 'Haute qualité, toutes quantités',
+                },
+            ] %}
+
+        {% for c in acards %}
+            <article class="protic-about-card protic-about-card--img"
+                    data-aos="{{ loop.index is odd ? 'flip-left' : 'flip-right' }}"
+                    data-aos-duration="700"
+                    data-aos-delay="{{ loop.index0 * 150 }}"
+                    data-aos-easing="ease-out-cubic">
+
+                <div class="protic-about-card__img-wrap">
+                    <img
+                        src="{{ asset(c.image,'app') }}"
+                        alt="{{ c.alt }}"
+                        class="protic-about-card__img img-fluid"
+                        loading="lazy"
+                        width="300"
+                        height="200"
+                    >
+            {# Overlay dégradé bleu pour lisibilité du texte #}
+            <div class="protic-about-card__img-overlay" aria-hidden="true"></div>
+        </div>
+
+        {# Contenu texte par-dessus l'image #}
+        <div class="protic-about-card__content">
+            <h4 class="protic-about-card__title">{{ c.title }}</h4>
+            <p class="protic-about-card__sub">{{ c.sub }}</p>
+        </div>
+
+    </article>
+    {% endfor %}
+
+    </div>
+
+    </div>
+
+    {# Image d'illustration #}
+    <div class="protic-about__img-wrap carousel slide" 
+        data-aos="fade-left" 
+        id="protic-about__img-wrap"
+        data-aos-duration="900" 
+        data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{{ asset('assets/images/hero-bg-2.png','app') }}"
+                    alt="Équipe ProTIC Editions Bénin — accompagnement des auteurs"
+                    class="protic-about__img d-block w-100 img-fluid"
+                    loading="lazy"
+                    alt="Équipe ProTIC Editions Services — accompagnement des auteurs béninois à Cotonou"
+                    width="600" height="450">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ asset('assets/images/about-team.png','app') }}"
+                    alt="Équipe ProTIC Editions Bénin — accompagnement des auteurs"
+                    class="protic-about__img d-block w-100 img-fluid"
+                    loading="lazy"
+                    alt="Équipe ProTIC Editions Services — accompagnement des auteurs béninois à Cotonou"
+                    width="600" height="450">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ asset('assets/images/hero-bg5.png','app') }}"
+                    alt="Équipe ProTIC Editions Bénin — accompagnement des auteurs"
+                    class="protic-about__img d-block w-100 img-fluid"
+                    loading="lazy"
+                    alt="Équipe ProTIC Editions Services — accompagnement des auteurs béninois à Cotonou"
+                    width="600" height="450">
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#protic-about__img-wrap" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#protic-about__img-wrap" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+         </div>
+        
+        <div class="protic-about__img-badge">
+            <i class="bi bi-award-fill"></i>
+            <span>15 ans d'expertise éditoriale</span>
+        </div>
+    </div>
+
+</section>
+
+
+{# ══════════════════════════════════════════
+   §7 — TÉMOIGNAGES
+   (pas d'image — fond uni avec avatar)
+══════════════════════════════════════════ #}
+<section class="protic-section" id="temoignages" aria-labelledby="temoignages-title">
+    <div class="container">
+
+        <div class="protic-section__header" data-aos="fade-up">
+            <span class="protic-section__tag">Ils nous font confiance</span>
+            <h2 id="temoignages-title">Ce que disent nos auteurs</h2>
+            <p>Plus de <strong>85 auteurs béninois</strong> ont fait confiance à ProTIC pour publier leur œuvre</p>
+        </div>
+
+        <div class="protic-testimonials__grid">
+            {% set temoignages = [
+                {
+                    text: 'ProTIC m\'a accompagné avec professionnalisme du début à la fin. Mon recueil de poèmes a été publié dans les délais et la qualité d\'impression est remarquable.',
+                    name: 'Winnock G. M. D. K. Goundete',
+                    role: 'Auteur — La femme de sa vie',
+                    delay: 0
+                },
+                {
+                    text: 'Grâce à ProTIC, mon roman a trouvé son public. L\'équipe est à l\'écoute, réactive et vraiment passionnée par la promotion du livre africain.',
+                    name: 'Marie-Claire Adjovi',
+                    role: 'Auteure — Les Voix du Lac',
+                    delay: 150
+                },
+                {
+                    text: 'En tant qu\'enseignant, j\'avais besoin d\'un partenaire fiable pour mes manuels scolaires. ProTIC a répondu à toutes mes attentes avec sérieux et compétence.',
+                    name: 'Jean-Baptiste Hounsou',
+                    role: 'Auteur — Mathématiques BAC',
+                    delay: 300
+                },
+            ] %}
+
+            {% for t in temoignages %}
+            <article class="protic-testimonial"
+                     data-aos="zoom-in-up"
+                     data-aos-duration="700"
+                     data-aos-delay="{{ t.delay }}"
+                     data-aos-easing="ease-out-back"
+                     itemscope itemtype="https://schema.org/Review">
+                <span class="protic-testimonial__quote" aria-hidden="true">❝</span>
+                <p class="protic-testimonial__text" itemprop="reviewBody">{{ t.text }}</p>
+                <footer class="protic-testimonial__footer">
+                    <div class="protic-testimonial__avatar" aria-hidden="true">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div>
+                        <strong class="protic-testimonial__name" itemprop="author">{{ t.name }}</strong>
+                        <span class="protic-testimonial__role">{{ t.role }}</span>
+                    </div>
+                </footer>
+            </article>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+<section class="protic-cta" id="manuscrit" aria-labelledby="cta-title">
+    <div class="protic-cta__bg"
+         style="background-image: url('{{ asset('assets/images/cta-bg.png','app') }}')"
+         role="img"
+         aria-label="Auteur béninois en train d'écrire son manuscrit">
+    </div>
+    <div class="protic-cta__overlay" aria-hidden="true"></div>
+
+    <div class="container protic-cta__inner">
+
+        <div class="protic-cta__badge"
+             data-aos="fade-down" data-aos-duration="600" data-aos-delay="200">
+            <i class="bi bi-pencil-square"></i>
+            Vous avez un manuscrit ?
+        </div>
+
+        <h2 id="cta-title"
+            data-aos="fade-up" data-aos-duration="700" data-aos-delay="300">
+            Confiez votre œuvre à <strong>ProTIC Editions &amp; Services</strong>
+        </h2>
+
+        <p data-aos="fade-up" data-aos-duration="600" data-aos-delay="450">
+            Que vous soyez à <strong>Cotonou</strong> ou à l'étranger, soumettez votre
+            <strong>manuscrit</strong> en ligne. Notre équipe vous recontacte sous <strong>48h</strong>.
+        </p>
+
+        <div class="protic-cta__btns"
+             data-aos="zoom-in-up" data-aos-duration="600" data-aos-delay="600">
+            <a href="#" class="btn protic-btn-gold">
+                <i class="bi bi-upload"></i> Soumettre mon manuscrit
+            </a>
+            <a href="#" class="btn protic-btn-glass">
+                <i class="bi bi-eye"></i> Découvrir nos services
+            </a>
+        </div>
+
+        <div class="protic-cta__guarantees"
+             data-aos="fade-up" data-aos-duration="500" data-aos-delay="750">
+            <span><i class="bi bi-check-circle-fill"></i> Réponse sous 48h</span>
+            <span><i class="bi bi-check-circle-fill"></i> Accompagnement personnalisé</span>
+            <span><i class="bi bi-check-circle-fill"></i> Dépôt légal inclus</span>
+        </div>
+
+    </div>
+</section>
+
+
+<section class="protic-section" id="partenaires" aria-labelledby="partenaires-title">
+    <div class="container">
+
+        <div class="protic-section__header" data-aos="fade-up">
+            <span class="protic-section__tag">Reconnaissance</span>
+            <h2 id="partenaires-title">Officiellement reconnus</h2>
+            <p>ProTIC est enregistré auprès des <strong>institutions officielles béninoises</strong></p>
+        </div>
+
+        <div class="protic-partners__grid">
+            {% set partners = [
+                { icon: 'bi-book-half',   name: 'APPEL-Bénin',          sub: 'Association Professionnelle des Éditeurs de Livres' },
+                { icon: 'bi-bank2',       name: 'Bibliothèque Nationale', sub: 'Dépôt légal officiel — République du Bénin' },
+                { icon: 'bi-building',    name: 'RCCM Officiel',         sub: 'RB/ABC/21 A 32987 — Registre du Commerce' },
+                { icon: 'bi-credit-card', name: 'UBA Bénin',             sub: 'Compte bancaire certifié N° 506070006684' },
+            ] %}
+
+            {% for p in partners %}
+            <div class="protic-partner"
+                 data-aos="fade-up"
+                 data-aos-duration="600"
+                 data-aos-delay="{{ loop.index0 * 120 }}"
+                 data-aos-easing="ease-out-cubic">
+                <i class="bi {{ p.icon }} protic-partner__icon"></i>
+                <strong class="protic-partner__name">{{ p.name }}</strong>
+                <span class="protic-partner__sub">{{ p.sub }}</span>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{# ══════════════════════════════════════════
+   Three.js — uniquement sur cette page
+══════════════════════════════════════════ #}
+{% block threejs %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+{# Hero canvas Three.js — particules flottantes façon pages de livre #}
+(function() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+    camera.position.z = 5;
+
+    /* ── Particules (pages de livre) ── */
+    const geo = new THREE.BufferGeometry();
+    const count = 180;
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i++) {
+        pos[i] = (Math.random() - 0.5) * 14;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+
+    const mat = new THREE.PointsMaterial({
+        color: 0x6090ff,
+        size: 0.06,
+        transparent: true,
+        opacity: 0.55,
+    });
+
+    const points = new THREE.Points(geo, mat);
+    scene.add(points);
+
+    /* ── Resize ── */
+    const resize = () => {
+        const w = canvas.offsetWidth, h = canvas.offsetHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+    };
+    window.addEventListener('resize', resize);
+    resize();
+
+    /* ── Boucle ── */
+    let t = 0;
+    (function animate() {
+        requestAnimationFrame(animate);
+        t += 0.004;
+        points.rotation.y = t * 0.12;
+        points.rotation.x = Math.sin(t * 0.3) * 0.08;
+        renderer.render(scene, camera);
+    })();
+})();
+</script>
+{% endblock %}
+
+
+{% block scripts_extra %}
+
+{# React — injection composant BooksGrid #}
+{{ vite_entry_script_tags('home') }}
+{% endblock %}

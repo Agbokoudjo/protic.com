@@ -1,0 +1,19 @@
+{# 
+    Template utilisé pour la colonne 'assignedByUser' dans la liste SonataAdmin.
+    'object' est l'entité UserPermissionRoleEntity.
+    'value' est l'objet AdminUserInterface (assignedByUser).
+#}
+
+{% if user %}
+    <p class="user-info-cell flex flex-col items-start space-y-1">
+        <span class="font-semibold text-success fw-bold">
+            {{ user.username }}
+        </span>
+
+        <span class="badge rounded-pill bg-danger">
+           {{ user.rolePrincipal|trans({}, 'role', app.locale) }}
+        </span>
+    </p>
+{% else %}
+    <span class="text-gray-500 italic"></span>
+{% endif %}

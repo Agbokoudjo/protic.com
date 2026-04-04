@@ -1,0 +1,16 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% import 'admin/macros/custom_array_render.html.twig' as render %}
+
+{% block field %}
+    {% set icon = 'fa-envelope' %}
+    {% if field_description.fieldName == 'phonePrimary' %}
+        {% set icon = 'fa-phone-alt' %}
+    {% elseif field_description.fieldName == 'addresses' %}
+        {% set icon = 'fa-map-marker-alt' %}
+    {% endif %}
+
+    <div class="well well-sm" style="background: #f9f9f9; border-left: 3px solid #0f1c3a;">
+        {{ render.render_list(value, icon) }}
+    </div>
+{% endblock %}

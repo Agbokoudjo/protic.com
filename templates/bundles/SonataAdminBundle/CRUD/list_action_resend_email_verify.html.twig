@@ -1,0 +1,31 @@
+{% if   admin.isGranted('ROLE_FOUNDER',object) %}
+  
+    {% set action_resend_email = admin.createResendEmailVerificationAction(object) %}
+
+    {% if action_resend_email is not null %}
+        
+        {% set label = action_resend_email.label | trans([], 'SonataUserBundle', app.locale) %}
+        {% set title = action_resend_email.title | trans([], 'SonataUserBundle', app.locale) %}
+        
+        {% set confirmation_message = action_resend_email.confirm | trans(
+            {'%username%': object.username}, 
+            'SonataUserBundle', 
+            app.locale
+        ) %}
+
+        <a href="{{ action_resend_email.url }}" 
+        class="btn btn-sm btn-info btn-resend-email-verification text-white fw-bold"
+        title="{{ title }}"
+        data-bs-toggle="tooltip" 
+        data-bs-placement="top" 
+        data-event-name="resend:email:verificatio:password:confirmed"
+        data-http-method-request-action="GET"
+        data-loading-config-key-message="ACTION_PENDING_RESEND_EMAIL_VERIFCATION_MESSAGE"
+        data-action-confirm="{{ confirmation_message }}"
+        >
+            <i class="{{ action_resend_email.icon }}" aria-hidden="true"></i> 
+        <span class="d-none d-sm-inline ms-1">{{ label }}</span>
+        </a>
+    {% endif %}
+    
+{% endif %}

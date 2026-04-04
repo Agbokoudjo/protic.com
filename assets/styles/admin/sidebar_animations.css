@@ -1,0 +1,118 @@
+/* ── Keyframes ───────────────────────────────────────────── */
+@keyframes wave-move {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes particle-rise {
+    0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+    15%  { opacity: 1; }
+    85%  { opacity: 0.6; }
+    100% { transform: translateY(-280px) translateX(var(--drift, 10px)) scale(0.4); opacity: 0; }
+}
+
+@keyframes particle-pulse {
+    0%, 100% { box-shadow: 0 0 3px rgba(255, 215, 0, 0.6); }
+    50%       { box-shadow: 0 0 8px rgba(255, 215, 0, 1.0); }
+}
+
+@keyframes sidebar-breathe {
+    0%, 100% { opacity: 0.6; }
+    50%       { opacity: 1.0; }
+}
+
+/* ── Vague de fond ───────────────────────────────────────── */
+#app-sidebar::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  
+    height: 60px;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(255, 215, 0, 0.04)  0px,
+        rgba(255, 215, 0, 0.09)  20px,
+        rgba(45,  48,  153, 0.10) 40px,
+        rgba(255, 215, 0, 0.04)  60px,
+        rgba(10,  22,  40,  0.08) 80px,
+        rgba(255, 215, 0, 0.06)  100px
+    );
+    animation: wave-move 10s linear infinite;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 0;
+}
+
+/* Deuxième vague — décalée pour effet profondeur */
+#app-sidebar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+   
+    height: 35px;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(255, 215, 0, 0.06)   0px,
+        rgba(45,  48,  153, 0.12) 30px,
+        rgba(255, 215, 0, 0.03)  60px,
+        rgba(26,  48,  96,  0.15) 90px
+    );
+    animation: wave-move 14s linear infinite reverse;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ── Conteneur particules ────────────────────────────────── */
+#sidebar-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* ── Particules individuelles ────────────────────────────── */
+.sidebar-particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particle-rise var(--duration, 6s) ease-in infinite var(--delay, 0s);
+    animation-fill-mode: both;
+}
+
+/* Particules dorées */
+.sidebar-particle.gold {
+    width: var(--size, 3px);
+    height: var(--size, 3px);
+    background: #FFD700;
+    animation: particle-rise var(--duration, 6s) ease-in infinite var(--delay, 0s),
+               particle-pulse 2s ease-in-out infinite var(--delay, 0s);
+}
+
+/* Particules blanches */
+.sidebar-particle.white {
+    width: var(--size, 2px);
+    height: var(--size, 2px);
+    background: rgba(255, 255, 255, 0.55);
+    animation: particle-rise var(--duration, 6s) ease-in infinite var(--delay, 0s);
+}
+
+/* Particules bleues */
+.sidebar-particle.blue {
+    width: var(--size, 2px);
+    height: var(--size, 2px);
+    background: rgba(100, 150, 255, 0.50);
+    animation: particle-rise var(--duration, 8s) ease-in infinite var(--delay, 0s);
+}
+
+/* ── Orbe de lumière ambiante ────────────────────────────── */
+.sidebar-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: sidebar-breathe var(--breathe, 5s) ease-in-out infinite var(--delay, 0s);
+    z-index: 0;
+}
+

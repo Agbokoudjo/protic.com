@@ -1,0 +1,20 @@
+{# templates/partials/_footer.html.twig #}
+{% set data_config = footerData|json_encode|e('html_attr')  %}
+<div
+    id="protic-footer-root"
+    data-config="{{ data_config }}"
+    aria-label="Pied de page ProTIC"
+    {{ react_component('Footer', {config: footerData}, {permanent: true}) }}
+>
+    {# ── Fallback statique (affiché si React ne se charge pas) ── #}
+    <noscript>
+        <footer class="protic-footer protic-footer--static">
+            <div class="container">
+                <p class="text-center text-white-50 mb-0 py-4">
+                    © {{ 'now'|date('Y') }} ProTIC Editions &amp; Services —
+                    Développé par <strong>INTERNATIONALES WEB APPS &amp; SERVICES</strong>
+                </p>
+            </div>
+        </footer>
+    </noscript>
+</div>

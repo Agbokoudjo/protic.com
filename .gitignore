@@ -1,8 +1,8 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
 /.env.*.local
+/.env
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
@@ -13,8 +13,28 @@
 /phpunit.xml
 /.phpunit.cache/
 ###< phpunit/phpunit ###
+###> pentatrion/vite-bundle ###
+/node_modules/
+/public/build/
+###< pentatrion/vite-bundle ###
 
-###> symfony/asset-mapper ###
+###> uploads & assets générés ###
+/public/uploads/
 /public/assets/
-/assets/vendor/
-###< symfony/asset-mapper ###
+###< uploads ###
+var/certificates/
+###> IDE ###
+/.idea/
+/.vscode/
+*.swp
+*.swo
+###< IDE ###
+
+###> OS ###
+.DS_Store
+Thumbs.db
+###< OS ###
+
+###> logs ###
+*.log
+###< logs ###

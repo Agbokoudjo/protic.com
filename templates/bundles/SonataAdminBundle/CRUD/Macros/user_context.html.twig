@@ -1,0 +1,57 @@
+{% macro display(userContext) %}
+    {% set isGuest = userContext.type == 'guest' %}
+    {% set hasValidUsername = userContext.username is defined 
+                              and userContext.username not in ['anonymous', 'N/A', ''] %}
+    {% set displayName = hasValidUsername ? userContext.username : userContext.email %}
+
+    <div class="user-context-display">
+        {# Identité #}
+        <div class="user-identity fw-bold">
+            {% if isGuest %}
+                <span class="badge bg-secondary">
+                    <i class="bi bi-incognito"></i> ANONYME
+                </span>
+            {% else %}
+                {{ displayName }}
+            {% endif %}
+        </div>
+
+        {# Badge Rôle #}
+        {% set roleLabel = userContext.role|default('N/A')|replace({'ROLE_': ''}) %}
+        {% set badgeClass = _self.getBadgeClass(userContext.type, roleLabel) %}
+
+        <div class="mt-1">
+            <span class="badge {{ badgeClass }}" 
+                  title="Type: {{ userContext.type|upper }} | ID: {{ userContext.id|default('N/A') }}">
+                {{ roleLabel }}
+            </span>
+        </div>
+
+        {# ID #}
+        {% if userContext.id and userContext.id > 0 %}
+            <small class="text-muted d-block mt-1">
+                <i class="bi bi-hash"></i> {{ userContext.id }}
+            </small>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro getBadgeClass(type, role) %}
+    {% if type == 'admin' %}
+        {% if role in ['SUPER_ADMIN', 'ADMIN'] %}
+            bg-danger
+        {% elseif role in ['FOUNDER', 'CO_FOUNDER'] %}
+            bg-info
+        {% elseif role == 'MINISTRE' %}
+            bg-warning text-dark
+        {% else %}
+            bg-secondary
+        {% endif %}
+    {% elseif type == 'member' %}
+        bg-primary
+    {% elseif type == 'client' %}
+        bg-success
+    {% else %}
+        bg-secondary
+    {% endif %}
+{% endmacro %}

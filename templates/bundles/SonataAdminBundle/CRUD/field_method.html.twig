@@ -1,0 +1,17 @@
+{% set badge_class = 'bg-secondary' %}
+
+{% if value in ['GET', 'HEAD', 'OPTIONS', 'TRACE'] %}
+    {% set badge_class = 'bg-primary' %}  {# Lecture/Sûreté #}
+{% elseif value == 'POST' %}
+    {% set badge_class = 'bg-info' %}      {# Création #}
+{% elseif value in ['PUT', 'PATCH'] %}
+    {% set badge_class = 'bg-warning' %}   {# Modification #}
+{% elseif value in ['DELETE', 'PURGE'] %}
+    {% set badge_class = 'bg-danger' %}    {# Destruction/Critique #}
+{% elseif value == 'CONNECT' %}
+    {% set badge_class = 'bg-dark' %}      {# Spéciale/Tunnel #}
+{% endif %}
+
+<span class="badge {{ badge_class }} text-uppercase">
+    {{ value|trans({}, 'httpMethod') }} 
+</span>

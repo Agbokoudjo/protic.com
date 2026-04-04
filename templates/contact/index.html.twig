@@ -1,0 +1,343 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Soumettre un manuscrit — ProTIC Editions & Services Bénin{% endblock %}
+
+{% block meta_description %}
+Soumettez votre manuscrit à ProTIC Editions &amp; Services, maison d'édition béninoise à Abomey-Calavi. Réponse sous 48h. Roman, poésie, essai, théâtre, conte, didactique.
+{% endblock %}
+
+{% block head_extra %}
+<meta property="og:title"       content="Contact ProTIC — Soumettez votre manuscrit">
+<meta property="og:description" content="Confiez votre œuvre à ProTIC Editions. Dépôt légal inclus, accompagnement personnalisé, réponse sous 48h.">
+<meta property="og:image"       content="{{ asset('assets/images/contact-hero-bg.jpg','app') }}">
+<meta name="keywords" content="soumettre manuscrit Bénin, publier livre Cotonou, contact édition Abomey-Calavi, manuscrit ProTIC, publication auteur béninois">
+<link rel="canonical" href="{{ app.request.uri }}">
+{{ vite_entry_link_tags('contact') }}
+{% endblock %}
+
+{# ── Schema.org LocalBusiness ── #}
+{% block main %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "ProTIC Editions & Services",
+  "description": "Maison d'édition béninoise — publication, impression et distribution de livres",
+  "address": { "@type": "PostalAddress", "streetAddress": "Campus d'Abomey-Calavi, K61-62", "addressLocality": "Abomey-Calavi", "addressCountry": "BJ" },
+  "telephone": "+22995869951",
+  "email": "proticeditions@gmail.com",
+  "openingHours": ["Mo-Fr 08:00-17:00", "Sa 09:00-13:00"]
+}
+</script>
+
+<section class="pc-hero" aria-label="Page contact ProTIC Editions">
+    <div class="pc-hero__bg"
+         style="background-image:url('{{ asset('assets/images/contact-hero-bg.png','app') }}')"
+         role="img" aria-label="Espace d'écriture — ProTIC Editions Bénin"></div>
+    <div class="pc-hero__overlay"></div>
+
+    <div class="container pc-hero__inner">
+
+        <div class="pc-hero__badge"
+             data-aos="fade-down" data-aos-duration="600">
+            <i class="bi bi-send-fill"></i>
+            Soumission de manuscrit &amp; contact direct
+        </div>
+
+        <h1 class="pc-hero__title"
+            data-aos="fade-up" data-aos-duration="800" data-aos-delay="150">
+            Confiez-nous<br>
+            <span class="pc-hero__highlight">votre projet éditorial</span>
+        </h1>
+
+        <p class="pc-hero__sub"
+           data-aos="fade-up" data-aos-duration="700" data-aos-delay="300">
+            Que vous soyez à <strong>Cotonou</strong> ou à l'autre bout du monde,
+            soumettez votre <strong>manuscrit</strong> ou contactez-nous directement.
+            Nous vous répondons sous <strong>48h</strong>.
+        </p>
+
+        <div class="pc-hero__badges"
+             data-aos="zoom-in" data-aos-duration="600" data-aos-delay="500">
+            <span class="pc-hero__badge-item">
+                <i class="bi bi-check-circle-fill"></i> Réponse sous 48h
+            </span>
+            <span class="pc-hero__badge-item">
+                <i class="bi bi-check-circle-fill"></i> Accompagnement personnalisé
+            </span>
+            <span class="pc-hero__badge-item">
+                <i class="bi bi-check-circle-fill"></i> Dépôt légal inclus
+            </span>
+        </div>
+
+        {# Scroll chevron #}
+        <div class="pc-hero__scroll" aria-hidden="true">
+            <i class="bi bi-chevron-down"></i>
+        </div>
+    </div>
+</section>
+
+<section class="pc-section" id="contact-form-section" aria-labelledby="contact-form-title">
+    <div class="container pc-grid">
+
+        <aside class="pc-sidebar" aria-label="Informations de contact ProTIC">
+            <div class="pc-sidebar__img-wrap"
+                 data-aos="fade-right" data-aos-duration="800">
+                <img src="{{ asset('assets/images/contact-side-illustration.png','app') }}"
+                     alt="Conseillère éditoriale ProTIC Editions — Accompagnement des auteurs béninois"
+                     class="pc-sidebar__img"
+                     loading="eager" width="480" height="320">
+                <div class="pc-sidebar__img-badge">
+                    <i class="bi bi-award-fill"></i>
+                    15 ans d'expertise éditoriale
+                </div>
+            </div>
+
+            {# Carte coordonnées #}
+            <div class="pc-info-card"
+                 data-aos="fade-right" data-aos-duration="700" data-aos-delay="100">
+
+                <h3 class="pc-info-card__title">
+                    <i class="bi bi-geo-alt-fill"></i> Nos coordonnées
+                </h3>
+                
+                <twig:ContactInfo />
+            </div>
+
+            <div class="pc-why-card"
+                 data-aos="fade-right" data-aos-duration="700" data-aos-delay="200">
+                <h4 class="pc-why-card__title">
+                    <i class="bi bi-lightbulb-fill"></i> Pourquoi nous choisir ?
+                </h4>
+                <ul class="pc-why-list">
+                    {% for reason in [
+                        'Membre officiel de l\'APPEL-Bénin',
+                        'Dépôt légal à la Bibliothèque Nationale inclus',
+                        'Accompagnement de A à Z : maquette, impression, distribution',
+                        'Ouvert aux auteurs locaux et de la diaspora africaine',
+                        '15 ans d\'expérience au service de la culture africaine',
+                    ] %}
+                    <li class="pc-why-item">
+                        <i class="bi bi-check-circle-fill pc-why-item__icon"></i>
+                        <span>{{ reason }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </aside>
+
+        <div class="pc-form-wrap"
+             data-aos="fade-left" data-aos-duration="700" data-aos-delay="100">
+
+            {# ── État succès (caché par défaut) ── #}
+            {% if app.session.flashBag.has('contact_success') %}
+            <div class="pc-success-card" id="pc-success-card" role="alert">
+                <div class="pc-success-card__circle">
+                    <i class="bi bi-check-lg"></i>
+                </div>
+                <h3 class="pc-success-card__title">Demande envoyée !</h3>
+                <p class="pc-success-card__msg">
+                    {% for msg in app.session.flashBag.get('contact_success') %}
+                        {{ msg }}
+                    {% endfor %}
+                </p>
+                <a href="{{ path('app_home') }}" class="btn protic-btn-primary">
+                    <i class="bi bi-arrow-left"></i> Retour à l'accueil
+                </a>
+            </div>
+            {% else %}
+
+            <div class="pc-form-card" id="pc-form-card">
+                <div class="pc-form-card__header">
+                    <h2 id="contact-form-title" class="pc-form-card__title">
+                        <i class="bi bi-pencil-square"></i>
+                        Soumettre votre manuscrit
+                    </h2>
+                    <p class="pc-form-card__sub">
+                        Tous les champs marqués <span class="pc-required-star">*</span> sont obligatoires.
+                    </p>
+                </div>
+
+                {# Barre de progression du formulaire #}
+                <div class="pc-form-progress" aria-hidden="true">
+                    <div class="pc-form-progress__bar" id="pc-progress-bar"></div>
+                </div>
+
+                {{ form_start(form, {
+                    attr: {
+                        id: 'pc-manuscript-form',
+                        enctype: 'multipart/form-data',
+                        class: 'pc-form form-validate',
+                    }
+                }) }}
+
+                    <div class="pc-field pc-field--full pc-field--animate"
+                         data-aos="fade-up" data-aos-duration="500" data-aos-delay="100">
+                        {{ form_label(form.fullName, 'Nom complet', {
+                            label_attr: { class: 'pc-label form-label control-label' }
+                        }) }}
+                        <span class="pc-required-star">*</span>
+                        <div class="pc-input-wrap">
+                            <i class="bi bi-person pc-input-wrap__icon"></i>
+                            {{ form_widget(form.fullName, {
+                                attr: {
+                                    class: 'pc-input',
+                                    placeholder: 'Ex : Kofi Adjovi',
+                                    autocomplete: 'name',
+                                }
+                            }) }}
+                        </div>
+                        <div class="pc-field-error">
+                            {{ form_errors(form.fullName) }}
+                        </div>
+                    </div>
+
+                    {# ── Ligne 2 : Email + Téléphone ── #}
+                    <div class="pc-row">
+                        <div class="pc-field pc-field--animate"
+                             data-aos="fade-up" data-aos-duration="500" data-aos-delay="160">
+                            {{ form_label(form.email, 'Email', { label_attr: { class: 'pc-label form-label control-label' } }) }}
+                            <span class="pc-required-star">*</span>
+                            <div class="pc-input-wrap">
+                                <i class="bi bi-envelope pc-input-wrap__icon"></i>
+                                {{ form_widget(form.email, {
+                                    attr: { class: 'pc-input', placeholder: 'votre@email.com', autocomplete: 'email' }
+                                }) }}
+                            </div>
+                            <div class="pc-field-error">{{ form_errors(form.email) }}</div>
+                        </div>
+
+                        <div class="pc-field pc-field--animate"
+                             data-aos="fade-up" data-aos-duration="500" data-aos-delay="220">
+                            {{ form_label(form.phone, 'Téléphone', { label_attr: { class: 'pc-label form-label control-label' } }) }}
+                            <span class="pc-required-star">*</span>
+                            <div class="pc-input-wrap">
+                                <i class="bi bi-telephone pc-input-wrap__icon"></i>
+                                {{ form_widget(form.phone, {
+                                    attr: { class: 'pc-input', placeholder: '+229 XX XX XX XX' }
+                                }) }}
+                            </div>
+                            <div class="pc-field-error">{{ form_errors(form.phone) }}</div>
+                        </div>
+                    </div>
+
+                    {# ── Ligne 3 : Pays ── #}
+                    <div class="pc-field pc-field--full pc-field--animate"
+                         data-aos="fade-up" data-aos-duration="500" data-aos-delay="280">
+                        {{ form_label(form.country, 'Pays', { label_attr: { class: 'pc-label form-label control-label' } }) }}
+                        <div class="pc-input-wrap">
+                            <i class="bi bi-globe-americas pc-input-wrap__icon"></i>
+                            {{ form_widget(form.country, {
+                                attr: { class: 'pc-input pc-select' }
+                            }) }}
+                        </div>
+                        <div class="pc-field-error">{{ form_errors(form.country) }}</div>
+                    </div>
+
+                    {# ── Ligne 4 : Objet ── #}
+                    <div class="pc-field pc-field--full pc-field--animate"
+                         data-aos="fade-up" data-aos-duration="500" data-aos-delay="340">
+                        {{ form_label(form.subject, 'Objet de votre demande', { label_attr: { class: 'pc-label form-label control-label' } }) }}
+                        <span class="pc-required-star">*</span>
+                        <div class="pc-input-wrap">
+                            <i class="bi bi-tag pc-input-wrap__icon"></i>
+                            {{ form_widget(form.subject, {
+                                attr: { class: 'pc-input pc-select' }
+                            }) }}
+                        </div>
+                        <div class="pc-field-error">{{ form_errors(form.subject) }}</div>
+                    </div>
+
+                    {# ── Ligne 5 : Message ── #}
+                    <div class="pc-field pc-field--full pc-field--animate"
+                         data-aos="fade-up" data-aos-duration="500" data-aos-delay="400">
+                        {{ form_label(form.message, 'Message', { label_attr: { class: 'pc-label form-label control-label' } }) }}
+                        <span class="pc-required-star">*</span>
+                        <div class="pc-textarea-wrap">
+                            {{ form_widget(form.message, {
+                                attr: {
+                                    class: 'pc-textarea',
+                                    rows: '6',
+                                    placeholder: 'Décrivez votre projet : genre, nombre de pages approximatif, vos attentes...',
+                                    id: 'pc-message',
+                                }
+                            }) }}
+                            <span class="pc-char-counter" id="pc-char-counter">0 / 4000</span>
+                        </div>
+                        <div class="pc-field-error">{{ form_errors(form.message) }}</div>
+                    </div>
+
+                    {# ── Ligne 6 : Upload manuscrit ── #}
+                    <div class="pc-field pc-field--full pc-field--animate"
+                         data-aos="fade-up" data-aos-duration="500" data-aos-delay="460">
+                        <label class="pc-label">
+                            Déposer votre manuscrit
+                            <span class="pc-label-optional">(optionnel)</span>
+                        </label>
+                        <div class="pc-upload-zone" id="pc-upload-zone"
+                             role="button" tabindex="0"
+                             aria-label="Zone de dépôt de fichier manuscrit">
+                            {{ form_widget(form.manuscriptFile, {
+                                attr: { class: 'pc-upload-input', id: 'pc-file-input', accept: '.pdf,.doc,.docx,.odt,.txt' }
+                            }) }}
+                            <div class="pc-upload-zone__inner" id="pc-upload-inner">
+                                <div class="pc-upload-zone__icon">
+                                    <i class="bi bi-cloud-arrow-up-fill"></i>
+                                </div>
+                                <p class="pc-upload-zone__text">
+                                    Glissez votre fichier ici ou
+                                    <span class="pc-upload-zone__browse">parcourez</span>
+                                </p>
+                                <p class="pc-upload-zone__hint">PDF, DOC, DOCX, ODT, TXT — Max 10 Mo</p>
+                            </div>
+                            <div class="pc-upload-preview" id="pc-upload-preview" style="display:none">
+                                <i class="bi bi-file-earmark-text pc-upload-preview__icon"></i>
+                                <div class="pc-upload-preview__info">
+                                    <span class="pc-upload-preview__name" id="pc-file-name"></span>
+                                    <span class="pc-upload-preview__size" id="pc-file-size"></span>
+                                </div>
+                                <button type="button"
+                                        class="pc-upload-preview__remove"
+                                        id="pc-file-remove"
+                                        aria-label="Supprimer le fichier">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="pc-field-error">{{ form_errors(form.manuscriptFile) }}</div>
+                    </div>
+
+                    {# ── Bouton soumettre ── #}
+                    <div class="pc-submit-wrap"
+                         data-aos="zoom-in-up" data-aos-duration="600" data-aos-delay="520">
+                        <button type="submit" class="pc-submit-btn" id="pc-submit-btn">
+                            <span class="pc-submit-btn__label" id="pc-btn-label">
+                                <i class="bi bi-send-fill"></i>
+                                Envoyer ma demande
+                            </span>
+                            <span class="pc-submit-btn__spinner" id="pc-spinner" style="display:none">
+                                <span class="pc-spinner-ring"></span>
+                                Envoi en cours…
+                            </span>
+                        </button>
+                        <p class="pc-submit-note">
+                            <i class="bi bi-lock-fill"></i>
+                            Vos données sont sécurisées et ne seront jamais partagées.
+                        </p>
+                    </div>
+
+                {{ form_end(form) }}
+            </div>
+
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts_extra %}
+{{ vite_entry_script_tags('contact') }}
+{{ vite_entry_script_tags('form_validator',[],'app') }} 
+{% endblock %}

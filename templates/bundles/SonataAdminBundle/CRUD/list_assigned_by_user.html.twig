@@ -1,0 +1,7 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    {%- include 'bundles/SonataAdminBundle/CRUD/assigned_by_user.html.twig' with {
+        user:value
+    } only -%}
+{% endblock %}

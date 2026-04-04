@@ -1,0 +1,102 @@
+[
+  {
+    "title": "Les Soleils des indépendances",
+    "subtitle": "Roman de la désillusion africaine",
+    "summary": "Fama Doumbouya, prince malinké déchu, erre dans une ville africaine indépendante qui n'a rien tenu de ses promesses. Ce roman fondateur de la littérature africaine francophone décrit avec ironie et profondeur les désillusions politiques et sociales de l'Afrique post-coloniale. Kourouma y mêle magistralement le français académique aux structures narratives et aux proverbes malinké, créant un style unique qui a révolutionné la littérature africaine.",
+    "isbn": "2070364364",
+    "publishedAt": "1968-06-15",
+    "cover_image_url": "https://picsum.photos/seed/soleil/400/600",
+    "author_index": 3,
+    "category_index":4 
+  },
+  {
+    "title": "Mission terminée",
+    "subtitle": "Prix Sainte-Beuve 1958",
+    "summary": "Medza, jeune étudiant camerounais en vacances forcées après avoir échoué à ses examens, est envoyé dans un village reculé pour ramener la femme fugueuse d'un cousin. Ce voyage initiatique lui permet de découvrir les contradictions entre la culture traditionnelle africaine et les valeurs importées par la colonisation. Mongo Beti dresse un portrait satirique et lucide de la société camerounaise des années 1950.",
+    "isbn": "2207233596",
+    "publishedAt": "1957-09-20",
+    "cover_image_url": "https://picsum.photos/seed/mission/400/600",
+    "author_index": 1,
+    "category_index": 2
+  },
+  {
+    "title": "Une si longue lettre",
+    "subtitle": "Prix Noma 1980",
+    "summary": "Ramatoulaye, récemment veuve, écrit une longue lettre à son amie Aissatou pour lui raconter sa vie et ses épreuves. Son mari vient de prendre une seconde épouse, une jeune femme de l'âge de leur fille. Ce roman épistolaire est un témoignage poignant sur la condition de la femme africaine face à la polygamie, aux traditions et à la modernité. Mariama Bâ y pose avec force la question de l'émancipation féminine en Afrique.",
+    "isbn": "2708700480",
+    "publishedAt": "1979-03-10",
+    "cover_image_url": "https://picsum.photos/seed/lettre/400/600",
+    "author_index": 2,
+    "category_index": 7
+  },
+  {
+    "title": "Things Fall Apart",
+    "subtitle": "Le monde s'effondre",
+    "summary": "Okonkwo est un guerrier respecté du clan igbo de l'Umuofia, au Nigeria. Quand les missionnaires britanniques arrivent dans son village, ils bouleversent l'ordre traditionnel et provoquent l'effondrement d'une civilisation millénaire. Chinua Achebe raconte avec une précision anthropologique et une profonde humanité la destruction d'une culture africaine sous le choc colonial. Ce roman est l'un des plus importants du XXe siècle.",
+    "isbn": "0385474547",
+    "publishedAt": "1958-06-17",
+    "cover_image_url": "https://picsum.photos/seed/things/400/600",
+    "author_index": 3,
+    "category_index": 9
+  },
+  {
+    "title": "Les Misérables",
+    "subtitle": "L'épopée de Jean Valjean",
+    "summary": "Jean Valjean, ancien forçat libéré après dix-neuf ans de bagne pour avoir volé un pain, tente de se racheter et de se reconstruire dans une société impitoyable. Poursuivi sans relâche par l'inspecteur Javert, il recueille Cosette, la fille d'une pauvre ouvrière morte de misère. Victor Hugo dépeint avec une puissance romanesque exceptionnelle les injustices sociales de la France du XIXe siècle et le combat pour la dignité humaine.",
+    "isbn": "2070409228",
+    "publishedAt": "1862-04-03",
+    "cover_image_url": "https://picsum.photos/seed/miserables/400/600",
+    "author_index": 4,
+    "category_index": 1
+  },
+  {
+    "title": "Chants d'Ombre",
+    "subtitle": "Poèmes de la Négritude",
+    "summary": "Premier recueil poétique de Léopold Sédar Senghor, publié en 1945, Chants d'Ombre exprime la nostalgie de l'Afrique natale et la douleur de l'exil parisien. Ces poèmes fondateurs du mouvement de la Négritude célèbrent la beauté de la civilisation africaine, la mémoire des ancêtres et la richesse des cultures noires face au déracinement colonial. Senghor y forge un langage poétique unique, mêlant influences françaises et rythmes africains.",
+    "isbn": "2070321517",
+    "publishedAt": "1945-01-15",
+    "cover_image_url": "https://picsum.photos/seed/chants/400/600",
+    "author_index": 5,
+    "category_index": 6
+  },
+  {
+    "title": "Les Bouts de bois de Dieu",
+    "subtitle": "La grève du chemin de fer",
+    "summary": "En 1947, les cheminots africains de la ligne Dakar-Niger déclenchent une longue grève pour obtenir les mêmes droits que leurs collègues français. Ousmane Sembène retrace cette lutte collective à travers une galerie de personnages inoubliables, des hommes et des femmes qui affrontent la faim, la répression et la mort pour leur dignité. Ce roman est un monument de la littérature sociale africaine et un hymne à la solidarité ouvrière.",
+    "isbn": "2266120786",
+    "publishedAt": "1960-08-22",
+    "cover_image_url": "https://picsum.photos/seed/bouts/400/600",
+    "author_index": 6,
+    "category_index": 1
+  },
+  {
+    "title": "Weep Not, Child",
+    "subtitle": "Les larmes d'un enfant du Kenya",
+    "summary": "Njoroge est un jeune Kenyan qui croit que l'éducation peut le sauver et lui permettre de libérer son peuple de la domination britannique. Mais la révolte des Mau Mau éclate et détruit ses rêves d'enfant. Ngugi wa Thiong'o signe avec ce premier roman un récit émouvant sur la perte de l'innocence, les ravages du colonialisme sur la jeunesse africaine et la difficile recherche d'identité dans un Kenya en pleine transformation.",
+    "isbn": "0435905481",
+    "publishedAt": "1964-05-12",
+    "cover_image_url": "https://picsum.photos/seed/weep/400/600",
+    "author_index": 7,
+    "category_index": 3
+  },
+  {
+    "title": "L'Amour, la fantasia",
+    "subtitle": "Autobiographie croisée",
+    "summary": "Dans ce roman autobiographique, Assia Djebar entremêle deux récits : sa propre histoire de femme algérienne apprenant le français et découvrant l'écriture, et les récits de la conquête française de l'Algérie en 1830 tirés des archives militaires. Ce livre magistral explore les rapports entre langue, mémoire et identité, entre colonisateurs et colonisés, entre hommes et femmes dans la société algérienne. Une oeuvre essentielle sur l'Algérie et la condition féminine.",
+    "isbn": "2742720782",
+    "publishedAt": "1985-09-30",
+    "cover_image_url": "https://picsum.photos/seed/amour/400/600",
+    "author_index": 8,
+    "category_index": 2
+  },
+  {
+    "title": "ProTIC et la révolution numérique africaine",
+    "subtitle": "Vers une Afrique connectée",
+    "summary": "Dans cet essai visionnaire, Franck Agbokoudjo analyse les défis et les opportunités de la transformation numérique en Afrique de l'Ouest. Il explore comment les technologies de l'information peuvent devenir des leviers de développement économique et culturel pour le continent africain. À travers des exemples concrets tirés de l'expérience de ProTIC Editions & Services, l'auteur propose une feuille de route pour une Afrique numérique souveraine et inclusive.",
+    "isbn": "9789990001",
+    "publishedAt": "2024-01-10",
+    "cover_image_url": "https://picsum.photos/seed/protic/400/600",
+    "author_index": 9,
+    "category_index": 8
+  }
+]

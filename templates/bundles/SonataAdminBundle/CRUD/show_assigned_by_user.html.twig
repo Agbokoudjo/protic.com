@@ -1,0 +1,11 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+  {% set user = value  %}
+ <button type="button" class="btn btn-success position-relative">
+   {{ user.username }}
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    {{ user.rolePrincipal|trans({}, 'role', app.locale) }}
+  </span>
+</button>
+{% endblock %}

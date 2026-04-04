@@ -1,0 +1,16 @@
+pentatrion_vite:
+
+    default_config: app
+    configs:
+         app:
+            build_directory: build/app
+
+         admin:
+            build_directory: build/admin
+
+
+
+# config/packages/pentatrion_vite.yaml
+when@prod:
+    pentatrion_vite:
+        cache: true

@@ -1,0 +1,2 @@
+ {% set translation_key = value.name %}
+    {{ translation_key|trans([], 'user', app.locale) }}

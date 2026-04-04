@@ -1,0 +1,180 @@
+{#
+
+* This file is part of the project by AGBOKOUDJO Franck.
+ *
+ * (c) AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
+ * Phone: +229 01 67 25 18 86
+ * LinkedIn: https://www.linkedin.com/in/internationales-web-apps-services-120520193/
+ * Github: https://github.com/Agbokoudjo/
+ * Company: INTERNATIONALES WEB APPS & SERVICES
+ *
+ * For more information, please feel free to contact the author.
+
+#}
+{% extends base_template %}
+{% block sonata_nav %}{% endblock sonata_nav %}
+
+{% block favicon %}
+    <link rel="icon" href="{{ asset('assets/' ~ sonata_config.logo,'admin') }}" width="100" height="100">
+{% endblock %}
+
+{% block sonata_left_side %}{% endblock %}
+ {% block sonata_header %}{% endblock %}
+{% block body_attributes %}
+    class="sonata-bc login-page {% if _use_icheck %}sonata-icheck{% endif %}"{% endblock %}
+{% block stylesheets %} 
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"> 
+{{ vite_entry_link_tags('login',[],'admin') }} {% endblock %}
+{% block sonata_footer %} {% endblock %}
+
+ {% block title %}Connexion — ProTIC Editions & Services{% endblock %}
+{% block javascripts_inline %}{% endblock %}
+
+{% block javascripts %}  
+    {{ vite_entry_script_tags('login',[],'admin') }} 
+    {{ vite_entry_script_tags('form_validator',[],'admin') }} 
+{% endblock %}
+
+{% block sonata_wrapper %}
+   <div class="login-page">
+
+    {# ── Background image ── #}
+    <div class="login-bg" style="background-image: url({{asset('assets/images/login_bg.png','admin')}});">
+        <div class="login-overlay"></div>
+    </div>
+
+    {# ── Formulaire de connexion ── #}
+    <div class="login-wrapper">
+
+        {# Card formulaire #}
+        <div class="login-card">
+
+            {# Logo + titre #}
+            <div class="login-header">
+                <img src="{{ asset('assets/images/logo.jpeg' ,'admin') }}"
+                     alt="ProTIC Editions & Services"
+                     class="login-logo">
+                <h1 class="login-title">Espace Administration</h1>
+                <p class="login-subtitle">ProTIC Editions & Services</p>
+                <div class="login-divider"></div>
+            </div>
+
+            {# Messages d'erreur #}
+            {% if error %}
+                <div class="login-alert">
+                    <span class="login-alert-icon">⚠️</span>
+                    <span>{{ error.messageKey | trans(error.messageData, 'security') }}</span>
+                </div>
+            {% endif %}
+
+            {# Formulaire #}
+            <form method="post"
+                  action="{{ path("app_admin_user_login") }}" 
+                  role="form" 
+                  name="login_form" 
+                  class="login-form form-validate" 
+                  autocomplete="off">
+
+                <div class="login-field">
+                    <label for="username" class="login-label">
+                        {# <i class="fas fa-user"></i> #}
+                        {{ ux_icon('fa:user') }}
+                        Identifiant
+                    </label>
+                    <input type="email"
+                           value="{{ last_username }}"
+                           class="login-input"
+                           autocomplete="username"
+                           required
+                           id="email"
+                           name="email"
+                           placeholder="Ex: admin@protic.com"
+                            data-type="email"
+                            data-allow-quoted-local="false"
+                            maxlength="200"
+                            minlength="6"
+                            data-host-whitelist="gmail.com,protic.com"
+                            data-event-validate-blur="blur"
+                            data-event-validate-input="input"
+                           autofocus>
+                </div>
+
+                <div class="login-field">
+                    <label for="password" class="login-label">
+                        {# <i class="fas fa-lock"></i> #}
+                        {{ ux_icon('fa:lock') }}
+                        Mot de passe
+                    </label>
+                    <div class="login-input-wrapper">
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               class="login-input"
+                               placeholder="Votre mot de passe"
+                               autocomplete="current-password"
+                                maxlength="255"
+                                minlength="16"
+                                data-event-validate-blur="blur"
+                                data-event-validate-input="input"
+                                data-enable-scoring="false"
+                                data-custom-upper-regex="[\p{Lu}]"
+                                data-custom-lower-regex="[\p{Ll}]"
+                                data-custom-number-regex="[\p{N}]"
+                                data-custom-symbol-regex="[\p{S}\p{P}]"
+                                data-custom-special-char-regex="[\p{S}\p{P}\s]"
+                                data-custom-punctuation-regex="[\p{P}]"
+                                data-pattern="^[\p{L}\p{N}\p{M}\p{S}\p{P}\s]+$"
+                               required>
+                        <button type="button"
+                                class="login-toggle-pw"
+                                id="togglePassword"
+                                title="Afficher/Masquer">
+                            {# <i class="fas fa-eye" id="eyeIcon"></i> #}
+                            {{ ux_icon('fa:eye',{id:'eyeIcon'}) }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="login-remember">
+                    <label class="login-checkbox-label">
+                        <input type="checkbox"
+                               name="_remember_me"
+                               id="remember_me"
+                               class="login-checkbox">
+                        <span class="login-checkbox-custom"></span>
+                        <span>Se souvenir de moi</span>
+                    </label>
+                </div>
+                 <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+                <button type="submit" class="login-btn">
+                    <span class="login-btn-text">Se connecter</span>
+                    {# <i class="fas fa-arrow-right login-btn-icon"></i> #}
+                     {{ ux_icon('fa:arrow-right',{class:'login-btn-icon'}) }}
+                </button>
+
+            </form>
+
+            {# Footer card #}
+            <div class="login-card-footer">
+                <span class="login-member-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    Accès réservé aux administrateurs
+                </span>
+            </div>
+
+        </div>
+
+        {# Footer page #}
+        <div class="login-page-footer">
+            <span>© {{ "now" | date("Y") }} ProTIC Editions & Services</span>
+            <span class="login-footer-dot">•</span>
+            <span>Membre de l'APPEL-Bénin</span>
+            <span class="login-footer-dot">•</span>
+            <span>Abomey-Calavi, Bénin</span>
+        </div>
+
+    </div>
+</div>
+{% endblock sonata_wrapper %}
+

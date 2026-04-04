@@ -1,10 +1,23 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
+    assets:
+        packages:
+            app:
+                version_strategy: 'pentatrion_vite.asset_strategy_app'
 
+            admin:
+                version_strategy: 'pentatrion_vite.asset_strategy_admin'
+
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-prefix']
+    router:
+        default_uri: '%env(APP_URL)%'
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
-
+    session:
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
+        cookie_secure: auto
+        cookie_samesite: lax
+        storage_factory_id: session.storage.factory.native
     #esi: true
     #fragments: true
 
@@ -13,3 +26,19 @@ when@test:
         test: true
         session:
             storage_factory_id: session.storage.factory.mock_file
+
+
+when@dev:
+    framework:
+        http_cache: false
+        assets:
+            base_urls: '%env(APP_URL_DEV)%'
+        router:
+            strict_requirements: true
+        trusted_hosts: 
+            - '^localhost$'
+            - '^127\.0\.0\.1$'
+            - '^protic\.local$'
+            - '^.+\.ngrok-free\.app$'
+        trusted_proxies: '127.0.0.1, 10.0.0.0/8, 172.16.0.0/12,154.72.114.130, 192.168.0.0/16,REMOTE_ADDR'
+        trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-prefix']

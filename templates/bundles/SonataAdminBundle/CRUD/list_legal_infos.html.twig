@@ -1,0 +1,10 @@
+ {% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    {% for key, val in value %}
+        <small><strong>{{ key|upper }}:</strong> {{ val }}</small>
+        {% if not loop.last %} | {% endif %}
+    {% else %}
+        <span class="label label-default">N/A</span>
+    {% endfor %}
+{% endblock %}

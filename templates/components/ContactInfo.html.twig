@@ -1,0 +1,138 @@
+{#
+  ContactInfo.html.twig
+  Twig Component — Coordonnées dynamiques ProTIC
+  Données issues de GlobalSetting (BDD)
+
+  Usage minimal :
+    <twig:ContactInfo />
+
+  Usage avec setting pré-chargé (évite une requête SQL) :
+    <twig:ContactInfo :setting="globalSetting" />
+#}
+
+{% if this.hasData %}
+
+    <ul class="pc-info-list">
+
+        {# ── Adresses ── #}
+        {% if this.addresses is not empty %}
+        <li class="pc-info-item"
+            data-aos="fade-right"
+            data-aos-duration="500"
+            data-aos-delay="0">
+            <span class="pc-info-icon">
+                <i class="bi bi-pin-map-fill"></i>
+            </span>
+            <div>
+                <span class="pc-info-label">Adresse</span>
+                <span class="pc-info-value">
+                    {% for address in this.addresses %}
+                        {{ address }}{% if not loop.last %}<br>{% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+        </li>
+        {% endif %}
+
+        {# ── Téléphones ── #}
+        {% if this.phones is not empty %}
+        <li class="pc-info-item"
+            data-aos="fade-right"
+            data-aos-duration="500"
+            data-aos-delay="80">
+            <span class="pc-info-icon">
+                <i class="bi bi-telephone-fill"></i>
+            </span>
+            <div>
+                <span class="pc-info-label">Téléphones</span>
+                <span class="pc-info-value">
+                    {% for phone in this.phones %}
+                        <a href="tel:{{ phone.href }}"
+                           class="pc-info-link"
+                           aria-label="Appeler ProTIC au {{ phone.display }}">
+                            {{ phone.display }}
+                        </a>
+                        {% if not loop.last %}<br>{% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+        </li>
+        {% endif %}
+
+        {# ── Emails ── #}
+        {% if this.emails is not empty %}
+        <li class="pc-info-item"
+            data-aos="fade-right"
+            data-aos-duration="500"
+            data-aos-delay="160">
+            <span class="pc-info-icon">
+                <i class="bi bi-envelope-fill"></i>
+            </span>
+            <div>
+                <span class="pc-info-label">Emails</span>
+                <span class="pc-info-value">
+                    {% for email in this.emails %}
+                        <a href="mailto:{{ email }}"
+                           class="pc-info-link"
+                           aria-label="Écrire à ProTIC : {{ email }}">
+                            {{ email }}
+                        </a>
+                        {% if not loop.last %}<br>{% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+        </li>
+        {% endif %}
+
+        {# ── Horaires (statiques — pas en BDD) ── #}
+        <li class="pc-info-item"
+            data-aos="fade-right"
+            data-aos-duration="500"
+            data-aos-delay="240">
+            <span class="pc-info-icon">
+                <i class="bi bi-clock-fill"></i>
+            </span>
+            <div>
+                <span class="pc-info-label">Horaires</span>
+                <span class="pc-info-value">
+                    Lun – Ven : 08h00 – 17h00<br>
+                    Samedi : 09h00 – 13h00
+                </span>
+            </div>
+        </li>
+
+        {# ── Infos légales (optionnel — si on veut les afficher ici) ── #}
+        {% if this.legalInfos is not empty %}
+        <li class="pc-info-item pc-info-item--legal"
+            data-aos="fade-right"
+            data-aos-duration="500"
+            data-aos-delay="320">
+            <span class="pc-info-icon">
+                <i class="bi bi-shield-check-fill"></i>
+            </span>
+            <div>
+                <span class="pc-info-label">Registre légal</span>
+                <span class="pc-info-value">
+                    {% if this.legalInfos.rccm is defined %}
+                        RCCM N° {{ this.legalInfos.rccm }}<br>
+                    {% endif %}
+                    {% if this.legalInfos.ifu is defined %}
+                        IFU N° {{ this.legalInfos.ifu }}
+                    {% endif %}
+                </span>
+            </div>
+        </li>
+        {% endif %}
+
+    </ul>
+
+{% else %}
+
+    {# ── Fallback si aucun GlobalSetting en BDD ── #}
+    <p class="pc-info-fallback">
+        <i class="bi bi-exclamation-triangle"></i>
+        Coordonnées temporairement indisponibles.
+        Contactez-nous via <a href="mailto:proticeditions@gmail.com">proticeditions@gmail.com</a>.
+    </p>
+
+{% endif %}

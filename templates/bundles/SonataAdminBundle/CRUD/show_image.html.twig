@@ -1,0 +1,25 @@
+{#
+
+This file is part of the Sonata package.
+
+(c)  AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
+LinkedIn: https://www.linkedin.com/in/internationales-web-apps-services-120520193/
+Github: https://github.com/Agbokoudjo/
+Company: INTERNATIONALES WEB APPS & SERVICES
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% import 'bundles/SonataAdminBundle/CRUD/Macros/image.html.twig' as image_render  %}
+{% block field %}
+     {% set  date_object = object.updatedAt|date('Y-m-d H-i-s')  %}
+     {% set  idobject = object.id ~ '-' ~ '-' ~ date_object ~ '-' ~ admin.code %}
+     {% cache 'image-user-'~ idobject ttl(CACHE_IMG_TWIG) tags('image'~ idobject) %} 
+        {% if field_description.type == 'Vich\\UploaderBundle\\Form\\Type\\VichImageType' %}
+            {% set fieldimgname = field_description.fieldName %}
+        {% endif %}
+        {{image_render.renderImage(object,fieldimgname)}}
+    {% endcache %} 
+{% endblock %}

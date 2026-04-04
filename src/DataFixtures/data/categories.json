@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Roman Chinois",
+    "icon": "📖"
+  },
+  {
+    "name": "Poésie Bénin",
+    "icon": "🎭"
+  },
+  {
+    "name": "Bande dessinée Afrique",
+    "icon": "🎨"
+  },
+  {
+    "name": "Sport",
+    "icon": "🚀"
+  },
+  {
+    "name": "Biographie Chimie",
+    "icon": "📚"
+  },
+  {
+    "name": "Développement personnel et intellectelle",
+    "icon": "✍️"
+  },
+  {
+    "name": "Théâtre Indien",
+    "slug": "theatre",
+    "icon": "🎬"
+  },
+  {
+    "name": "Littérature africaine",
+    "slug": "litterature-africaine",
+    "icon": "🌍"
+  },
+  {
+    "name": "Philosophie Adja",
+    "icon": "💡"
+  },
+  {
+    "name": "Histoire Russi",
+    "icon": "🏛️"
+  }
+]

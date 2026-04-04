@@ -1,0 +1,10 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+{% import 'bundles/SonataAdminBundle/CRUD/Macros/user_context.html.twig' as user_macro %}
+{% block field %}
+    {# Vérification que value existe et est un tableau #}
+    {% if value is null or value is not iterable %}
+        <span class="badge bg-secondary">DONNÉE INVALIDE</span>
+    {% else %}
+        {{ user_macro.display(value) }}
+    {% endif %}
+{% endblock %}

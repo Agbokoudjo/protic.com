@@ -1,0 +1,19 @@
+{#
+
+This file is part of the Sonata package.
+
+(c)  AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
+LinkedIn: https://www.linkedin.com/in/internationales-web-apps-services-120520193/
+Github: https://github.com/Agbokoudjo/
+Company: INTERNATIONALES WEB APPS & SERVICES
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+   {% block field %}
+    {%- include 'bundles/SonataAdminBundle/CRUD/display_phone_number.html.twig' with {
+        value: value 
+    } only -%}
+{% endblock %}

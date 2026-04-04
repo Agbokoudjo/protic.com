@@ -1,0 +1,340 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos — ProTIC Editions & Services | Maison d'édition béninoise depuis 2010{% endblock %}
+
+{% block meta_description %}
+Découvrez ProTIC Editions & Services : histoire, mission, valeurs et équipe. Maison d'édition béninoise fondée en 2010 par M. SETONWAN DENIS HOUNGNIMON. Membre APPEL-Bénin. 120+ livres publiés.
+{% endblock %}
+
+{% block head_extra %}
+<meta property="og:title"       content="À propos — ProTIC Editions & Services Bénin">
+<meta property="og:description" content="ProTIC Editions, maison d'édition béninoise depuis 2010. Histoire, équipe, valeurs et FAQ.">
+<meta property="og:image"       content="{{ asset('assets/images/about-og.png','app') }}">
+<meta name="keywords"           content="ProTIC Editions histoire, maison édition Bénin fondateur, SETONWAN DENIS HOUNGNIMON, équipe édition Cotonou, valeurs édition africaine">
+<link rel="canonical"           href="{{ app.request.uri }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "ProTIC Editions & Services",
+  "foundingDate": "2010",
+  "founder": { "@type": "Person", "name": "SETONWAN DENIS HOUNGNIMON" },
+  "description": "Maison d'édition béninoise engagée pour la promotion du livre et des auteurs",
+  "address": { "@type": "PostalAddress", "streetAddress": "Campus d'Abomey-Calavi, K61-62", "addressLocality": "Abomey-Calavi", "addressCountry": "BJ" },
+  "telephone": "+22995869951",
+  "email": "proticeditions@gmail.com",
+  "url": "{{ absolute_url('app_about') }}"
+}
+</script>
+
+{{ vite_entry_link_tags('about') }}
+{% endblock %}
+
+{% block main %}
+
+{# ══════════════════════════════════════════
+   §1 — HERO À PROPOS
+   IMAGE : about-hero-bg.jpg
+══════════════════════════════════════════ #}
+<section class="ab-hero" aria-label="À propos de ProTIC Editions">
+    <div class="ab-hero__bg"
+         style="background-image:url('{{ asset('assets/images/about-hero-bg.png','app') }}')"
+         role="img" aria-label="Siège ProTIC Editions — Abomey-Calavi Bénin"></div>
+    <div class="ab-hero__overlay"></div>
+
+    <div class="container ab-hero__inner">
+        <span class="ab-tag" data-aos="fade-down" data-aos-duration="600">
+            <i class="bi bi-building"></i> Notre histoire &amp; notre mission
+        </span>
+        <h1 class="ab-hero__title"
+            data-aos="fade-up" data-aos-duration="800" data-aos-delay="150">
+            Depuis 2010, nous donnons<br>
+            <span class="ab-hero__highlight">voix aux auteurs béninois</span>
+        </h1>
+        <p class="ab-hero__sub"
+           data-aos="fade-up" data-aos-duration="700" data-aos-delay="300">
+            <strong>ProTIC Editions &amp; Services</strong> est une maison d'édition béninoise
+            engagée pour la <strong>promotion du livre</strong>, la valorisation des
+            <strong>auteurs africains</strong> et le développement de la culture littéraire
+            en Afrique de l'Ouest.
+        </p>
+        <div class="ab-hero__btns" data-aos="fade-up" data-aos-delay="450">
+            <a href="{{ path('app_catalogue') }}" class="btn ab-btn-gold">
+                <i class="bi bi-grid"></i> Voir le catalogue
+            </a>
+            <a href="{{ path('app_contact') }}"  class="btn ab-btn-glass">
+                <i class="bi bi-upload"></i> Déposer un manuscrit
+            </a>
+        </div>
+        <div class="ab-hero__kpis" data-aos="fade-up" data-aos-delay="550">
+            {% for kpi in [
+                { num: '120+', label: 'Livres publiés' },
+                { num: '85+',  label: 'Auteurs accompagnés' },
+                { num: '15',   label: 'Années d\'expérience' },
+                { num: '6',    label: 'Genres littéraires' },
+            ] %}
+            <div class="ab-kpi">
+                <span class="ab-kpi__num">{{ kpi.num }}</span>
+                <span class="ab-kpi__label">{{ kpi.label }}</span>
+            </div>
+            {% if not loop.last %}<div class="ab-kpi__sep"></div>{% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ══════════════════════════════════════════
+   §2 — HISTOIRE & MISSION (split image/texte)
+   IMAGE : about-mission.jpg
+══════════════════════════════════════════ #}
+<section class="ab-section" id="mission" aria-labelledby="mission-title">
+    <div class="container ab-split">
+
+        <div class="ab-split__img-col" data-aos="fade-right" data-aos-duration="900">
+            <div class="ab-img-frame">
+                <img src="{{ asset('assets/images/about-mission.png','app') }}"
+                     alt="Mission ProTIC Editions — promotion du livre africain au Bénin"
+                     class="ab-img-frame__img"
+                     loading="lazy" width="560" height="420">
+                <div class="ab-img-frame__badge">
+                    <i class="bi bi-award-fill"></i>
+                    Membre officiel APPEL-Bénin
+                </div>
+                <div class="ab-img-frame__year">EST. 2010</div>
+            </div>
+        </div>
+
+        <div class="ab-split__text-col">
+            <span class="ab-tag" data-aos="fade-left" data-aos-duration="600">Notre histoire</span>
+
+            <h2 id="mission-title" data-aos="fade-left" data-aos-duration="700" data-aos-delay="100">
+                Une maison d'édition née d'une conviction profonde
+            </h2>
+
+            <p data-aos="fade-left" data-aos-duration="600" data-aos-delay="200">
+                Fondée en <strong>2010</strong> par <strong>M. SETONWAN DENIS HOUNGNIMON</strong>,
+                ProTIC Editions &amp; Services est née d'une conviction simple mais profonde :
+                <em>le livre est le vecteur le plus puissant de transmission du savoir,
+                de la culture et de l'identité africaine.</em>
+            </p>
+
+            <p data-aos="fade-left" data-aos-duration="600" data-aos-delay="280">
+                Face à la rareté des structures d'accompagnement des auteurs béninois,
+                ProTIC s'est imposé comme un <strong>partenaire éditorial de référence</strong>
+                au Bénin, offrant un accompagnement complet de A à Z : du manuscrit
+                brut à la distribution en librairie.
+            </p>
+
+            <div class="ab-mission-box" data-aos="fade-up" data-aos-delay="360">
+                <i class="bi bi-quote ab-mission-box__icon"></i>
+                <blockquote class="ab-mission-box__quote">
+                    Notre mission est de rendre la publication accessible à chaque auteur
+                    béninois et africain, quelle que soit son expérience ou sa localisation.
+                </blockquote>
+                <cite class="ab-mission-box__author">
+                    — M. SETONWAN DENIS HOUNGNIMON, Directeur &amp; Fondateur
+                </cite>
+            </div>
+
+            <div class="ab-badges" data-aos="fade-up" data-aos-delay="440">
+                {% for b in ['APPEL-Bénin', 'Bibliothèque Nationale', 'RCCM Officiel', 'Distribution nationale'] %}
+                <span class="ab-badge"><i class="bi bi-check-circle-fill"></i> {{ b }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ══════════════════════════════════════════
+   §3 — VALEURS
+══════════════════════════════════════════ #}
+<section class="ab-section ab-section--dark" id="valeurs" aria-labelledby="valeurs-title">
+    <div class="container">
+        <div class="ab-section-header" data-aos="fade-up">
+            <span class="ab-tag">Ce qui nous guide</span>
+            <h2 id="valeurs-title">Nos valeurs fondamentales</h2>
+            <p>Les principes qui orientent chacune de nos décisions et de nos collaborations</p>
+        </div>
+        <div class="ab-values-grid">
+            {% for v in values %}
+            <div class="ab-value-card"
+                 data-aos="{{ loop.index is odd ? 'flip-left' : 'flip-right' }}"
+                 data-aos-duration="700"
+                 data-aos-delay="{{ loop.index0 * 80 }}">
+                <div class="ab-value-card__icon-wrap">
+                    <i class="bi {{ v.icon }} ab-value-card__icon"></i>
+                </div>
+                <h3 class="ab-value-card__title">{{ v.title }}</h3>
+                <p class="ab-value-card__text">{{ v.text }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ══════════════════════════════════════════
+   §4 — TIMELINE HISTORIQUE
+══════════════════════════════════════════ #}
+<section class="ab-section" id="histoire" aria-labelledby="histoire-title">
+    <div class="container">
+        <div class="ab-section-header" data-aos="fade-up">
+            <span class="ab-tag">Notre parcours</span>
+            <h2 id="histoire-title">15 ans d'histoire éditoriale</h2>
+            <p>Les étapes clés qui ont construit ProTIC Editions &amp; Services</p>
+        </div>
+        <div class="ab-timeline">
+            {% for m in milestones %}
+            <div class="ab-timeline-item {{ loop.index is even ? 'ab-timeline-item--right' : '' }}"
+                 data-aos="{{ loop.index is odd ? 'fade-right' : 'fade-left' }}"
+                 data-aos-duration="700"
+                 data-aos-delay="{{ loop.index0 * 100 }}">
+                <div class="ab-timeline-item__dot {{ loop.last ? 'ab-timeline-item__dot--gold' : '' }}">
+                    {{ m.year }}
+                </div>
+                <div class="ab-timeline-item__card">
+                    <h3 class="ab-timeline-item__title">{{ m.title }}</h3>
+                    <p class="ab-timeline-item__text">{{ m.text }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="ab-timeline__line" aria-hidden="true"></div>
+        </div>
+    </div>
+</section>
+
+{# ══════════════════════════════════════════
+   §5 — ÉQUIPE
+   IMAGES : team/directeur.jpg, team/editorial.jpg, team/distribution.jpg
+══════════════════════════════════════════ #}
+<section class="ab-section ab-section--dark" id="equipe" aria-labelledby="equipe-title">
+    <div class="container">
+        <div class="ab-section-header" data-aos="fade-up">
+            <span class="ab-tag">Les visages de ProTIC</span>
+            <h2 id="equipe-title">Notre équipe</h2>
+            <p>Des professionnels passionnés au service de votre projet éditorial</p>
+        </div>
+        <div class="ab-team-grid">
+            {% for member in team %}
+            <article class="ab-team-card"
+                     data-aos="zoom-in-up"
+                     data-aos-duration="700"
+                     data-aos-delay="{{ loop.index0 * 120 }}">
+                <div class="ab-team-card__img-wrap">
+                    <img src="{{ asset(member.image,'app') }}"
+                         alt="{{ member.alt }}"
+                         class="ab-team-card__img"
+                         loading="lazy" width="300" height="300"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    {# Fallback initiales si image manquante #}
+                    <div class="ab-team-card__initial" style="display:none">
+                        {{ member.initial }}
+                    </div>
+                    <div class="ab-team-card__overlay">
+                        <p class="ab-team-card__bio">{{ member.bio }}</p>
+                    </div>
+                </div>
+                <div class="ab-team-card__body">
+                    <h3 class="ab-team-card__name">{{ member.name }}</h3>
+                    <span class="ab-team-card__role">{{ member.role }}</span>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ══════════════════════════════════════════
+   §6 — CTA CENTRAL (inviter à l'action)
+══════════════════════════════════════════ #}
+<section class="ab-cta" aria-label="Invitation à agir">
+    <div class="ab-cta__bg"
+         style="background-image:url('{{ asset('assets/images/about-cta-bg.png','app') }}')"></div>
+    <div class="ab-cta__overlay"></div>
+    <div class="container ab-cta__inner">
+        <div data-aos="zoom-in" data-aos-duration="800">
+            <span class="ab-tag" style="margin-bottom:18px;display:inline-block;">
+                <i class="bi bi-rocket-takeoff-fill"></i> Passez à l'action
+            </span>
+            <h2 class="ab-cta__title">
+                Votre histoire mérite d'être publiée.<br>
+                <strong>Faites confiance à ProTIC.</strong>
+            </h2>
+            <p class="ab-cta__sub">
+                Rejoignez les <strong>85+ auteurs béninois</strong> qui nous font confiance.
+                Notre équipe vous accompagne du premier mot à la distribution finale.
+            </p>
+            <div class="ab-cta__btns">
+                <a href="{{ path('app_contact') }}" class="btn ab-btn-gold">
+                    <i class="bi bi-upload"></i> Déposer mon manuscrit
+                </a>
+                <a href="{{ path('app_catalogue') }}" class="btn ab-btn-glass">
+                    <i class="bi bi-grid"></i> Voir le catalogue
+                </a>
+                <a href="{{ path('app_contact') }}" class="btn ab-btn-glass">
+                    <i class="bi bi-telephone"></i> Nous appeler
+                </a>
+            </div>
+            <div class="ab-cta__guarantees">
+                <span><i class="bi bi-check-circle-fill"></i> Réponse 48h</span>
+                <span><i class="bi bi-check-circle-fill"></i> Dépôt légal inclus</span>
+                <span><i class="bi bi-check-circle-fill"></i> Droits d'auteur protégés</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ══════════════════════════════════════════
+   §7 — FAQ (composant React injecté)
+══════════════════════════════════════════ #}
+<section class="ab-section" id="faq" aria-labelledby="faq-title">
+    <div class="container">
+
+        <div class="ab-section-header" data-aos="fade-up">
+            <span class="ab-tag">Vos questions</span>
+            <h2 id="faq-title">Questions fréquemment posées</h2>
+            <p>Retrouvez les réponses aux questions les plus courantes sur nos services éditoriaux</p>
+        </div>
+
+        {# Point d'injection React FAQ #}
+        <div id="faq-root"
+             data-api="/api/faqs"
+             data-per-page="8"
+             aria-label="Liste des questions fréquentes ProTIC"
+             aria-live="polite">
+            {# Skeleton statique affiché avant injection React #}
+            <div class="faq-skeleton" aria-hidden="true">
+                {% for i in 1..4 %}
+                <div class="faq-skeleton__item">
+                    <div class="faq-skeleton__q"></div>
+                    <div class="faq-skeleton__a"></div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# Invitation à poser une question #}
+        <div class="ab-faq-ask" data-aos="fade-up" data-aos-delay="200">
+            <div class="ab-faq-ask__inner">
+                <i class="bi bi-chat-question-fill ab-faq-ask__icon"></i>
+                <div>
+                    <h4 class="ab-faq-ask__title">Vous ne trouvez pas votre réponse ?</h4>
+                    <p class="ab-faq-ask__sub">
+                        Posez votre question directement — notre équipe vous répond sous 48h.
+                    </p>
+                </div>
+                <a href="{{ path('app_contact') }}?type=question"
+                   class="btn ab-btn-gold ab-faq-ask__btn">
+                    <i class="bi bi-send-fill"></i> Poser une question
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts_extra %}
+{{ vite_entry_script_tags('about') }}
+{% endblock %}

@@ -1,0 +1,91 @@
+.dropzone-container {
+     border: 2px dashed #e1b12c;
+     border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.03); 
+    min-height: 160px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: #f5f6fa;
+    backdrop-filter: blur(5px); 
+    transition: all 0.3s ease; /* Ajout d'une transition pour les effets de survol */
+}
+
+/* Effet de survol pour une meilleure interactivité */
+.dropzone-container:hover {
+   border-color: #4cd137; 
+    background-color: rgba(76, 209, 55, 0.05);
+    transform: scale(1.01);
+    box-shadow: 0 0 15px rgba(225, 177, 44, 0.2);
+}
+
+.dropzone-input {
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.dropzone-placeholder {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #dcdde1;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    line-height: 1.5;
+}
+
+/* Styles pour les aperçus des fichiers */
+.dropzone-preview {
+    align-items: center;
+    max-width: 100%;
+    display: flex;
+    padding: 10px;
+     background: #192a56; 
+    border: 1px solid #40739e;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.dropzone-preview-image {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    min-width: 60px; /* Taille légèrement plus grande pour l'icône de l'image */
+    max-width: 60px;
+    height: 60px;
+    margin-right: 15px;
+}
+
+.dropzone-preview-filename {
+    word-wrap: anywhere;
+    font-weight: 600; /* Nom de fichier en gras */
+    color: #495057;
+}
+
+/* Bouton de suppression (croix) */
+.dropzone-preview-button {
+    z-index: 2;
+    color: #A9A9A9;
+    font-size: 1.5rem;
+    transition: color 0.2s ease;
+    cursor: pointer;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.dropzone-preview-button:hover {
+    color: #DC3545; /* Couleur rouge au survol */
+}

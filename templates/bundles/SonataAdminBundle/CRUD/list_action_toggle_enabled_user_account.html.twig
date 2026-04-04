@@ -1,0 +1,21 @@
+{% if   admin.isGranted('ROLE_FOUNDER',object) %}
+    {% set action_toogle_enabled_account = admin.createToggleEnabledAction(object) %}
+
+    {% set status_account = { status: object.enabled ? 'false' : 'true' } %}
+    {% set badge_status = object.enabled ? 'badge-inactive text-bg-danger' : 'badge-active text-bg-success'  %}
+    <a href="{{ action_toogle_enabled_account.url }}" 
+       class="btn btn-sm btn-toggle-account badge {{badge_status}}"
+       title="{{ action_toogle_enabled_account.title|trans([],'SonataAdminBundle',app.locale) }}"
+       data-bs-toggle="tooltip" 
+       data-bs-placement="top" 
+       data-additional="{{status_account|json_encode()}}"
+       data-event-name="account:toggle:confirmed"
+       data-http-method-request-action="PATCH"
+       data-loading-config-key-title="ACTION_PENDING_TITLE"
+       data-loading-config-key-message="ACTION_PENDING_MESSAGE"
+       data-action-confirm="{{action_toogle_enabled_account.confirm |trans({'%username%': object.username},'SonataAdminBundle',app.locale) }}"
+       >
+        <i class="{{ action_toogle_enabled_account.icon }}" aria-hidden="true"></i> 
+       <span class="d-none d-sm-inline ms-1">{{ action_toogle_enabled_account.label |trans([],'SonataAdminBundle',app.locale) }}</span>
+    </a>
+{% endif %} 

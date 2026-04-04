@@ -1,0 +1,401 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue de livres béninois — ProTIC Editions & Services{% endblock %}
+
+{% block meta_description %}
+Découvrez le catalogue complet de ProTIC Editions &amp; Services : romans, poésies, essais, théâtre, contes et ouvrages didactiques publiés par des auteurs béninois et africains. Commandez vos livres directement.
+{% endblock %}
+
+{% block head_extra %}
+{# ── SEO Open Graph ── #}
+<meta property="og:title"       content="Catalogue — ProTIC Editions & Services Bénin">
+<meta property="og:description" content="Plus de 120 livres béninois et africains : roman, poésie, théâtre, conte, essai, didactique. Contactez les auteurs directement.">
+<meta property="og:image"       content="{{ asset('assets/images/catalogue-og.png','app') }}">
+<meta property="og:type"        content="website">
+<meta name="keywords"           content="catalogue livres bénin, acheter livre africain, roman béninois, poésie afrique, auteur béninois, édition Cotonou, livres ProTIC">
+<link rel="canonical"           href="{{ app.request.uri }}">
+
+{# ── Schema.org CollectionPage ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Catalogue ProTIC Editions & Services",
+  "description": "Catalogue complet des livres publiés par ProTIC Editions — maison d'édition béninoise",
+  "url": "{{ absolute_url('app_catalogue') }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "ProTIC Editions & Services",
+    "address": { "@type": "PostalAddress", "addressLocality": "Abomey-Calavi", "addressCountry": "BJ" }
+  }
+}
+</script>
+
+{{ vite_entry_link_tags('catalogue') }}
+{% endblock %}
+
+{% block main %}
+
+<section class="cat-hero" aria-label="Catalogue ProTIC Editions">
+    <div class="cat-hero__bg"
+         style="background-image:url('{{ asset('assets/images/catalogue-hero-bg.png','app') }}')"
+         role="img" aria-label="Rayons de livres africains — ProTIC Editions Bénin"></div>
+    <div class="cat-hero__overlay"></div>
+
+    <div class="container cat-hero__inner">
+
+        <span class="cat-hero__tag"
+              data-aos="fade-down" data-aos-duration="600">
+            <i class="bi bi-book-half"></i>
+            Catalogue officiel ProTIC Editions
+        </span>
+
+        <h1 class="cat-hero__title"
+            data-aos="fade-up" data-aos-duration="800" data-aos-delay="150">
+            <span class="cat-hero__title-highlight">120+</span> livres béninois<br>
+            à découvrir &amp; à commander
+        </h1>
+
+        <p class="cat-hero__sub"
+           data-aos="fade-up" data-aos-duration="700" data-aos-delay="300">
+            Romans, poésies, essais, théâtre, contes et ouvrages didactiques
+            publiés par <strong>ProTIC Editions &amp; Services</strong> —
+            maison d'édition béninoise depuis 2010.
+            Contactez directement les <strong>auteurs</strong> pour acquérir leurs œuvres.
+        </p>
+
+        {# ── Genres pills rapides ── #}
+        <div class="cat-hero__pills"
+             data-aos="fade-up" data-aos-duration="600" data-aos-delay="450">
+            {% for g in ['Roman', 'Poésie', 'Essai', 'Théâtre', 'Conte', 'Didactique'] %}
+            <button class="cat-pill cat-pill--hero js-quick-filter"
+                    data-genre="{{ g }}"
+                    type="button">
+                {{ g }}
+            </button>
+            {% endfor %}
+        </div>
+
+        {# ── Stats rapides ── #}
+        <div class="cat-hero__stats"
+             data-aos="fade-up" data-aos-duration="600" data-aos-delay="550">
+            <span><i class="bi bi-journals"></i> 120+ titres</span>
+            <span class="cat-hero__stats-sep"></span>
+            <span><i class="bi bi-people"></i> 85+ auteurs</span>
+            <span class="cat-hero__stats-sep"></span>
+            <span><i class="bi bi-grid"></i> 6 genres</span>
+        </div>
+
+    </div>
+</section>
+
+{# ══════════════════════════════════════════
+   §2 — BARRE CTA HAUTE (invitation action)
+══════════════════════════════════════════ #}
+<div class="cat-cta-bar" aria-label="Actions rapides">
+    <div class="container cat-cta-bar__inner">
+        <p class="cat-cta-bar__text">
+            <i class="bi bi-star-fill"></i>
+            Vous êtes <strong>auteur</strong> ? Publiez votre prochain livre avec ProTIC.
+        </p>
+        <div class="cat-cta-bar__btns">
+            <a href="{{ path('app_contact') }}" class="btn cat-btn-gold">
+                <i class="bi bi-upload"></i> Déposer mon manuscrit
+            </a>
+            <a href="{{ path('app_contact') }}" class="btn cat-btn-glass">
+                <i class="bi bi-chat-dots"></i> Nous contacter
+            </a>
+        </div>
+    </div>
+</div>
+
+{# ══════════════════════════════════════════
+   §3 — SECTION PRINCIPALE : Filtres + BooksGrid React
+══════════════════════════════════════════ #}
+<section class="cat-section" id="catalogue" aria-labelledby="catalogue-title">
+    <div class="container">
+
+        <div class="cat-main-grid">
+
+            {# ── SIDEBAR FILTRES (gauche) ── #}
+            <aside class="cat-sidebar" aria-label="Filtres du catalogue" id="cat-sidebar">
+
+                {# Toggle mobile #}
+                <button class="cat-sidebar__mobile-toggle d-lg-none"
+                        id="cat-filter-toggle" type="button"
+                        aria-expanded="false" aria-controls="cat-filters-body">
+                    <i class="bi bi-sliders"></i>
+                    Filtres
+                    <span class="cat-filter-count-badge" id="cat-active-count" style="display:none">0</span>
+                    <i class="bi bi-chevron-down cat-sidebar__chevron" id="cat-chevron"></i>
+                </button>
+
+                <div class="cat-filters-body" id="cat-filters-body">
+
+                    {# Header sidebar desktop #}
+                    <div class="cat-sidebar__header d-none d-lg-flex">
+                        <span><i class="bi bi-sliders"></i> Filtres</span>
+                        <button class="cat-sidebar__reset" id="cat-reset-btn" type="button">
+                            Tout effacer
+                        </button>
+                    </div>
+
+                    {# ── Recherche textuelle ── #}
+                    <div class="cat-filter-group">
+                        <label class="cat-filter-label" for="cat-search">
+                            <i class="bi bi-search"></i> Recherche
+                        </label>
+                        <div class="cat-search-wrap">
+                            <input type="search"
+                                   id="cat-search"
+                                   class="cat-search-input"
+                                   placeholder="Titre, auteur, mot-clé…"
+                                   aria-label="Rechercher un livre"
+                                   autocomplete="off">
+                            <i class="bi bi-search cat-search-icon"></i>
+                        </div>
+                    </div>
+
+                    {# ── Filtre genre ── #}
+                    <div class="cat-filter-group">
+                        <div class="cat-filter-label">
+                            <i class="bi bi-tag"></i> Genre littéraire
+                        </div>
+                        <div class="cat-filter-options" role="group" aria-label="Filtrer par genre">
+                            {% set genres = [
+                                { slug: 'roman',      label: 'Roman',      icon: 'bi-book' },
+                                { slug: 'poesie',     label: 'Poésie',     icon: 'bi-pencil' },
+                                { slug: 'theatre',    label: 'Théâtre',    icon: 'bi-people' },
+                                { slug: 'conte',      label: 'Conte',      icon: 'bi-moon-stars' },
+                                { slug: 'essai',      label: 'Essai',      icon: 'bi-search' },
+                                { slug: 'didactique', label: 'Didactique', icon: 'bi-mortarboard' },
+                            ] %}
+                            {% for g in genres %}
+                            <label class="cat-filter-chip">
+                                <input type="checkbox"
+                                       class="cat-filter-chip__input js-filter-genre"
+                                       value="{{ g.slug }}"
+                                       aria-label="Filtrer par {{ g.label }}">
+                                <span class="cat-filter-chip__label">
+                                    <i class="bi {{ g.icon }}"></i> {{ g.label }}
+                                </span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {# ── Filtre année ── #}
+                    <div class="cat-filter-group">
+                        <div class="cat-filter-label">
+                            <i class="bi bi-calendar3"></i> Année de parution
+                        </div>
+                        <div class="cat-filter-options" role="group" aria-label="Filtrer par année">
+
+                            {% set currentYear = ("now"|date("Y")) | number_format(0, '', '') %}
+
+                            {% for year in range(currentYear, 2010, -1) %}
+                            <label class="cat-filter-chip">
+                                <input type="checkbox"
+                                    class="cat-filter-chip__input js-filter-year"
+                                    value="{{ year }}"
+                                    aria-label="Livres parus en {{ year }}">
+                                <span class="cat-filter-chip__label">{{ year }}</span>
+                            </label>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                    {# ── Tri ── #}
+                    <div class="cat-filter-group">
+                        <label class="cat-filter-label" for="cat-sort">
+                            <i class="bi bi-sort-down"></i> Trier par
+                        </label>
+                        <select id="cat-sort" class="cat-select" aria-label="Trier les livres">
+                            <option value="date_desc">Plus récents</option>
+                            <option value="date_asc">Plus anciens</option>
+                            <option value="title_asc">Titre A → Z</option>
+                            <option value="title_desc">Titre Z → A</option>
+                        </select>
+                    </div>
+
+                    {# Reset mobile #}
+                    <button class="cat-sidebar__reset cat-sidebar__reset--mobile d-lg-none"
+                            id="cat-reset-btn-mobile" type="button">
+                        <i class="bi bi-arrow-counterclockwise"></i> Effacer les filtres
+                    </button>
+
+                </div>
+            </aside>
+
+            {# ── ZONE PRINCIPALE : résultats React ── #}
+            <div class="cat-results-wrap">
+
+                {# Barre d'état résultats #}
+                <div class="cat-results-bar">
+                    <span class="cat-results-bar__count" id="cat-results-label">
+                        Chargement…
+                    </span>
+                    <div class="cat-results-bar__right">
+                        {# Toggle vue grille / liste #}
+                        <div class="cat-view-toggle" role="group" aria-label="Mode d'affichage">
+                            <button class="cat-view-btn is-active" id="btn-view-grid"
+                                    data-view="grid" type="button" aria-label="Vue grille"
+                                    aria-pressed="true">
+                                <i class="bi bi-grid-3x3-gap-fill"></i>
+                            </button>
+                            <button class="cat-view-btn" id="btn-view-list"
+                                    data-view="list" type="button" aria-label="Vue liste"
+                                    aria-pressed="false">
+                                <i class="bi bi-list-ul"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {# ── Point d'injection React BooksGrid ── #}
+                <div id="catalogue-books-root"
+                     data-per-page="12"
+                     data-view="grid"
+                     aria-label="Grille du catalogue ProTIC"
+                     aria-live="polite">
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ══════════════════════════════════════════
+   §4 — BANDEAU CTA "Auteur" (milieu de page)
+══════════════════════════════════════════ #}
+<section class="cat-author-cta" aria-label="Invitation aux auteurs">
+    <div class="cat-author-cta__bg"
+         style="background-image:url('{{ asset('assets/images/catalogue-author-cta-bg.png','app') }}')"></div>
+    <div class="cat-author-cta__overlay"></div>
+    <div class="container cat-author-cta__inner">
+
+        <div class="cat-author-cta__content"
+             data-aos="fade-right" data-aos-duration="800">
+            <span class="cat-author-cta__tag">
+                <i class="bi bi-pencil-square"></i> Vous êtes auteur ?
+            </span>
+            <h2 class="cat-author-cta__title">
+                Votre livre mérite d'être lu.<br>
+                <strong>Publiez avec ProTIC.</strong>
+            </h2>
+            <p class="cat-author-cta__text">
+                Rejoignez les <strong>85+ auteurs béninois</strong> qui nous ont
+                fait confiance pour publier, imprimer et distribuer leurs œuvres
+                à l'échelle nationale et internationale.
+            </p>
+            <div class="cat-author-cta__btns">
+                <a href="{{ path('app_contact') }}" class="btn cat-btn-gold">
+                    <i class="bi bi-upload"></i> Soumettre mon manuscrit
+                </a>
+                <a href="#" class="btn cat-btn-glass">
+                    <i class="bi bi-eye"></i> Voir nos services
+                </a>
+            </div>
+            <div class="cat-author-cta__guarantees">
+                <span><i class="bi bi-check-circle-fill"></i> Réponse sous 48h</span>
+                <span><i class="bi bi-check-circle-fill"></i> Dépôt légal inclus</span>
+                <span><i class="bi bi-check-circle-fill"></i> Distribution nationale</span>
+            </div>
+        </div>
+
+        <div class="cat-author-cta__steps"
+             data-aos="fade-left" data-aos-duration="800" data-aos-delay="150">
+            {% for step in [
+                { num: '1', icon: 'bi-upload',            title: 'Déposez',     sub: 'Soumettez votre manuscrit en ligne' },
+                { num: '2', icon: 'bi-palette',           title: 'On conçoit',  sub: 'Mise en page & conception graphique' },
+                { num: '3', icon: 'bi-bank',              title: 'On légalise', sub: 'Dépôt légal Bibliothèque Nationale' },
+                { num: '4', icon: 'bi-rocket-takeoff',    title: 'On publie',   sub: 'Impression & distribution nationale' },
+            ] %}
+            <div class="cat-mini-step">
+                <div class="cat-mini-step__num {{ loop.last ? 'cat-mini-step__num--gold' : '' }}">
+                    {{ step.num }}
+                </div>
+                <div>
+                    <strong class="cat-mini-step__title">{{ step.title }}</strong>
+                    <span class="cat-mini-step__sub">{{ step.sub }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+{# ══════════════════════════════════════════
+   §5 — GENRES EN VEDETTE
+══════════════════════════════════════════ #}
+<section class="cat-section cat-section--dark" id="genres" aria-labelledby="genres-title">
+    <div class="container">
+        <div class="cat-section-header" data-aos="fade-up">
+            <span class="cat-section-tag">Explorer par genre</span>
+            <h2 id="genres-title">Tous les genres littéraires</h2>
+            <p>Filtrez le catalogue selon votre univers littéraire préféré</p>
+        </div>
+        <div class="cat-genres-grid">
+            {% set genres_full = [
+                { slug: 'roman',      label: 'Roman',      icon: 'bi-book',          count: '42',  desc: 'Fiction, récit de vie, narration' },
+                { slug: 'poesie',     label: 'Poésie',     icon: 'bi-pencil',         count: '18',  desc: 'Vers, lyrisme, recueils' },
+                { slug: 'theatre',    label: 'Théâtre',    icon: 'bi-people',         count: '11',  desc: 'Pièces, dialogues, scènes' },
+                { slug: 'conte',      label: 'Conte',      icon: 'bi-moon-stars',     count: '15',  desc: 'Folklore, tradition orale africaine' },
+                { slug: 'essai',      label: 'Essai',      icon: 'bi-search',         count: '22',  desc: 'Analyse, réflexion, critique' },
+                { slug: 'didactique', label: 'Didactique', icon: 'bi-mortarboard',    count: '12',  desc: 'Manuels, pédagogie, scolaire' },
+            ] %}
+            {% for g in genres_full %}
+            <button class="cat-genre-card js-quick-filter"
+                    data-genre="{{ g.slug }}"
+                    type="button"
+                    data-aos="zoom-in"
+                    data-aos-duration="600"
+                    data-aos-delay="{{ loop.index0 * 80 }}"
+                    aria-label="Voir les livres de genre {{ g.label }}">
+                <i class="bi {{ g.icon }} cat-genre-card__icon"></i>
+                <span class="cat-genre-card__label">{{ g.label }}</span>
+                <span class="cat-genre-card__count">{{ g.count }} titres</span>
+                <span class="cat-genre-card__desc">{{ g.desc }}</span>
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="cat-bottom-cta" aria-label="Commander un livre ProTIC">
+    <div class="container cat-bottom-cta__inner">
+
+        <div class="cat-bottom-cta__left" data-aos="fade-right">
+            <i class="bi bi-bag-heart-fill cat-bottom-cta__icon"></i>
+            <div>
+                <h3 class="cat-bottom-cta__title">
+                    Vous souhaitez acquérir un livre ?
+                </h3>
+                <p class="cat-bottom-cta__sub">
+                    Contactez-nous directement ou contactez l'auteur via notre formulaire.
+                    Livraison disponible à <strong>Cotonou</strong> et dans tout le <strong>Bénin</strong>.
+                </p>
+            </div>
+        </div>
+
+        <div class="cat-bottom-cta__btns" data-aos="fade-left">
+            <a href="{{ path('app_contact') }}" class="btn cat-btn-gold">
+                <i class="bi bi-envelope-fill"></i>
+                Commander / Contacter
+            </a>
+            <a href="tel:+22995869951" class="btn cat-btn-glass">
+                <i class="bi bi-telephone-fill"></i>
+                +229 01 95 86 99 51
+            </a>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts_extra %}
+{{ vite_entry_script_tags('catalogue') }}
+{% endblock %}

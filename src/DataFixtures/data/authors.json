@@ -1,0 +1,72 @@
+[
+  {
+    "fullName": "Ahmadou Kourouma Maele",
+    "email": "ahmadou.kourouma@litterature-africaine.com",
+    "bio": "Ahmadou Kourouma est un écrivain ivoirien, né en 1927 à Boundiali. Il est surtout connu pour son roman Les Soleils des indépendances, publié en 1968, qui décrit avec ironie et profondeur les désillusions politiques de l'Afrique post-coloniale. Son style mêle le français académique aux structures narratives malinké.",
+    "phone": "+2250102030405",
+    "country": "CIV"
+  },
+  {
+    "fullName": "Mongo Beti",
+    "email": "mongo.beti@litterature-africaine.com",
+    "bio": "Alexandre Biyidi-Awala, dit Mongo Beti, est un romancier camerounais né en 1932 à Mbalmayo. Figure majeure de la littérature africaine francophone, il est l'auteur de Ville cruelle et de Mission terminée, deux oeuvres qui interrogent le colonialisme et ses effets sur les sociétés africaines avec un regard critique et engagé.",
+    "phone": "+2376xxxxxxxx",
+    "country": "CMR"
+  },
+  {
+    "fullName": "Mariama Bâ Maele",
+    "email": "mariama.ba@litterature-africaine.com",
+    "bio": "Mariama Bâ est une romancière et militante féministe sénégalaise, née en 1929 à Dakar. Son roman Une si longue lettre, publié en 1979 et couronné du Prix Noma, est une oeuvre fondatrice de la littérature féminine africaine. Elle y aborde la condition de la femme africaine face à la polygamie et aux traditions.",
+    "phone": "+221701234567",
+    "country": "SEN"
+  },
+  {
+    "fullName": "Chinua Achebechimoe",
+    "email": "chinua.achebe@african-writers.com",
+    "bio": "Chinua Achebe est un romancier nigérian né en 1930 à Ogidi. Son oeuvre majeure, Things Fall Apart, publiée en 1958, est l'un des livres africains les plus lus dans le monde avec plus de 20 millions d'exemplaires vendus. Il décrit avec précision la culture igbo et l'impact de la colonisation britannique sur les sociétés traditionnelles.",
+    "phone": "+2348012345678",
+    "country": "NGA"
+  },
+  {
+    "fullName": "Victor Hugo Euga",
+    "email": "victor.hugo@litterature-francaise.fr",
+    "bio": "Victor Hugo est un poète, dramaturge et romancier français né en 1802 à Besançon. Chef de file du romantisme français, il est l'auteur de nombreuses oeuvres majeures dont Les Misérables, Notre-Dame de Paris et Les Contemplations. Son engagement politique et humaniste a marqué profondément la littérature et la société françaises du XIXe siècle.",
+    "phone": "+33612345678",
+    "country": "FRA"
+  },
+  {
+    "fullName": "Léopold Sédar Senghor",
+    "email": "leopold.senghor@negritude.sn",
+    "bio": "Léopold Sédar Senghor est un poète et homme d'État sénégalais né en 1906 à Joal. Co-fondateur du mouvement de la Négritude avec Aimé Césaire, il est l'auteur de Chants d'Ombre et de Hosties noires. Premier président du Sénégal indépendant en 1960, il fut aussi le premier Africain à être élu à l'Académie française en 1983.",
+    "phone": "+221779876543",
+    "country": "SEN"
+  },
+  {
+    "fullName": "Ousmane Sembène",
+    "email": "ousmane.sembene@xala-films.sn",
+    "bio": "Ousmane Sembène est un écrivain et cinéaste sénégalais né en 1923 à Ziguinchor. Surnommé le père du cinéma africain, il est aussi l'auteur de romans importants tels que Les Bouts de bois de Dieu et Xala. Son oeuvre littéraire et cinématographique dénonce les inégalités sociales, le néocolonialisme et la corruption politique en Afrique.",
+    "phone": "+221771122334",
+    "country": "SEN"
+  },
+  {
+    "fullName": "Ngugi wa Thiongo",
+    "email": "ngugi.thiongo@kenyan-writers.ke",
+    "bio": "Ngugi wa Thiong'o est un romancier et essayiste kényan né en 1938 à Limuru. Auteur de Weep Not, Child et de Petals of Blood, il est l'un des écrivains africains les plus engagés politiquement. Il a renoncé à l'anglais pour écrire en gikuyu, sa langue maternelle, afin de promouvoir les littératures africaines dans les langues locales.",
+    "phone": "+254712345678",
+    "country": "KEN"
+  },
+  {
+    "fullName": "Assia Djebar",
+    "email": "assia.djebar@femmes-algerie.dz",
+    "bio": "Assia Djebar, de son vrai nom Fatima-Zohra Imalayen, est une romancière algérienne née en 1936 à Cherchell. Membre de l'Académie française depuis 2005, elle est l'auteure de L'Amour, la fantasia et de Femmes d'Alger dans leur appartement. Son oeuvre explore l'identité féminine algérienne entre tradition et modernité, entre langue française et culture arabe.",
+    "phone": "+213555123456",
+    "country": "DZA"
+  },
+  {
+    "fullName": "Franck Agbokoudjo",
+    "email": "agbokoudjo.franck@protic-editions.bj",
+    "bio": "Franck Agbokoudjo est un développeur et entrepreneur béninois, fondateur de la plateforme ProTIC Editions & Services. Passionné de littérature africaine et de technologie, il oeuvre pour la promotion des auteurs africains à travers des solutions numériques innovantes. Son engagement pour la valorisation du patrimoine littéraire africain est au coeur de sa vision entrepreneuriale.",
+    "phone": "+22901672518",
+    "country": "BEN"
+  }
+]

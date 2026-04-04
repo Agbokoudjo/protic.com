@@ -1,0 +1,13 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+  {% if (value|length) > 80 %}
+    {# Display the truncated message and the "Voir Plus" button #}
+    <div class="message-container">
+      <span class="truncated-message-text">{{ value|slice(0, 80) }}...</span>
+    </div>
+  {% else %}
+    {# If the message is not long, just display the full message #}
+    {{ value }}
+  {% endif %}
+{% endblock %}

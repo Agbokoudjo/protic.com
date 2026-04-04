@@ -1,10 +1,16 @@
-import './stimulus_bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
+import { registerReactControllerComponents } from "vite-plugin-symfony/stimulus/helpers/react"
+import { startStimulusApp } from "vite-plugin-symfony/stimulus/helpers"
+import '@vitejs/plugin-react/preamble';
 import './styles/app.css';
+import 'bootstrap/dist/js/bootstrap.min.js'
+import { disableUserInteractions } from './utils';
+import jQuery from 'jquery';
+window.jQuery = jQuery;
+window.$ = jQuery;
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+const app = startStimulusApp();
+registerReactControllerComponents(import.meta.glob('./react/controllers/**/*.js(x)\?',{ eager: true })); 
+
+window.addEventListener('DOMContentLoaded', () => {
+    disableUserInteractions("iws-config");
+})

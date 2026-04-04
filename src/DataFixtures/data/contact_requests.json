@@ -1,0 +1,222 @@
+[
+  {
+    "fullName": "Kofi Mensah",
+    "email": "kofi.mensah@gmail.com",
+    "phone": "+22891234567",
+    "country": "TGO",
+    "subject": "Commande du roman Les Soleils des indépendances",
+    "message": "Bonjour, je suis très intéressé par le roman Les Soleils des indépendances d'Ahmadou Kourouma. J'aimerais savoir si vous avez des exemplaires disponibles et quelles sont les modalités de livraison au Togo. Je souhaite également connaître les tarifs pour une commande groupée de 5 exemplaires destinés à ma classe de littérature.",
+    "status": "new",
+    "book_index": 5,
+    "sentAt": "2025-01-15 09:30:00"
+  },
+  {
+    "fullName": "Aminata Diallo",
+    "email": "aminata.diallo@yahoo.fr",
+    "phone": "+221781234567",
+    "country": "SEN",
+    "subject": "Demande d'information sur Une si longue lettre",
+    "message": "Bonjour, j'enseigne la littérature au lycée et je souhaite intégrer Une si longue lettre de Mariama Bâ dans mon programme de cours. Pourriez-vous me confirmer la disponibilité de cet ouvrage et me donner plus d'informations sur les conditions tarifaires pour les établissements scolaires ? Je serais également intéressée par d'autres oeuvres de littérature féminine africaine disponibles dans votre catalogue.",
+    "status": "read",
+    "book_index": 2,
+    "sentAt": "2025-01-18 14:15:00"
+  },
+  {
+    "fullName": "Jean-Baptiste Ouédraogo",
+    "email": "jb.ouedraogo@hotmail.com",
+    "phone": "+22670123456",
+    "country": "BFA",
+    "subject": "Acquisition de Things Fall Apart pour bibliothèque",
+    "message": "Je suis bibliothécaire à Ouagadougou et je cherche à enrichir notre collection de littérature africaine anglophone. Je souhaite acquérir plusieurs exemplaires de Things Fall Apart de Chinua Achebe. Avez-vous une version française disponible ? Dans le cas contraire, pouvez-vous me conseiller d'autres éditions ? Notre bibliothèque dessert plus de 500 lecteurs réguliers et nous accordons une importance particulière à la littérature africaine.",
+    "status": "new",
+    "book_index": 3,
+    "sentAt": "2025-01-20 10:00:00"
+  },
+  {
+    "fullName": "Marie-Claire Fondjo",
+    "email": "mcfondjo@orange.cm",
+    "phone": "+23767891234",
+    "country": "CMR",
+    "subject": "Renseignement sur Mission terminée de Mongo Beti",
+    "message": "Je prépare une thèse de doctorat sur la littérature camerounaise des années 50 et je recherche une édition récente de Mission terminée de Mongo Beti. Disposez-vous d'une édition annotée ou critique de ce roman ? Je souhaite également savoir si vous proposez des ressources pédagogiques ou critiques complémentaires sur l'oeuvre de Mongo Beti que je pourrais consulter ou acquérir.",
+    "status": "processing",
+    "book_index": 1,
+    "sentAt": "2025-01-22 16:45:00"
+  },
+  {
+    "fullName": "Ibrahima Sow",
+    "email": "ibrahima.sow@protonmail.com",
+    "phone": "+224621234567",
+    "country": "GIN",
+    "subject": "Commande Les Misérables - édition illustrée",
+    "message": "Je suis à la recherche d'une belle édition illustrée des Misérables de Victor Hugo pour offrir à l'occasion d'un anniversaire. Disposez-vous d'éditions illustrées ou de luxe de ce classique ? Je serais également intéressé par d'autres classiques de la littérature française disponibles dans votre catalogue. Quelles sont vos options de livraison vers la Guinée Conakry ?",
+    "status": "new",
+    "book_index": 4,
+    "sentAt": "2025-01-25 11:20:00"
+  },
+  {
+    "fullName": "Fatou Ndiaye",
+    "email": "fatou.ndiaye@univ-dakar.sn",
+    "phone": "+221709876543",
+    "country": "SEN",
+    "subject": "Recherche édition critique Chants d'Ombre de Senghor",
+    "message": "Dans le cadre de mes recherches universitaires sur la poésie de la Négritude, je cherche une édition critique des Chants d'Ombre de Léopold Sédar Senghor. Avez-vous dans votre catalogue des éditions commentées ou annotées de ce recueil ? Je serais aussi intéressée par des ouvrages critiques sur l'oeuvre poétique de Senghor. Merci de me préciser vos conditions de commande pour les chercheurs universitaires.",
+    "status": "read",
+    "book_index": 5,
+    "sentAt": "2025-01-28 09:00:00"
+  },
+  {
+    "fullName": "Moussa Traoré",
+    "email": "moussa.traore@mali-culture.ml",
+    "phone": "+22376543210",
+    "country": "MLI",
+    "subject": "Les Bouts de bois de Dieu - commande institutionnelle",
+    "message": "Notre institution culturelle à Bamako souhaite acquérir une quantité importante du roman Les Bouts de bois de Dieu d'Ousmane Sembène pour nos activités de promotion de la lecture. Nous cherchons environ 50 exemplaires pour nos centres culturels répartis sur le territoire malien. Pouvez-vous nous communiquer vos tarifs pour les commandes institutionnelles et vos délais de livraison vers le Mali ?",
+    "status": "processing",
+    "book_index": 6,
+    "sentAt": "2025-02-01 13:30:00"
+  },
+  {
+    "fullName": "Esther Aboagye",
+    "email": "esther.aboagye@gmail.com",
+    "phone": "+233244567890",
+    "country": "GHA",
+    "subject": "Demande d'information Weep Not Child",
+    "message": "I would like to order several copies of Weep Not Child by Ngugi wa Thiong'o for our reading club in Accra. We are a group of 15 avid readers passionate about East African literature. Please let me know the availability, pricing and shipping conditions to Ghana. We would also be interested in other works by Ngugi wa Thiong'o that you might have in your catalogue.",
+    "status": "new",
+    "book_index": 7,
+    "sentAt": "2025-02-03 15:00:00"
+  },
+  {
+    "fullName": "Rachida Benali",
+    "email": "rachida.benali@univ-alger.dz",
+    "phone": "+213550123456",
+    "country": "DZA",
+    "subject": "L'Amour la fantasia - programme universitaire",
+    "message": "Je suis enseignante à l'université d'Alger et je souhaite inclure L'Amour, la fantasia d'Assia Djebar dans mon cours sur la littérature maghrébine francophone. J'ai besoin d'une trentaine d'exemplaires pour mes étudiants. Pouvez-vous me proposer un tarif préférentiel pour les commandes universitaires ? Je voudrais également savoir si vous disposez d'autres oeuvres d'Assia Djebar dans votre catalogue.",
+    "status": "read",
+    "book_index": 8,
+    "sentAt": "2025-02-05 10:45:00"
+  },
+  {
+    "fullName": "Franck Junior Dossou",
+    "email": "fjdossou@protic-fan.bj",
+    "phone": "+22901987654",
+    "country": "BEN",
+    "subject": "ProTIC et la révolution numérique africaine",
+    "message": "Félicitations pour la publication de ProTIC et la révolution numérique africaine. En tant que jeune développeur béninois passionné par l'entrepreneuriat numérique, ce livre m'intéresse beaucoup. Je souhaite commander 3 exemplaires, un pour moi et deux pour offrir à des collègues. Quelles sont les modalités de commande et de paiement disponibles au Bénin ? Acceptez-vous Mobile Money ?",
+    "status": "new",
+    "book_index": 9,
+    "sentAt": "2025-02-08 08:30:00"
+  },
+  {
+    "fullName": "Sylvie Kouassi",
+    "email": "sylvie.kouassi@education.ci",
+    "phone": "+2250708901234",
+    "country": "CIV",
+    "subject": "Programme scolaire - littérature africaine",
+    "message": "Je suis inspectrice pédagogique en Côte d'Ivoire et je travaille sur la mise à jour des programmes scolaires de littérature. Je souhaite avoir un catalogue complet de vos ouvrages de littérature africaine disponibles, ainsi que vos conditions tarifaires pour les commandes du Ministère de l'Education. Nous cherchons des oeuvres représentatives de différentes régions africaines pour diversifier les textes étudiés dans le secondaire.",
+    "status": "processing",
+    "book_index": 1,
+    "sentAt": "2025-02-10 14:00:00"
+  },
+  {
+    "fullName": "Abdoulaye Bâ",
+    "email": "abdoulaye.ba@gmail.com",
+    "phone": "+221766543210",
+    "country": "SEN",
+    "subject": "Partenariat librairie - catalogue complet",
+    "message": "Je suis propriétaire d'une librairie indépendante à Dakar spécialisée dans la littérature africaine. Je souhaite établir un partenariat commercial avec ProTIC Editions pour distribuer vos ouvrages dans notre espace. Pourriez-vous me communiquer votre catalogue complet avec les conditions de distribution ? Je suis particulièrement intéressé par les oeuvres de Mariama Bâ et de Senghor qui sont très demandées par notre clientèle.",
+    "status": "read",
+    "book_index": 2,
+    "sentAt": "2025-02-12 11:15:00"
+  },
+  {
+    "fullName": "Emmanuel Koffi",
+    "email": "e.koffi@togofest.tg",
+    "phone": "+22890987654",
+    "country": "TGO",
+    "subject": "Festival littéraire - demande de partenariat",
+    "message": "Notre festival littéraire annuel de Lomé accueille cette année un focus sur la littérature africaine post-coloniale. Nous aimerions vous inviter en tant que partenaire éditorial pour présenter vos ouvrages lors de l'événement. Seriez-vous intéressés par un stand ou une table ronde ? Nous attendons plus de 2000 visiteurs et c'est une excellente opportunité de visibilité pour votre catalogue.",
+    "status": "new",
+    "book_index": 1,
+    "sentAt": "2025-02-15 16:30:00"
+  },
+  {
+    "fullName": "Nadia Oumarou",
+    "email": "nadia.oumarou@niger-presse.ne",
+    "phone": "+22796123456",
+    "country": "NER",
+    "subject": "Interview auteur pour magazine culturel",
+    "message": "Je suis journaliste culturelle pour un magazine nigérien et je prépare un dossier sur la renaissance de la littérature africaine contemporaine. Je souhaiterais interviewer les auteurs de votre catalogue sur leurs sources d'inspiration et leur vision de la littérature africaine d'aujourd'hui. Pourriez-vous me mettre en contact avec vos auteurs ou me communiquer leurs disponibilités pour une interview écrite ou téléphonique ?",
+    "status": "processing",
+    "book_index": 3,
+    "sentAt": "2025-02-18 09:45:00"
+  },
+  {
+    "fullName": "Pierre Ndong",
+    "email": "pierre.ndong@bib-gabon.ga",
+    "phone": "+24106789012",
+    "country": "GAB",
+    "subject": "Acquisition pour Bibliothèque nationale du Gabon",
+    "message": "La Bibliothèque nationale du Gabon souhaite enrichir sa collection de littérature africaine francophone et anglophone. Nous recherchons des éditions récentes et bien conservées des grands classiques africains. Pouvez-vous nous soumettre une offre commerciale pour l'acquisition d'une sélection d'une centaine d'ouvrages ? Nous avons un budget alloué et pouvons procéder à un règlement par virement bancaire.",
+    "status": "read",
+    "book_index": 6,
+    "sentAt": "2025-02-20 13:00:00"
+  },
+  {
+    "fullName": "Aïcha Touré",
+    "email": "aicha.toure@hotmail.fr",
+    "phone": "+22365432109",
+    "country": "MLI",
+    "subject": "Cadeau d'anniversaire - conseil lecture",
+    "message": "Je cherche un livre à offrir à mon père pour son anniversaire. Il adore la littérature africaine classique et a déjà lu la plupart des grands classiques. Pourriez-vous me conseiller des oeuvres moins connues mais de qualité équivalente dans votre catalogue ? Mon père est particulièrement sensible à la poésie et aux romans qui traitent des questions d'identité africaine et de la relation entre tradition et modernité.",
+    "status": "new",
+    "book_index": 5,
+    "sentAt": "2025-02-22 17:20:00"
+  },
+  {
+    "fullName": "Carlos Mendes",
+    "email": "carlos.mendes@academia.cv",
+    "phone": "+2389812345",
+    "country": "CPV",
+    "subject": "Recherche bibliographique Cap-Vert",
+    "message": "Je suis chercheur à l'université du Cap-Vert et je travaille sur une étude comparative des littératures africaines lusophones et francophones. Je recherche des ouvrages critiques et académiques sur les auteurs de votre catalogue. Disposez-vous d'essais critiques, de biographies d'auteurs ou de travaux universitaires en lien avec votre fond littéraire ? Je serais également intéressé par des échanges académiques avec votre équipe.",
+    "status": "processing",
+    "book_index": 8,
+    "sentAt": "2025-02-25 10:30:00"
+  },
+  {
+    "fullName": "Rose Mumbua",
+    "email": "rose.mumbua@nairobi-reads.ke",
+    "phone": "+254733456789",
+    "country": "KEN",
+    "subject": "Club de lecture Nairobi - Weep Not Child",
+    "message": "Our reading club in Nairobi is organizing a month dedicated to the works of Ngugi wa Thiong'o. We would like to order 20 copies of Weep Not Child for our members. We are also interested in organizing a virtual discussion with literary experts on the themes of colonialism and education in Ngugi's work. Could you suggest any academic resources or connect us with specialists on East African literature?",
+    "status": "new",
+    "book_index": 7,
+    "sentAt": "2025-02-28 08:00:00"
+  },
+  {
+    "fullName": "Mireille Zannou",
+    "email": "mireille.zannou@bj-edu.bj",
+    "phone": "+22997654321",
+    "country": "BEN",
+    "subject": "Intégration numérique ProTIC en classe",
+    "message": "Je suis formatrice d'enseignants au Bénin et je m'intéresse beaucoup aux travaux de Franck Agbokoudjo sur la révolution numérique africaine. Je souhaite utiliser son livre comme support de formation pour sensibiliser les enseignants aux outils numériques. Pourriez-vous me contacter pour discuter d'un éventuel partenariat avec notre centre de formation ? Nous formons environ 200 enseignants par an dans plusieurs régions du Bénin.",
+    "status": "read",
+    "book_index": 9,
+    "sentAt": "2025-03-02 11:00:00"
+  },
+  {
+    "fullName": "Théodore Bassole",
+    "email": "t.bassole@culture-burkina.bf",
+    "phone": "+22625678901",
+    "country": "BFA",
+    "subject": "Salon du livre de Ouagadougou - participation",
+    "message": "Nous organisons le prochain Salon International du Livre de Ouagadougou et nous souhaiterions inviter ProTIC Editions & Services à y participer. Votre catalogue de littérature africaine correspond parfaitement à l'esprit de notre événement qui valorise la production littéraire du continent. Seriez-vous intéressés par la location d'un stand ? Nous pouvons vous proposer des conditions préférentielles pour les éditeurs africains.",
+    "status": "new",
+    "book_index": 4,
+    "sentAt": "2025-03-05 14:30:00"
+  }
+]

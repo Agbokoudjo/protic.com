@@ -1,0 +1,24 @@
+{#
+
+This file is part of the Sonata package.
+
+(c)  AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
+LinkedIn: https://www.linkedin.com/in/internationales-web-apps-services-120520193/
+Github: https://github.com/Agbokoudjo/
+Company: INTERNATIONALES WEB APPS & SERVICES
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% if value.nationalNumber is defined and value.countryCode is defined %}
+    {% if value.countryCode is not empty and value.nationalNumber is not empty %}
+        {# Format international : +indicatif numéro #}
+        <span>+{{ value.countryCode }} {{ value.nationalNumber }}</span>
+    {% else %}
+        {# Si les champs sont vides mais l'objet existe, afficher l'input brut #}
+        <span>{{ value.rawInput ?? '' }}</span>
+    {% endif %}
+{% else %}
+    {# Si la valeur n'est pas un objet PhoneNumber, afficher la valeur telle quelle #}
+    <span>{{ value }}</span>
+{% endif %}

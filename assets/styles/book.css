@@ -1,0 +1,725 @@
+/* ═══════════════════════════════════════════════════════════════
+   ProTIC — Modales & BookCard Design System
+   Maison d'édition · Palette deep-blue + or
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Variables locales (étendent les variables globales) ── */
+:root {
+    --protic-blue-deep   : #0d1f4e;
+    --protic-blue-mid    : #1a3a8f;
+    --protic-blue-light  : #2d5be3;
+    --protic-white       : #ffffff;
+    --protic-white-70    : rgba(255,255,255,0.70);
+    --protic-white-40    : rgba(255,255,255,0.40);
+    --protic-white-15    : rgba(255,255,255,0.15);
+    --protic-white-08    : rgba(255,255,255,0.08);
+    --protic-glass-bg    : rgba(255,255,255,0.10);
+    --protic-glass-bdr   : rgba(255,255,255,0.28);
+    --protic-secondary   : rgb(253, 217, 9);
+    --protic-transition  : 0.25s ease;
+
+    /* Couleurs spécifiques modales — ivoire chaud, pas blanc pur */
+    --modal-bg           : #f5f0e8;        /* ivoire chaud — papier ancien */
+    --modal-bg-alt       : #ede8dc;        /* variante légèrement plus foncée */
+    --modal-bg-form      : #ede5d8;        /* fond formulaire — parchemin */
+    --modal-border       : rgba(13,31,78,0.12);
+    --modal-accent       : var(--protic-blue-deep);
+    --modal-gold         : rgb(253, 217, 9);
+    --modal-gold-dark    : #c9a800;
+    --modal-text-main    : #0d1f4e;
+    --modal-text-muted   : #5a6480;
+    --modal-text-light   : #8892a8;
+    --modal-input-bg     : #faf7f2;
+    --modal-input-border : rgba(13,31,78,0.20);
+    --modal-input-focus  : var(--protic-blue-light);
+    --modal-radius       : 16px;
+    --modal-radius-sm    : 8px;
+    --modal-shadow       : 0 24px 64px rgba(13,31,78,0.28), 0 4px 16px rgba(13,31,78,0.12);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   OVERLAY
+═══════════════════════════════════════════════════════════════ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 16, 42, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    padding: 16px;
+    animation: overlayIn 0.22s ease;
+}
+
+@keyframes overlayIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL SHELL
+═══════════════════════════════════════════════════════════════ */
+.modal {
+    background: var(--modal-bg);
+    border-radius: var(--modal-radius);
+    box-shadow: var(--modal-shadow);
+    border: 1px solid var(--modal-border);
+    width: 100%;
+    max-width: 560px;
+    max-height: 92vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: modalIn 0.28s cubic-bezier(0.34, 1.3, 0.64, 1);
+    position: relative;
+}
+
+.modal.modal-lg   { max-width: 640px; }
+.modal.modal-resume { max-width: 580px; }
+.modal.modal-bio  { max-width: 540px; }
+
+@keyframes modalIn {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* Bande décorative or en haut */
+.modal::before {
+    content: "";
+    display: block;
+    height: 4px;
+    background: linear-gradient(90deg, var(--protic-blue-deep) 0%, var(--protic-blue-light) 50%, var(--modal-gold) 100%);
+    flex-shrink: 0;
+}
+
+.modal-dialog {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL HEADER
+═══════════════════════════════════════════════════════════════ */
+.modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--modal-border);
+    background: linear-gradient(135deg, #eee8d8 0%, var(--modal-bg) 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.modal-header > *:first-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.modal-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--modal-text-main);
+    margin: 0 0 2px;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+}
+
+.modal-subtitle {
+    font-size: 12px;
+    color: var(--modal-text-muted);
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Bouton fermer */
+.btn-close.modal-close,
+.modal-close {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: rgba(13,31,78,0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--modal-text-muted);
+    cursor: pointer;
+    transition: background var(--protic-transition), color var(--protic-transition);
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.btn-close.modal-close:hover,
+.modal-close:hover {
+    background: rgba(13,31,78,0.16);
+    color: var(--modal-text-main);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL BODY
+═══════════════════════════════════════════════════════════════ */
+.modal-body {
+    padding: 20px 24px;
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(13,31,78,0.2) transparent;
+}
+
+.modal-body::-webkit-scrollbar { width: 4px; }
+.modal-body::-webkit-scrollbar-thumb {
+    background: rgba(13,31,78,0.2);
+    border-radius: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL FOOTER
+═══════════════════════════════════════════════════════════════ */
+.modal-footer {
+    padding: 14px 24px 20px;
+    border-top: 1px solid var(--modal-border);
+    background: var(--modal-bg-alt);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FORMULAIRE DE CONTACT — DESIGN SOIGNÉ
+═══════════════════════════════════════════════════════════════ */
+.modal-body form {
+    background: var(--modal-bg-form);
+    border-radius: var(--modal-radius-sm);
+    padding: 20px;
+    border: 1px solid rgba(13,31,78,0.08);
+     width: 100%;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--protic-blue-mid);
+    margin-bottom: 6px;
+}
+
+.form-group .form-control,
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    background: var(--modal-input-bg);
+    border: 1.5px solid var(--modal-input-border);
+    border-radius: var(--modal-radius-sm);
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--modal-text-main);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    outline: none;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.form-group .form-control:focus,
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--modal-input-focus);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(45,91,227,0.12);
+}
+
+.form-group .form-control:read-only,
+.form-group input[readonly] {
+    background: #ede8de;
+    cursor: not-allowed;
+    color: var(--modal-text-muted);
+    border-color: rgba(13,31,78,0.10);
+}
+
+.form-group textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+}
+
+/* Ligne à deux colonnes email / téléphone */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 480px) {
+    .form-row { grid-template-columns: 1fr; }
+}
+
+/* Message d'erreur */
+.form-error {
+    display: block;
+    font-size: 11px;
+    color: #c0392b;
+    margin-top: 4px;
+    min-height: 14px;
+}
+
+/* Champ sujet en lecture seule — style éditorial */
+input#subject {
+    background: linear-gradient(90deg, #e8e0d0, #ede8de) !important;
+    font-weight: 600;
+    color: var(--protic-blue-mid) !important;
+    letter-spacing: 0.01em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOUTONS DANS LES MODALES
+═══════════════════════════════════════════════════════════════ */
+.modal-footer .btn,
+.modal-footer button {
+    padding: 10px 20px;
+    border-radius: var(--modal-radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--protic-transition);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.modal-footer .btn-primary {
+    background: linear-gradient(135deg, var(--protic-blue-mid), var(--protic-blue-light));
+    color: #fff;
+    flex: 1;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(26,58,143,0.30);
+}
+
+.modal-footer .btn-primary:hover {
+    background: linear-gradient(135deg, var(--protic-blue-deep), var(--protic-blue-mid));
+    box-shadow: 0 4px 14px rgba(26,58,143,0.40);
+    transform: translateY(-1px);
+}
+
+.modal-footer .btn-secondary {
+    background: rgba(13,31,78,0.07);
+    color: var(--modal-text-muted);
+}
+
+.modal-footer .btn-secondary:hover {
+    background: rgba(13,31,78,0.13);
+    color: var(--modal-text-main);
+}
+
+.modal-footer .btn-full {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Bouton biographie style ghost ivoire */
+.modal-footer .btn[style*="f0f4ff"] {
+    background: rgba(13,31,78,0.06) !important;
+    color: var(--protic-blue-mid) !important;
+    border: 1.5px solid rgba(13,31,78,0.18) !important;
+}
+
+.modal-footer .btn[style*="f0f4ff"]:hover {
+    background: rgba(13,31,78,0.12) !important;
+}
+
+/* Bouton envoyer — accent or */
+button[type="submit"].btn-primary {
+    background: linear-gradient(135deg, var(--protic-blue-mid), var(--protic-blue-light));
+    color: #fff;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(26,58,143,0.30);
+}
+
+button[type="submit"].btn-primary:hover {
+    background: linear-gradient(135deg, var(--modal-gold-dark), var(--modal-gold));
+    color: var(--protic-blue-deep);
+    box-shadow: 0 4px 14px rgba(201,168,0,0.35);
+    transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOOKCARD
+═══════════════════════════════════════════════════════════════ */
+.protic-books-grid {
+    display: grid;
+     grid-template-columns: repeat(3, 1fr) !important;
+    gap: 30px !important;
+     padding: 20px 0;
+    width: 100%;
+}
+
+@media (max-width: 1100px) {
+    .protic-books-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .protic-books-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+.protic-book-card {
+    background: linear-gradient(160deg, #1e3570 0%, var(--protic-blue-deep) 100%);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 8px 28px rgba(8,16,42,0.35);
+    transition: transform var(--protic-transition), box-shadow var(--protic-transition);
+}
+
+.protic-book-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(8,16,42,0.45);
+}
+
+/* Badge catégorie */
+.protic-book-card__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--modal-gold);
+    color: var(--protic-blue-deep);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    z-index: 2;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Couverture */
+.protic-book-card__cover {
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba(45,91,227,0.15) 0%, rgba(13,31,78,0.4) 100%);
+}
+
+.protic-book-card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.protic-book-card:hover .protic-book-card__cover img {
+    transform: scale(1.04);
+}
+
+/* Corps */
+.protic-book-card__body {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.protic-book-card__title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--protic-white);
+    margin: 0;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    /* Tronque sur 2 lignes */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.protic-book-card__author {
+    font-size: 12px;
+    color: var(--protic-white-70);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Actions Résumé + Biographie : côte à côte ── */
+.protic-book-card__actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.protic-book-card__actions > * {
+    flex: 1;
+}
+
+/* Bouton Résumé — gauche */
+.protic-btn--sm.protic-btn--dark,
+.btn-resume {
+    background: rgba(255,255,255,0.12);
+    color: var(--protic-white);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 7px;
+    padding: 7px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--protic-transition);
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.protic-btn--sm.protic-btn--dark:hover,
+.btn-resume:hover {
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.40);
+}
+
+/* Bouton Biographie — droite */
+.protic-btn--sm.protic-btn--ghost-dark,
+.btn-author-bio {
+    background: transparent;
+    color: var(--modal-gold);
+    border: 1px solid rgba(253,217,9,0.40);
+    border-radius: 7px;
+    padding: 7px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--protic-transition);
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.protic-btn--sm.protic-btn--ghost-dark:hover,
+.btn-author-bio:hover {
+    background: rgba(253,217,9,0.12);
+    border-color: var(--modal-gold);
+}
+
+/* ── Bouton Contacter l'auteur — au-dessus des deux ── */
+.protic-btn--contact {
+    background: linear-gradient(135deg, var(--modal-gold-dark), var(--modal-gold));
+    color: var(--protic-blue-deep);
+    border: none;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--protic-transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(201,168,0,0.30);
+    letter-spacing: 0.01em;
+    order: -1; /* ← au-dessus des deux autres boutons */
+}
+
+.protic-btn--contact:hover {
+    background: linear-gradient(135deg, var(--modal-gold), #ffe033);
+    box-shadow: 0 4px 14px rgba(201,168,0,0.45);
+    transform: translateY(-1px);
+}
+
+.protic-btn--full { width: 100%; }
+
+/* ═══════════════════════════════════════════════════════════════
+   SKELETON LOADER
+═══════════════════════════════════════════════════════════════ */
+.protic-book-card--skeleton {
+    animation: pulse 1.6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.protic-book-card__cover-skeleton {
+    height: 200px;
+    background: rgba(255,255,255,0.08);
+}
+
+.skeleton-line {
+    height: 12px;
+    background: rgba(255,255,255,0.10);
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.skeleton-line--short { width: 65%; }
+.skeleton-line--btn   { height: 32px; margin-top: 8px; border-radius: 7px; }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.55; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PAGINATION
+═══════════════════════════════════════════════════════════════ */
+.protic-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 24px 0 8px;
+    flex-wrap: wrap;
+}
+
+.protic-pagination__btn {
+    min-width: 38px;
+    height: 38px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1.5px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.06);
+    color: var(--protic-white-70);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--protic-transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.protic-pagination__btn:hover:not(:disabled) {
+    background: rgba(255,255,255,0.14);
+    color: var(--protic-white);
+    border-color: rgba(255,255,255,0.35);
+}
+
+.protic-pagination__btn--active {
+    background: var(--modal-gold) !important;
+    color: var(--protic-blue-deep) !important;
+    border-color: var(--modal-gold) !important;
+    font-weight: 800;
+    box-shadow: 0 2px 10px rgba(253,217,9,0.40);
+}
+
+.protic-pagination__btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.protic-pagination__ellipsis {
+    color: var(--protic-white-40);
+    font-size: 16px;
+    padding: 0 4px;
+    line-height: 38px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ÉTATS VIDES / ERREUR
+═══════════════════════════════════════════════════════════════ */
+.protic-error,
+.protic-empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--protic-white-40);
+}
+
+.protic-error p,
+.protic-empty {
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.protic-btn--ghost {
+    background: rgba(255,255,255,0.10);
+    color: var(--protic-white-70);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 8px;
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--protic-transition);
+}
+
+.protic-btn--ghost:hover {
+    background: rgba(255,255,255,0.18);
+    color: var(--protic-white);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TAGS META (dans BookSummaryModal)
+═══════════════════════════════════════════════════════════════ */
+.meta-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.02em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    .modal {
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 16px 16px 0 0;
+        max-height: 96vh;
+        align-self: flex-end;
+    }
+
+    .modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .modal-body  { padding: 16px; }
+    .modal-header { padding: 16px; }
+    .modal-footer { padding: 12px 16px 16px; flex-wrap: wrap; }
+    .modal-footer .btn-primary { flex: 1 1 100%; }
+
+    .protic-books-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 16px;
+    }
+}

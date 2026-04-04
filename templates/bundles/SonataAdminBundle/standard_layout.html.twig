@@ -1,0 +1,492 @@
+{#
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+{#
+ * Custom modification by AGBOKOUDJO Franck.
+ *
+ * (c) AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
+ * Phone: +229 01 67 25 18 86
+ * LinkedIn: https://www.linkedin.com/in/internationales-web-apps-services-120520193/
+ * Company: INTERNATIONALES WEB APPS & SERVICES
+ * Github: <https://github.com/Agbokoudjo/>
+ * For more information, please feel free to contact the author.
+#}
+
+{%- set _preview = block('preview') is defined ? block('preview')|trim : null %}
+{% set _form = block('form') is defined ? block('form')|trim : null %}
+{% set _show = block('show') is defined ? block('show')|trim : null %}
+{% set _list_table = block('list_table') is defined ? block('list_table')|trim : null %}
+{% set _list_filters = block('list_filters') is defined ? block('list_filters')|trim : null %}
+{% set _tab_menu = block('tab_menu') is defined ? block('tab_menu')|trim : null %}
+{% set _content = block('content') is defined ? block('content')|trim : null %}
+{% set _title = block('title') is defined ? block('title')|trim : null %}
+{% set _breadcrumb = block('breadcrumb') is defined ? block('breadcrumb')|trim : null %}
+{% set _actions = block('actions') is defined ? block('actions')|trim : null %}
+{% set _navbar_title = block('navbar_title') is defined ? block('navbar_title')|trim : null %}
+{% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null -%}
+{% set _skin = sonata_config.getOption('skin') %}
+{% set _use_select2 = sonata_config.getOption('use_select2') %}
+{% set _use_icheck = sonata_config.getOption('use_icheck') %}
+
+<!DOCTYPE html>
+<html 
+
+     {% block html_attributes %}
+        class="no-js"
+        data-turbo="false"
+    {% endblock %}
+    
+    lang="{{app.locale}}"
+>
+<head>
+    {% block meta_tags %}
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="UTF-8">
+        <meta name="robots" content=" noindex , nofollow " >
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    {% endblock %}
+    {% block meta_sonata_config %}
+        <meta name="sonata-config" content='{{ {
+            SKIN: _skin,
+            CONFIRM_EXIT: sonata_config.getOption('confirm_exit'),
+            USE_SELECT2: _use_select2,
+            USE_ICHECK: _use_icheck,
+            USE_STICKYFORMS: sonata_config.getOption('use_stickyforms'),
+            DEBUG: app.debug ?? false,
+            APP_ENV: app.environment ?? 'prod',
+            LOCALE: app.locale ?? 'fr',
+            ENABLE_LOCALE: app.enabled_locales ?? []
+            }|json_encode()|e('html_attr') }}'
+        >
+    {% endblock %}
+    {% block meta_sonata_translation %}
+        {% set translations =  {
+            CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle',app.locale),
+            LABEL_BTN_CONFIRM: 'label_btn_confirm'|trans({}, 'SonataAdminBundle',app.locale),
+            LABEL_BTN_CANCEL: 'label_btn_cancel'|trans({}, 'SonataAdminBundle',app.locale),
+            ACTION_CANCELLED_SUCCESS : 'action_cancelled_success'|trans({}, 'SonataAdminBundle',app.locale),
+            FORM_SUBMISSION_PROGRESS_MESSAGE: 'form_submission_progress_message'|trans({}, 'SonataAdminBundle',app.locale),
+            FORM_SUBMISSION_PROGRESS_TITLE: 'form_submission_progress_title'|trans({}, 'SonataAdminBundle',app.locale),
+            ACTION_PENDING_RESEND_EMAIL_VERIFCATION_MESSAGE:'action_pending_resend_verification_message'|trans({}, 'SonataUserBundle',app.locale),
+            ACTION_PENDING_TITLE: 'action.pending.title'|trans({}, 'SonataAdminBundle',app.locale),
+            ACTION_PENDING_MESSAGE: 'action.pending.message'|trans({}, 'SonataAdminBundle',app.locale),
+        }   
+        %}
+        <meta name="sonata-translations" content='{{ translations|json_encode()|e('html_attr')}}'>
+        <meta name="sonata-translations-hash" content="{{TRANSLATION_HASH}}">
+    {% endblock %}
+    {% block stylesheets_font_policies %}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preload" 
+            href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,100..900&display=swap" as="style" 
+            onload="this.onload=null;this.rel='stylesheet'">
+    {% endblock %}
+    {% block stylesheets %}
+        {{ vite_entry_link_tags('sonata',[],'admin') }}
+        {% for stylesheet in sonata_config.getOption('stylesheets', []) %}
+            <link rel="stylesheet" href="{{ asset(stylesheet.path, stylesheet.package_name) }}">
+        {% endfor %}
+        <link rel="stylesheet" 
+            href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/fontawesome.min.css" 
+                integrity="sha256-sWSi0pBXSOHUhRLx6YVga0KCyUOLvA7ilY5W9lhpXSs=" 
+                crossorigin="anonymous">
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
+            integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q="
+            crossorigin="anonymous"
+            media="print"
+            onload="this.media='all'"
+        >
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css"
+            crossorigin="anonymous"
+        >
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+            crossorigin="anonymous"
+        >
+        <link 
+            rel="stylesheet" 
+            href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css" 
+            integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" 
+            crossorigin="anonymous">
+        <link 
+            rel="stylesheet" 
+            href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" 
+            integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" 
+            crossorigin="anonymous">
+    {% endblock %}
+    {% block javascripts %}
+         {{ vite_entry_script_tags('sonata',[],'admin') }}
+        {% block sonata_javascript_config %}{% endblock %}
+        {% block sonata_javascript_pool %}
+            {# {% for javascript in sonata_config.getOption('javascripts', []) %}
+                <script src="{{ asset(javascript.path, javascript.package_name) }}" defer></script>
+            {% endfor %} #}
+        {% endblock %}
+            {# localize select2 #}
+        {# {% if sonata_config.getOption('use_select2') %}
+            {% set localeForSelect2 = canonicalize_locale_for_select2() %}
+            {% if localeForSelect2 %}
+                <script src="{{ asset('bundles/sonataadmin/select2-locale/' ~ localeForSelect2 ~ '.js', 'sonata_admin') }}" defer>
+                </script>
+            {% endif %}
+        {% endif %}  #}
+        {{ vite_entry_script_tags('form_validator',[],'admin') }} 
+    {% endblock %}
+    
+    {% block favicon %}
+        {# <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>"> #}
+          <link rel="icon" href="{{ asset('assets/' ~ sonata_config.logo,'admin') }}" width="50" height="50">
+    {% endblock %}
+    <title>
+        {% block sonata_head_title %}
+            {{ 'Admin'|trans({}, 'SonataAdminBundle') }}
+
+            {% if _title is not empty %}
+                {{ _title|striptags|raw }}
+            {% else %}
+                {% if action is defined %}
+                    -
+                    {{ render_breadcrumbs_for_title(admin, action) }}
+                {% endif %}
+            {% endif %}
+        {% endblock %}
+    </title>
+</head>
+<body
+    {% block body_attributes -%}
+        class="sonata-bc {% block admin_lte_skin_class %}{{ _skin }}{% endblock %} fixed
+        {% if _use_select2 %}sonata-select2{% endif %}
+        {% if _use_icheck %}sonata-icheck{% endif %}
+        {% if app.request.cookies.get('sonata_sidebar_hide') -%}
+            sidebar-collapse
+        {%- endif -%}
+        layout-fixed sidebar-expand-lg sidebar-mini 
+        "
+        {{ stimulus_controller('sonata-sticky') }}
+    {%- endblock -%}
+>
+    <div class="app-wrapper  {% block cover_container_class %}  cover-container {% endblock %} " id="app-wrapper">
+        {% block sonata_header %}
+            <nav class="app-header navbar navbar-expand shadow" id="app-header">
+                {% block sonata_header_noscript_warning %}
+                    <noscript>
+                        <div class="noscript-warning">
+                            {{ 'noscript_warning'|trans({}, 'SonataAdminBundle') }}
+                        </div>
+                    </noscript>
+                {% endblock %}
+                {% block sonata_nav %}
+                    <div class="container-fluid" {{ stimulus_target('sonata-sticky', 'topNavbar') }}>
+                        <div class="navbar-nav">
+                            <div class="nav-item">
+                                <a class="nav-link sidebar-toggle btn btn-sidebar" data-lte-toggle="sidebar" href="#" role="button"><i class="bi bi-list"></i></a>
+                            </div>
+                        </div>
+                        {% if sonata_config.getOption('search') %}
+                            {% block sonata_header_search %}
+                                <div class="navbar-nav ms-5">
+                                    <div class="nav-item">
+                                        <div class="navbar-search-block">
+                                            <form class="d-flex navbar-search " 
+                                                action="{{ path('sonata_admin_search') }}" 
+                                                method="GET" 
+                                                id="navbar-search"
+                                                role="search">
+                                                <div class="input-group">
+                                                    <input type="search" 
+                                                        name="q" 
+                                                        value="{{ app.request.get('q') }}" 
+                                                        class="form-control form-control-navbar" 
+                                                        placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}" 
+                                                        aria-label="Search" />
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-navbar" type="submit">
+                                                            <i class="bi bi-search"></i>
+                                                        </button>
+                                                        <button class="btn btn-navbar" type="reset" data-widget="navbar-search" form="navbar-search">
+                                                            <i class="bi bi-x-lg"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endblock %} {# endblock  sonata_header_search  #}   
+                        {% endif %}    
+                        {% block sonata_top_nav_menu %}
+                            <div class="navbar-nav ms-auto">
+                                <div class="nav-item">
+                                    <a class="nav-link" href="#" data-lte-toggle="fullscreen">
+                                        <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
+                                        <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
+                                    </a>
+                                </div>
+                                {% block sonata_top_nav_menu_add_block %}
+                                    {% set addBlock = include(get_global_template('add_block')) %}
+                                    {% if addBlock|trim is not empty %}
+                                        <div class="nav-item dropdown">
+                                            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#">
+                                                <i class="fas fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fas fa-caret-down" aria-hidden="true"></i>
+                                            </a>
+                                            {{ addBlock|raw }}
+                                        </div>
+                                    {% endif %}
+                                {% endblock %} {# endblock sonata_top_nav_menu_add_block #}
+                                {% if app.user %}
+                                    {% block sonata_top_nav_menu_user_block %}
+                                        {% set userBlock = include(get_global_template('user_block')) %}
+                                        {% if userBlock|trim is not empty %}
+                                            <div class="nav-item  dropdown user-menu dropdown-menu-lg dropdown-menu-end">
+                                                {{ userBlock|raw }}
+                                            </div>
+                                        {% endif %}
+                                    {% endblock %} {# endblock sonata_top_nav_menu_user_block #}
+                                {% endif %}
+                            </div>
+                        {% endblock %} {# endblock sonata_top_nav_menu #}
+                    </div>
+                {% endblock %} {# endblock  sonata_nav #}
+            </nav>
+        {% endblock %} {# endblock sonata_header #}
+        {% block sonata_wrapper %}
+            {% block sonata_left_side %}
+                <aside class="app-sidebar app-sidebar-custom shadow overflow-auto" 
+                        data-enable-persistence="true"
+                        id="app-sidebar">
+                    <div class="sidebar-brand overflow-hidden" id="sidebar-brand">
+                        {% block logo %}
+                            <a class="logo" href="{{ path('sonata_admin_dashboard') }}" class="brand-link">
+                                {% if 'icon' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
+                                    <img src="{{ asset('assets/' ~ sonata_config.logo,'admin') }}" alt="{{ sonata_config.title }}" 
+                                        class="img-fluid brand-image" id="logo-image">
+                                {% endif %}
+                            </a> 
+                        {% endblock %} {# endblock logo #}
+                    </div>
+                        <div class="sidebar-wrapper" id="sidebar-wrapper">
+                            {% block sonata_side_nav %}
+                                <nav class="mt-2 sidebar-nav-container">
+                                    {% block side_bar_before_nav %} {% endblock %} {# endblock side_bar_before_nav #}
+                                    {% block side_bar_nav %}
+                                        {{ knp_menu_render('sonata_admin_sidebar', {template: get_global_template('knp_menu_template')}) }}
+                                    {% endblock side_bar_nav %} {# endblock side_bar_nav #}
+                                    {% block side_bar_after_nav %}
+                                            {% block side_bar_after_nav_content %} {% endblock %}
+                                    {% endblock %}
+                                </nav>
+                           {% endblock sonata_side_nav %} {# endblock sonata_side_nav #}
+                        </div>
+                </aside>
+            {% endblock sonata_left_side %} {# endblock sonata_left_side #}
+            {% block sonata_right_main %}
+                <main class="app-main content-wrapper" id="app-main">
+                    {% block sonata_page_content %}
+                        <div class="app-content-header content-header" id="app-content-header">
+                            {% block sonata_page_content_header %}
+                                {% block sonata_page_content_nav %}
+                                    {% if _navbar_title is not empty
+                                        or _tab_menu is not empty
+                                        or _actions is not empty
+                                        or _list_filters_actions is not empty
+                                    %}
+                                        <nav class="navbar navbar-expand-lg navbar-container navbar-container-header shadow-sm">
+                                            <div class="container-fluid d-flex justify-content-between align-items-center">
+                                                {% block tab_menu_navbar_header %}
+                                                    {% if _navbar_title is not empty %}
+                                                        <div class="navbar-header">
+                                                            <a class="navbar-brand" href="#">{{ _navbar_title|raw }}</a>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endblock %} {# endblock tab_menu_navbar_header #}
+                                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#sonataNavbarSupportedContent" 
+                                                    aria-controls="sonataNavbarSupportedContent" 
+                                                    aria-expanded="false" 
+                                                    aria-label="Toggle navigation">
+                                                    <span class="navbar-toggler-icon navabar-icon-custom"></span>
+                                                </button>
+                                                <div class="collapse navbar-collapse justify-content-end"  id="sonataNavbarSupportedContent">
+                                                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 navbar-nav-scroll element-action">
+                                                        {% if _tab_menu is not empty %}
+                                                            <li class="nav-item"><div class="navbar-left">{{ _tab_menu|raw }}</div></li>
+                                                        {% endif %}
+                                                        {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
+                                                            <li class="nav-item">
+                                                                <div class="nav navbar-right btn-group">
+                                                                    {% for mode, settings in admin.listModes %}
+                                                                        <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default list-mode navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}">
+                                                                                {{ settings.icon|default('')|parse_icon }}
+                                                                        </a>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </li>
+                                                        {% endif %}
+                                                        {% block sonata_admin_content_actions_wrappers %}
+                                                            {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
+                                                                <li class="nav-item">
+                                                                    <ul class="nav navbar-nav navbar-right">
+                                                                        {% if _actions|split('</a>')|length > 2 %}
+                                                                            <li class="dropdown sonata-actions">
+                                                                                <a href="#" class="btn text-white border text-decoration-none dropdown-toggle
+
+                                                                                {% if _show is not empty %}
+                                                                                                sonata-ba-show-actions-dropdown-toggle
+
+                                                                                            {% endif %}
+                                                                                    " 
+                                                                                        data-bs-toggle="dropdown">
+                                                                                        {{ 'link_actions'|trans({}, 'SonataAdminBundle') }} 
+                                                                                        <b class="caret"></b>
+                                                                                </a>
+                                                                                
+                                                                                <ul class="dropdown-menu
+                                                                                            dropdown-menu-end
+                                                                                           {% if _show is not empty %}
+                                                                                                sonata-ba-show-actions-dropdown-menu 
+                                                                                            {% endif %}
+                                                                                        " 
+                                                                                    role="menu">
+                                                                                    {{ _actions|raw }}
+                                                                                </ul>
+                                                                            </li>
+                                                                        {% else %}
+                                                                            <li class="single-action">
+                                                                                {{_actions|replace({ '<li>': '', '</li>': '' })|trim|raw}}
+                                                                            </li>
+                                                                        {% endif %}
+                                                                    </ul>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endblock %} {# endblock sonata_admin_content_actions_wrappers #}
+                                                        {% if _list_filters_actions is not empty %}
+                                                            <li class="nav-item"> {{ _list_filters_actions|raw }}</li>
+                                                        {% endif %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </nav>
+                                    {% endif %}
+                                {% endblock %} {# endblock sonata_page_content_nav #}
+                            {% endblock %} {# endblock sonata_page_content_header  #}
+                        </div>
+                        <div class="app-content" id="app-content">
+                            {% block sonata_admin_content %}
+                                {% block notice %}
+                                    {% include '@SonataTwig/FlashMessage/render.html.twig' %}
+                                {% endblock %} {# endblock notice #}
+
+                                {% if _preview is not empty %}
+                                    <div class="sonata-ba-preview">{{ _preview|raw }}</div>
+                                {% endif %}
+
+                                {% if _content is not empty %}
+                                    <div class="sonata-ba-content">{{ _content|raw }}</div>
+                                {% endif %}
+
+                                {% if _show is not empty %}
+                                    <div class="sonata-ba-show">{{ _show|raw }}</div>
+                                {% endif %}
+
+                                {% if _form is not empty %}
+                                    <div class="sonata-ba-form">{{ _form|raw }}</div>
+                                {% endif %}
+
+                                {% if _list_filters is not empty %}
+                                    <div class="row">
+                                        {{ _list_filters|raw }}
+                                    </div>
+                                {% endif %}
+
+                                {% if _list_table is not empty %}
+                                    <div class="row">
+                                        {{ _list_table|raw }}
+                                    </div>
+                                {% endif %}
+                            {% endblock %} {# sonata_admin_content #}
+                        </div>
+                    {% endblock %} {# endblock sonata_page_content  #}
+                </main>
+            {% endblock %} {# endblock sonata_right_main #}
+        {% endblock %} {# endblock sonata_wrapper #}
+        {% block sonata_footer %}
+            <footer class="app-footer text-center small text-muted">
+                Updated by ❤️ par AGBOKOUDJO Franck — 
+                <a href="https://www.linkedin.com/in/internationales-web-apps-services-120520193/" target="_blank" class="text-decoration-none">LinkedIn</a> |
+                <a href="https://github.com/Agbokoudjo/" target="_blank" class="text-decoration-none">GitHub</a> |
+                <strong> WhatsApp/Appel: +229 01 67 25 18 86</strong>
+            </footer>
+        {% endblock %} {# endblock sonata_footer #}
+    </div>
+    {% block javascript_inline %}
+        <script
+            src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
+            crossorigin="anonymous" defer>
+        </script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            crossorigin="anonymous" defer>
+        </script>
+        <script>
+          
+            const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
+            const Default = {
+                scrollbarTheme: 'os-theme-light',
+                scrollbarAutoHide: 'leave',
+                scrollbarClickScroll: true,
+            };
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+
+                // Disable OverlayScrollbars on mobile devices to prevent touch interference
+                const isMobile = window.innerWidth <= 992;
+
+                if (
+                    sidebarWrapper &&
+                    OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined &&
+                    !isMobile
+                    ) {
+                        OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+                            scrollbars: {
+                            theme: Default.scrollbarTheme,
+                            autoHide: Default.scrollbarAutoHide,
+                            clickScroll: Default.scrollbarClickScroll,
+                            },
+                    });
+                    }
+            });
+        </script>
+        {% if sonata_config.getOption('use_bootlint') %}
+            {% block bootlint %}
+                {# Bootlint - https://github.com/twbs/bootlint#in-the-browser #}
+                <script type="text/javascript">
+                    javascript:(function(){
+                        var s=document.createElement("script");
+                        s.onload=function(){
+                            bootlint.showLintReportForCurrentDocument([], {hasProblems: false, problemFree: false});};
+                            s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";
+                            document.body.appendChild(s)})();
+
+
+
+
+                            
+                </script>
+            {% endblock %}
+        {% endif %}
+    {% endblock %} {# endblock javascript_inline  #}
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/js/fontawesome.min.js" integrity="sha256-YbayIEYGVLmyi3xj7wG91wgAa+Iz3qf7HuK6e1N40/w=" crossorigin="anonymous"></script>
+</body>
+</html>
