@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import symfonyPlugin from "vite-plugin-symfony";
 import inject from '@rollup/plugin-inject';
 //import react from "@vitejs/plugin-react";
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
     base: '/build/admin/',
