@@ -64,15 +64,16 @@ services:
             $fromAddresses: '%app.mail.from%'
 
 when@dev:
-    App\DataFixtures\BookFixtures:
-        arguments:
-            $projectDir: '%kernel.project_dir%'
+    services:
+        App\DataFixtures\BookFixtures:
+            arguments:
+                $projectDir: '%kernel.project_dir%'
 
-    App\DataFixtures\ManuscriptSubmissionFixtures:
-        arguments:
-            $projectDir: '%kernel.project_dir%'
+        App\DataFixtures\ManuscriptSubmissionFixtures:
+            arguments:
+                $projectDir: '%kernel.project_dir%'
 
-    App\DataFixtures\SonataUserFixtures:
-        arguments:
-            $projectDir: '%kernel.project_dir%' 
+        App\DataFixtures\SonataUserFixtures:
+            arguments:
+                $projectDir: '%kernel.project_dir%'
     
