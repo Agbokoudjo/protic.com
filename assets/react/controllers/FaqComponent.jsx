@@ -3,7 +3,7 @@
  * Accordion avec <details>/<summary> natifs
  * Animation CSS pure — aucun calcul JS de hauteur
  */
-import { useState, useEffect, useCallback } from 'react';
+import React,{ useState, useEffect, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
 import { safeFetch } from '@wlindabla/http_client';
 import { addParamToUrl } from '@wlindabla/form_validator';
@@ -116,7 +116,7 @@ const FaqPagination = ({ current, total, onChange }) => {
     if (total <= 1) return null;
 
     return (
-        <nav className="faq-pagination" aria-label="Pagination des FAQ">
+        <nav className="faq-pagination" aria-label="Pagination des FAQ" data-turbo="false">
             <button
                 className="faq-page-btn faq-page-btn--nav"
                 onClick={() => onChange(current - 1)}
@@ -172,7 +172,7 @@ const FaqComponent = ({ perPage = 8 }) => {
     const load = useCallback(async (pg = 1, cat = '') => {
         setLoading(true);
         setError(false);
-        try {
+        try { 
             const res  = await fetchFaqs(pg, perPage, cat);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = res.data;
@@ -263,18 +263,20 @@ const FaqComponent = ({ perPage = 8 }) => {
    Montage via IntersectionObserver
 ══════════════════════════════════════════ */
 export const mountFaq = () => {
-    const root = document.getElementById('faq-root');
-    if (!root || root.dataset.mounted) return;
+    const rootEl = document.getElementById('faq-root');
+    if (!rootEl || rootEl.dataset.mounted) return;
 
-    const perPage = parseInt(root.dataset.perPage ?? '8', 10);
+    const perPage = parseInt(rootEl.dataset.perPage ?? '8', 10);
 
     const observer = new IntersectionObserver(([entry], obs) => {
         if (!entry.isIntersecting) return;
         obs.disconnect();
-        root.dataset.mounted = 'true';
-        root.innerHTML = '';
-        createRoot(root).render(<FaqComponent perPage={perPage} />);
+        if (rootEl.dataset.mounted === 'true') return;
+        rootEl.dataset.mounted = 'true';
+        rootEl.innerHTML = '';
+        const reactRoot = createRoot(rootEl);
+        reactRoot.render(<FaqComponent perPage={perPage} />);
     }, { rootMargin: '300px' });
 
-    observer.observe(root);
+    observer.observe(rootEl);
 };

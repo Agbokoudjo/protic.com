@@ -15,8 +15,8 @@ parameters:
 services:
     # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autowire: true      
+        autoconfigure: true 
     App\:
         resource: '../src/'
 
@@ -65,6 +65,10 @@ services:
 
 when@dev:
     services:
+        _defaults:
+            autowire: true      
+            autoconfigure: true 
+            
         App\DataFixtures\BookFixtures:
             arguments:
                 $projectDir: '%kernel.project_dir%'
@@ -73,11 +77,12 @@ when@dev:
         App\DataFixtures\ManuscriptSubmissionFixtures:
             arguments:
                 $projectDir: '%kernel.project_dir%'
+            tags: ['doctrine.fixture.orm']
 
         App\DataFixtures\SonataUserFixtures:
             arguments:
                 $projectDir: '%kernel.project_dir%'
+            tags: ['doctrine.fixture.orm']
 
         App\DataFixtures\GlobalSettingFixtures:
             tags: ['doctrine.fixture.orm']
-    

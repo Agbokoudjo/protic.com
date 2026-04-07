@@ -20,7 +20,7 @@ export default function BookSummaryModal({ book }) {
             <button
                 className="protic-btn protic-btn--sm protic-btn--dark btn-resume"
                 onClick={() => setIsOpen(true)}
-            >
+            > 
                 📄 Résumé
             </button>
 
@@ -105,19 +105,19 @@ export default function BookSummaryModal({ book }) {
 
                         {/* ContactFormModal gère son propre état — on ferme resumeModal avant */}
                         <ContactFormModal
-                            modalSubTitle={`📚 ${book?.title} — ${book?.author?.firstName} ${book?.author?.lastName}`}
+                            modalSubTitle={`📚 ${book?.title} — ${book?.author?.fullName}`}
                             subject={`Commande — ${book?.title ?? ""}`}
                             urlSubmit="/api/contact-author"
                             labelBtnClick="📩 Commander un exemplaire"
                             classNameBtnClick="btn btn-primary"
                             onTrigger={() => setIsOpen(false)}
-                            
+                            bookId={book.id}
                         />
 
                         {/* AuthorBioModal gère son propre état — on ferme resumeModal avant */}
-                        <AuthorBioModal
+                        {/* <AuthorBioModal
                             author={book?.author}
-                            labelBtnClick="👤 Voir la biographie"
+                             labelBtnClick="👤 Voir la biographie"
                             classNameBtnClick="btn"
                             styleBtnClick={{
                                 flex: 1,
@@ -129,8 +129,10 @@ export default function BookSummaryModal({ book }) {
                                 borderRadius: "8px"
                             }}
                             onTrigger={() => setIsOpen(false)}
+                            bookId={book.id}
+                            bookTitle={book.title}
                             
-                        />
+                        /> */}
                     </div>
                 }
             />

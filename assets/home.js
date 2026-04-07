@@ -1,15 +1,17 @@
 import './styles/home.css';
 import './styles/book.css'
 import { initLazyMounts } from "./react/lazy-mount.jsx";
-
+import { select2 } from "./utils";
 document.addEventListener('DOMContentLoaded',()=>{
     counterAnimanated();
     initLazyMounts();
+    select2(document);
 });
 
 document.addEventListener("turbo:load", ()=>{
     counterAnimanated();
     initLazyMounts();
+    select2(document);
 });
 
 /**

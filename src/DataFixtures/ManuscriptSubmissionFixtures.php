@@ -24,7 +24,6 @@ use Symfony\Component\DependencyInjection\Attribute\WhenNot;
 class ManuscriptSubmissionFixtures extends Fixture implements FixtureGroupInterface
 {
     public function __construct(
-        private readonly PhoneNumberUtil $phoneNumberUtil,
         private readonly string $projectDir,
     ) {}
 
@@ -45,7 +44,7 @@ class ManuscriptSubmissionFixtures extends Fixture implements FixtureGroupInterf
         }
 
         $loaded = 0;
-
+         $phoneNumberUtil=PhoneNumberUtil::getInstance() ;
         foreach ($data as $index => $item) {
             $submission = new ManuscriptSubmission();
 
@@ -59,7 +58,7 @@ class ManuscriptSubmissionFixtures extends Fixture implements FixtureGroupInterf
 
             // ── Téléphone ─────────────────────────────────────
             try {
-                $phone = $this->phoneNumberUtil->parse($item['phone'], null);
+                $phone = $phoneNumberUtil->parse($item['phone'], null);
                 $submission->setPhone($phone);
             } catch (\libphonenumber\NumberParseException $e) {
                 echo sprintf("⚠️  Téléphone invalide pour %s : %s\n", $item['fullName'], $e->getMessage());

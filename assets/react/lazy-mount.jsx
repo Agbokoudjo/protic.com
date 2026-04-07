@@ -1,4 +1,3 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
 import BooksGrid from "./controllers/BooksGrid";
 import CatalogueGrid from './controllers/CatalogueGrid';
@@ -11,12 +10,15 @@ const COMPONENTS = {
     BooksGrid,
 };
 
+const roots = new Map();
+
 /**
  * Monte un composant React quand son root entre dans le viewport
  */
 const lazyMount = (rootEl) => {
     // Déjà monté — on ignore
     if (rootEl.dataset.mounted === "true") return;
+    if (roots.has(rootEl)) return;
 
     const componentName = rootEl.dataset.component;
     const Component     = COMPONENTS[componentName];
@@ -41,7 +43,8 @@ const lazyMount = (rootEl) => {
             rootEl.dataset.mounted = "true";
 
             // Montage React
-            const root = createRoot(rootEl);
+           const root = createRoot(rootEl);
+            roots.set(rootEl, root);
             root.render(<Component {...props} />);
         },
         {
@@ -75,11 +78,14 @@ export const mountCatalogue = () => {
 };
 
 export const mountFooter = () => {
-    const root = document.getElementById('protic-footer-root');
-    if (!root) return;
+    const rootEl = document.getElementById('protic-footer-root');
+    
+    // Sécurité : si le root n'existe pas OU s'il est déjà marqué comme monté
+    if (!rootEl || rootEl.dataset.mounted === 'true') return;
 
-    const raw = root.getAttribute('data-config');
+    const raw = rootEl.getAttribute('data-config');
     if (!raw) return;
+
     let config;
     try {
         config = JSON.parse(raw);
@@ -92,12 +98,20 @@ export const mountFooter = () => {
         ([entry], obs) => {
             if (!entry.isIntersecting) return;
             obs.disconnect();
-            createRoot(root).render(<Footer config={config} />);
+            if (rootEl.dataset.mounted === 'true') return;
+            rootEl.dataset.mounted = 'true';
+
+            const reactRoot = createRoot(rootEl);
+            reactRoot.render(<Footer config={config} />);
+
             /* Relance AOS pour les éléments nouvellement insérés */
-            if (window.AOS) window.AOS.refresh();
+            if (window.AOS) {
+                // Petit timeout pour laisser à React le temps de rendre le DOM
+                setTimeout(() => window.AOS.refresh(), 100);
+            }
         },
         { rootMargin: '200px' } /* pré-charge 200px avant d'entrer dans le viewport */
     );
 
-    observer.observe(root);
+    observer.observe(rootEl);
 };

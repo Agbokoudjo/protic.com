@@ -2227,6 +2227,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"countries-list@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "countries-list@npm:3.3.0"
+  checksum: 10c0/7f71b163f9b34fbe5d023b2d4eab32e00af75a9e8b40c9635ee035539ff885b948b0cca36619fd5c76920606411b1eb3093b67ce96fbe81a6823deb6d35f6bfb
+  languageName: node
+  linkType: hard
+
 "crc-32@npm:~1.2.0, crc-32@npm:~1.2.1":
   version: 1.2.2
   resolution: "crc-32@npm:1.2.2"
@@ -3399,6 +3406,7 @@ __metadata:
     bootstrap: "npm:^5.3.8"
     bootstrap-icons: "npm:^1.13.1"
     concurrently: "npm:^9.2.1"
+    countries-list: "npm:^3.3.0"
     icheck: "npm:^1.0.2"
     qs: "npm:^6.15.0"
     react: "npm:^19.2.4"

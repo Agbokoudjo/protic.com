@@ -131,6 +131,7 @@ const BookCard = ({ book }) => {
                     urlSubmit="/api/contact-author"
                     labelBtnClick="✉️ Contacter l'auteur"
                     classNameBtnClick="protic-btn protic-btn--contact protic-btn--full"
+                     bookId={book.id}
                 />
 
                 {/* Résumé (gauche) + Biographie (droite) */}
@@ -141,6 +142,8 @@ const BookCard = ({ book }) => {
                         author={book.author}
                         labelBtnClick="👤 Biographie"
                         classNameBtnClick="protic-btn protic-btn--sm protic-btn--ghost-dark"
+                        bookId={book.id}
+                        bookTitle={book.title}
                     />
                 </div>
             </div>

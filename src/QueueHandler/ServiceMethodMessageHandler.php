@@ -17,10 +17,13 @@ declare(strict_types=1);
 namespace App\QueueHandler;
 
 use App\CommandHandler\AdminManuscriptNotificationHandler;
+use App\CommandHandler\AuthorCommandNotificationHandler;
 use App\CommandHandler\AuthorManuscriptConfirmationHandler;
 use App\Queue\Message\ServiceMethodMessage;
 use App\QueueHandler\ServiceMethodMessageHandlerInterface;
 use App\Service\ApplyEmailVerificationService;
+use App\Service\Mailing\SupportMailer;
+use App\Service\Mailing\SystemMailer;
 use App\Service\SecureTokenService;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -57,7 +60,10 @@ final class ServiceMethodMessageHandler implements ServiceSubscriberInterface,Se
             SecureTokenService::class,
             ApplyEmailVerificationService::class,
             AdminManuscriptNotificationHandler::class,
-            AuthorManuscriptConfirmationHandler::class
+            AuthorManuscriptConfirmationHandler::class,
+            SupportMailer::class,
+            SystemMailer::class,
+            AuthorCommandNotificationHandler::class
         ];
     }
 

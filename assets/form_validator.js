@@ -5,8 +5,7 @@ import {
 } from '@wlindabla/form_validator';
 
 
-
-jQuery(window).on('load',()=>{
+window.addEventListener('DOMContentLoaded',()=>{
     const form_exist = document.querySelector('form.form-validate');
     if (form_exist ===null) {
         return;
@@ -64,3 +63,4 @@ jQuery(window).on('load',()=>{
         }
     });
 })
+

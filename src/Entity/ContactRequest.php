@@ -3,14 +3,26 @@
 declare(strict_types=1);
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\ContactRequestRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use libphonenumber\PhoneNumber;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/contact_requests',
+            normalizationContext: ['groups' => ['contact_request:read']],
+            paginationEnabled: false,
+        ),
+    ],
+)]
 #[Gedmo\SoftDeleteable]
 #[ORM\Entity(repositoryClass: ContactRequestRepository::class)]
 class ContactRequest
@@ -20,6 +32,7 @@ class ContactRequest
     #[ORM\Id]
     #[ORM\GeneratedValue('IDENTITY')]
     #[ORM\Column(type: "integer")]
+    #[Groups(['contact_request:read'])]
     private ?int $id = null;
 
     /**
@@ -47,6 +60,7 @@ class ContactRequest
         pattern: '/^[\p{L}\p{N}\p{M}\s\-\.]{6,255}$/iu',
         message: 'Le nom ne peut contenir que des lettres (toutes langues), chiffres, espaces, tirets, et points.',
     )]
+    #[Groups(['contact_request:list', 'contact_request:write'])]
     #[ORM\Column(length: 255)]
     private ?string $fullName = null;
 
@@ -72,16 +86,18 @@ class ContactRequest
         message: 'L\'adresse email contient des caractères non autorisés.',
     )]
     #[ORM\Column(type: "string", length: 200)]
+    #[Groups(['contact_request:write'])]
     protected ?string $email = null;
 
     #[Assert\NotBlank()]
     #[Assert\Length(min: 6, max: 255)]
     #[Assert\NotNull]
     #[Assert\Regex(
-        pattern: '/^[\p{L}\p{N}\p{M}\s\-\.]{6,255}$/iu',
-        message: 'L\'objet du message  ne peut contenir que des lettres (toutes langues), chiffres, espaces, tirets, et points.',
+        pattern: '/^[\p{L}\p{N}\p{M}\s\-\.\p{P}\,\(\)]{6,255}$/iu',
+        message: 'L\'objet du message contient des caractères non autorisés.',
     )]
     #[ORM\Column(length: 255)]
+    #[Groups(['contact_request:write'])]
     private ?string $subject = null;
 
     /** 
@@ -109,6 +125,7 @@ class ContactRequest
         match: false,
     )]
     #[ORM\Column(type: Types::TEXT, length: 5000)]
+    #[Groups(['contact_request:write'])]
     private ?string $message = null;
 
     #[ORM\Column(length: 20)]
@@ -118,6 +135,7 @@ class ContactRequest
     #[Assert\NotNull(message: 'Le téléphone ne peut pas être nul.')]
     #[Assert\Length(min: 8, max: 80)]
     #[ORM\Column(type: 'phone_number', length: 80)]
+    #[Groups(['contact_request:write'])]
     protected ?PhoneNumber $phone = null;
 
     #[Assert\Country(
@@ -126,6 +144,7 @@ class ContactRequest
     )]
     #[Assert\Length(min: 3, max: 200)]
     #[ORM\Column(type: 'string', length: 200, nullable: true)]
+    #[Groups(['contact_request:write'])]
     protected ?string $country;
     
     #[ORM\ManyToOne]

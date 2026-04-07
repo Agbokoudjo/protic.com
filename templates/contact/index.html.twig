@@ -9,7 +9,7 @@ Soumettez votre manuscrit à ProTIC Editions &amp; Services, maison d'édition b
 {% block head_extra %}
 <meta property="og:title"       content="Contact ProTIC — Soumettez votre manuscrit">
 <meta property="og:description" content="Confiez votre œuvre à ProTIC Editions. Dépôt légal inclus, accompagnement personnalisé, réponse sous 48h.">
-<meta property="og:image"       content="{{ asset('assets/images/contact-hero-bg.jpg','app') }}">
+<meta property="og:image"       content="{{ asset('assets/images/contact-hero-bg.png','app') }}">
 <meta name="keywords" content="soumettre manuscrit Bénin, publier livre Cotonou, contact édition Abomey-Calavi, manuscrit ProTIC, publication auteur béninois">
 <link rel="canonical" href="{{ app.request.uri }}">
 {{ vite_entry_link_tags('contact') }}
@@ -128,7 +128,7 @@ Soumettez votre manuscrit à ProTIC Editions &amp; Services, maison d'édition b
         </aside>
 
         <div class="pc-form-wrap"
-             data-aos="fade-left" data-aos-duration="700" data-aos-delay="100">
+             data-aos="fade-left" data-aos-duration="700" data-aos-delay="100" id="container-succcess">
 
             {# ── État succès (caché par défaut) ── #}
             {% if app.session.flashBag.has('contact_success') %}
@@ -169,6 +169,7 @@ Soumettez votre manuscrit à ProTIC Editions &amp; Services, maison d'édition b
                         id: 'pc-manuscript-form',
                         enctype: 'multipart/form-data',
                         class: 'pc-form form-validate',
+                        
                     }
                 }) }}
 
@@ -340,4 +341,14 @@ Soumettez votre manuscrit à ProTIC Editions &amp; Services, maison d'édition b
 {% block scripts_extra %}
 {{ vite_entry_script_tags('contact') }}
 {{ vite_entry_script_tags('form_validator',[],'app') }} 
+{% if app.flashes('contact_success') is not empty %}
+    <script>
+        window.addEventListener('load', function() {
+            const el = document.getElementById('container-succcess');
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    </script>
+{% endif %}
 {% endblock %}

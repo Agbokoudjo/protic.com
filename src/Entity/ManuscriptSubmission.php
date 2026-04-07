@@ -3,16 +3,28 @@
 declare(strict_types=1);
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\ManuscriptSubmissionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use libphonenumber\PhoneNumber;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Attribute as Vich;
-use Symfony\Component\HttpFoundation\File\File;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: 'manuscript_submissions',
+            normalizationContext: ['groups' => ['manuscript:read']],
+            paginationEnabled: false,
+        ),
+    ],
+)]
 #[Vich\Uploadable]
 #[Gedmo\SoftDeleteable]
 #[ORM\Entity(repositoryClass: ManuscriptSubmissionRepository::class)]
@@ -23,6 +35,7 @@ class ManuscriptSubmission
     #[ORM\Id]
     #[ORM\GeneratedValue('IDENTITY')]
     #[ORM\Column(type: "integer")]
+    #[Groups(['manuscript:read'])]
     private ?int $id = null;
 
     /**

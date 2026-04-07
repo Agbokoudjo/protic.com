@@ -123,7 +123,6 @@ final class ManuscriptSubmissionType extends AbstractType
             ->add('manuscriptFile', FileType::class, [
                 'label'    => false,
                 'required' => false,
-                'mapped'   => false, // géré manuellement dans le controller via VichUploader
                 'attr'     => [
                     'accept' => '.pdf,.doc,.docx,.odt,.txt',
                     'class'  => 'pc-upload-input',

@@ -25,7 +25,6 @@
 .protic-body {
     background: var(--protic-blue-deep);
     color: var(--protic-white);
-    font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
 /* ══════════════════════════════════════════
@@ -38,6 +37,11 @@
     position: sticky;
     top: 0;
     z-index: 1040;
+     width:100%;
+    min-width:100vw;
+    max-width:100vw;
+    left: 0;
+    right: 0;
 }
 
 .protic-header__logo-link {
@@ -90,6 +94,42 @@
     position: sticky;
     top: var(--protic-header-h);
     z-index: 1030;
+    min-width:100vw;
+    width: 100%;
+    max-width: 100vw;
+    left: 0;
+    right: 0;
+}
+
+/* Hero sections — force 100% largeur */
+.pc-hero,
+.cat-hero,
+.ab-hero,
+.protic-hero {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Fix scroll au chargement — empêche le layout shift */
+.pc-hero__bg,
+.cat-hero__bg,
+.ab-hero__bg,
+.protic-hero__bg {
+    /* Désactive le scale au chargement sur mobile */
+    transform: none !important;
+    transition: none !important;
+}
+
+@media (min-width: 769px) {
+    /* Réactive l'effet zoom uniquement sur desktop */
+    .pc-hero__bg,
+    .cat-hero__bg,
+    .ab-hero__bg,
+    .protic-hero__bg {
+        transform: scale(1.04) !important;
+        transition: transform 10s ease !important;
+    }
 }
 
 /* Liens desktop */
@@ -198,99 +238,65 @@
 /* ══════════════════════════════════════════
    FOOTER
 ══════════════════════════════════════════ */
-.protic-footer {
-    background: linear-gradient(180deg, #06122e 0%, #03091a 100%);
-    border-top: 1px solid var(--protic-white-15);
-    padding: 64px 0 0;
-    color: var(--protic-white-70);
-    font-size: 0.875rem;
-}
 
-/* Grille 4 colonnes → 2 → 1 */
-.protic-footer__grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
-    gap: 40px;
-    padding-bottom: 48px;
+/* ══════════════════════════════════════════
+   FIX 1 — Footer mobile : padding gauche/droite
+   À ajouter dans protic-layout.css
+══════════════════════════════════════════ */
+
+/* Barre top footer (réseaux sociaux + slogan) */
+footer .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
 }
 
 @media (max-width: 1024px) {
-    .protic-footer__grid { grid-template-columns: 1fr 1fr; }
-}
+            .protic-footer__grid-responsive {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 36px !important;
+            }
+        }
 @media (max-width: 576px) {
-    .protic-footer__grid { grid-template-columns: 1fr; gap: 28px; }
+    .protic-footer__grid-responsive {
+        grid-template-columns: 1fr !important;
+        gap: 28px !important;
+        padding: 36px 0 28px !important;
+    }
+
+    /* Padding sur chaque colonne */
+    .protic-footer__grid-responsive > div {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Barre bottom copyright */
+    .protic-footer__bottom {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 6px !important;
+        padding: 16px 1rem !important;
+    }
+
+    /* Liens navigation footer */
+    .protic-footer__links li a {
+        padding: 4px 0 !important;
+    }
+
+    /* Contact list items */
+    .protic-footer__contact-list li {
+        flex-wrap: wrap;
+    }
+
 }
 
-/* Brand */
-.protic-footer__logo { max-width: 160px; height: auto; margin-bottom: 16px; }
-.protic-footer__tagline { line-height: 1.7; margin-bottom: 12px; }
-.protic-footer__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.75rem;
-    color: var(--protic-white-70);
-    border: 1px solid var(--protic-white-15);
-    border-radius: 20px;
-    padding: 4px 12px;
+@media (max-width: 768px) {
+    .container,
+    .container-fluid {
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+    }
 }
 
-/* Colonnes */
-.protic-footer__col-title {
-    color: var(--protic-white);
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--protic-white-15);
-}
 
-/* Liens nav footer */
-.protic-footer__links { list-style: none; margin: 0; padding: 0; }
-.protic-footer__links li { margin-bottom: 8px; }
-.protic-footer__link {
-    color: var(--protic-white-70);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: color var(--protic-transition);
-}
-.protic-footer__link:hover { color: var(--protic-white); }
 
-/* Contact */
-.protic-footer__contact-list { list-style: none; margin: 0; padding: 0; }
-.protic-footer__contact-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 10px;
-    line-height: 1.5;
-}
-.protic-footer__contact-list a {
-    color: var(--protic-white-70);
-    text-decoration: none;
-    transition: color var(--protic-transition);
-}
-.protic-footer__contact-list a:hover { color: var(--protic-white); }
-.protic-footer__contact-list svg { flex-shrink: 0; margin-top: 2px; }
 
-/* Légal */
-.protic-footer__legal { list-style: none; margin: 0; padding: 0; }
-.protic-footer__legal li {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-.protic-footer__legal span { font-size: 0.75rem; color: var(--protic-white-40); }
-.protic-footer__legal strong { color: var(--protic-white-70); font-size: 0.8rem; }
-
-/* Copyright bar */
-.protic-footer__bottom {
-    border-top: 1px solid var(--protic-white-08);
-    padding: 16px 0;
-    text-align: center;
-    font-size: 0.8rem;
-    color: var(--protic-white-40);
-}
-.protic-footer__bottom strong { color: var(--protic-white-70); }

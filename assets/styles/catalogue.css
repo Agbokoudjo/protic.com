@@ -589,3 +589,31 @@
 .cat-bottom-cta__title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
 .cat-bottom-cta__sub { font-size: .85rem; color: rgba(255,255,255,.60); line-height: 1.6; margin: 0; }
 .cat-bottom-cta__btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+@media (max-width: 768px) {
+    .cat-hero__inner {
+        padding: 36px 0 48px !important;
+    }
+
+    .cat-hero__title {
+        font-size: clamp(1.7rem, 8vw, 2.4rem) !important;
+        line-height: 1.2 !important;
+    }
+
+    .cat-hero__sub {
+        font-size: 0.88rem !important;
+    }
+
+    .cat-hero__pills {
+        gap: 6px !important;
+    }
+
+    .cat-hero__stats {
+        gap: 0 !important;
+        font-size: 0.75rem !important;
+    }
+
+    .cat-hero__stats-sep {
+        margin: 0 8px !important;
+    }
+}

@@ -76,7 +76,7 @@ final class ContactController extends AbstractController
                 )
             );
 
-            return $this->redirectToRoute('app_contact');
+            return $this->redirectToRoute('app_contact',['_fragment' => 'container-succcess']);
         }
 
         return $this->render('contact/index.html.twig', [

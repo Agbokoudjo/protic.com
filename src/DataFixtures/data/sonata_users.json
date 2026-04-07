@@ -1,13 +1,13 @@
 [
   {
-    "username": "franck_agbokoudjo",
-    "email": "franck.agbokoudjo@protic.bj",
-    "plainPassword": "Admin@2025!",
+    "username": "AGBOKOUDJO FRANCK",
+    "email": "internationaleswebservices@gmail.com",
+    "plainPassword": "ProTIC@Admin2025!",
     "phone": "+22901672518",
     "country": "BEN",
     "roles": ["ROLE_SUPER_ADMIN"],
     "enabled": true,
-    "profile": "super_admin",
+    "profile": "DÉVELOPPEUR WEB INTERNATIONALES WEB APPS & SERVICES",
     "avatar_url": "https://picsum.photos/seed/franck/200/200"
   },
   {
@@ -18,7 +18,7 @@
     "country": "SEN",
     "roles": ["ROLE_ADMIN"],
     "enabled": true,
-    "profile": "admin",
+    "profile": "Adjoua Bello — Responsable commercial",
     "avatar_url": "https://picsum.photos/seed/aminata/200/200"
   },
   {
@@ -29,7 +29,7 @@
     "country": "GHA",
     "roles": ["ROLE_ADMIN", "ROLE_EDITOR"],
     "enabled": true,
-    "profile": "editor",
+    "profile": "Koffi Mensah — Éditeur en chef",
     "avatar_url": "https://picsum.photos/seed/kofi/200/200"
   },
   {
@@ -40,7 +40,7 @@
     "country": "CMR",
     "roles": ["ROLE_ADMIN", "ROLE_EDITOR"],
     "enabled": true,
-    "profile": "editor",
+    "profile": "Sènou Dossou — Assistante éditoriale",
     "avatar_url": "https://picsum.photos/seed/marie/200/200"
   },
   {
@@ -210,13 +210,13 @@
   },
   {
     "username": "rose_mumbua",
-    "email": "rose.mumbua@protic.bj",
+    "email": "directeur@proticeditions.com",
     "plainPassword": "Editor@2025!",
     "phone": "+254733456789",
     "country": "KEN",
     "roles": ["ROLE_ADMIN", "ROLE_EDITOR"],
     "enabled": true,
-    "profile": "editor",
+    "profile": "Gérard Ahouansou — Directeur ProTIC",
     "avatar_url": "https://picsum.photos/seed/rose/200/200"
   }
 ]

@@ -4,3 +4,4 @@ show__app_admin_book: "Détails du livre %name%"
 show__app_admin_contactrequest: "Détails de la demande de %name%"
 show__app_admin_manuscriptsubmission: "Détails de demande Manuscrit de soumission de %name%"
 show__app.admin.global_setting: "Récapitulatif des coordonnées et identifiants fiscaux "
+show__app_admin_faq: Détails de la FAQ

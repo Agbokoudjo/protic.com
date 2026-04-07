@@ -1,8 +1,8 @@
 
 import './styles/book.css'
 import './styles/catalogue.css';
-
-import { initLazyMounts,mountCatalogue  } from "./react/lazy-mount.jsx";
+import { select2 } from "./utils";
+import { mountCatalogue  } from "./react/lazy-mount.jsx";
 
 /* ══════════════════════════════════════════════════════════════
    Helpers — dispatch events vers React
@@ -233,6 +233,7 @@ const init = () => {
     initViewToggle();
     initReset();
     initSidebarToggle();
+    select2(document);
 };
 
 document.addEventListener('DOMContentLoaded', init);

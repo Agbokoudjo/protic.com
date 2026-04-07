@@ -1,0 +1,137 @@
+{#
+ * Dashboard ProTIC Éditions & Services — Sonata Admin
+ * Statistiques dynamiques chargées via API Platform
+ * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
+#}
+{% extends base_template %}
+
+{% block title %}Tableau de bord — ProTIC Éditions{% endblock %}
+{% block breadcrumb %}{% endblock %}
+
+{% block content %}
+<div class="protic-dashboard">
+
+    {# ── En-tête ── #}
+    <div class="dash-header">
+        <div class="dash-header__left">
+            <span class="dash-header__eyebrow">ProTIC Éditions &amp; Services</span>
+            <h1 class="dash-header__title">Tableau de bord</h1>
+            <p class="dash-header__sub">Vue d'ensemble de l'activité éditoriale</p>
+        </div>
+        <div class="dash-header__right">
+            <div class="dash-date">
+                <span class="dash-date__icon">📅</span>
+                <span id="dash-live-date"></span>
+            </div>
+        </div>
+    </div>
+
+    {# ── Grille de cartes statistiques ── #}
+    <div class="stats-grid" id="stats-grid">
+
+        <div class="stat-card stat-card--blue" data-endpoint="/api/authors?pagination=false" data-key="hydra:totalItems" data-label="Auteurs" data-icon="✍️" data-link="{{ path('sonata_author_list') }}">
+            <div class="stat-card__glow"></div>
+            <div class="stat-card__inner">
+                <div class="stat-card__icon-wrap">
+                    <span class="stat-card__icon">✍️</span>
+                </div>
+                <div class="stat-card__body">
+                    <div class="stat-card__value"><span class="counter">—</span></div>
+                    <div class="stat-card__label">Auteurs enregistrés</div>
+                </div>
+                <div class="stat-card__arrow">→</div>
+            </div>
+            <div class="stat-card__bar"></div>
+        </div>
+
+        <div class="stat-card stat-card--gold" data-endpoint="/api/books?pagination=false" data-key="hydra:totalItems" data-label="Livres" data-icon="📚" data-link="{{ path('sonata_book_list') }}">
+            <div class="stat-card__glow"></div>
+            <div class="stat-card__inner">
+                <div class="stat-card__icon-wrap">
+                    <span class="stat-card__icon">📚</span>
+                </div>
+                <div class="stat-card__body">
+                    <div class="stat-card__value"><span class="counter">—</span></div>
+                    <div class="stat-card__label">Livres au catalogue</div>
+                </div>
+                <div class="stat-card__arrow">→</div>
+            </div>
+            <div class="stat-card__bar"></div>
+        </div>
+
+        <div class="stat-card stat-card--teal" data-endpoint="/api/category?pagination=false" data-key="hydra:totalItems" data-label="Catégories" data-icon="🏷️" data-link="{{ path('sonata_category_list') }}">
+            <div class="stat-card__glow"></div>
+            <div class="stat-card__inner">
+                <div class="stat-card__icon-wrap">
+                    <span class="stat-card__icon">🏷️</span>
+                </div>
+                <div class="stat-card__body">
+                    <div class="stat-card__value"><span class="counter">—</span></div>
+                    <div class="stat-card__label">Catégories de livres</div>
+                </div>
+                <div class="stat-card__arrow">→</div>
+            </div>
+            <div class="stat-card__bar"></div>
+        </div>
+
+        <div class="stat-card stat-card--red" data-endpoint="/api/contact_requests?pagination=false" data-key="hydra:totalItems" data-label="Demandes" data-icon="📩" data-link="{{ path('sonata_contactrequest_list') }}">
+            <div class="stat-card__glow"></div>
+            <div class="stat-card__inner">
+                <div class="stat-card__icon-wrap">
+                    <span class="stat-card__icon">📩</span>
+                </div>
+                <div class="stat-card__body">
+                    <div class="stat-card__value"><span class="counter">—</span></div>
+                    <div class="stat-card__label">Demandes de contact</div>
+                </div>
+                <div class="stat-card__arrow">→</div>
+            </div>
+            <div class="stat-card__bar"></div>
+        </div>
+
+        <div class="stat-card stat-card--purple" data-endpoint="/api/manuscript_submissions?pagination=false" data-key="hydra:totalItems" data-label="Manuscrits" data-icon="📝" data-link="{{ path('sonata_manuscriptsubmission_list') }}">
+            <div class="stat-card__glow"></div>
+            <div class="stat-card__inner">
+                <div class="stat-card__icon-wrap">
+                    <span class="stat-card__icon">📝</span>
+                </div>
+                <div class="stat-card__body">
+                    <div class="stat-card__value"><span class="counter">—</span></div>
+                    <div class="stat-card__label">Soumissions de manuscrits</div>
+                </div>
+                <div class="stat-card__arrow">→</div>
+            </div>
+            <div class="stat-card__bar"></div>
+        </div>
+
+        <div class="stat-card stat-card--green" data-endpoint="/api/faqs?pagination=false" data-key="hydra:totalItems" data-label="FAQ" data-icon="❓" data-link="{{ path('sonata_faq_list') }}">
+            <div class="stat-card__glow"></div>
+            <div class="stat-card__inner">
+                <div class="stat-card__icon-wrap">
+                    <span class="stat-card__icon">❓</span>
+                </div>
+                <div class="stat-card__body">
+                    <div class="stat-card__value"><span class="counter">—</span></div>
+                    <div class="stat-card__label">FAQ publiées</div>
+                </div>
+                <div class="stat-card__arrow">→</div>
+            </div>
+            <div class="stat-card__bar"></div>
+        </div>
+
+    </div>
+
+    {# ── Bloc infos bas de page ── #}
+    <div class="dash-footer-info">
+        <div class="dash-info-chip">
+            <span class="dash-info-chip__dot dash-info-chip__dot--live"></span>
+            Données chargées en temps réel via API
+        </div>
+        <div class="dash-info-chip" id="dash-last-refresh">
+            <span class="dash-info-chip__dot"></span>
+            Actualisation à chaque visite
+        </div>
+    </div>
+
+</div>
+{% endblock %}

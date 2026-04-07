@@ -9,7 +9,7 @@ Découvrez ProTIC Editions & Services : histoire, mission, valeurs et équipe. M
 {% block head_extra %}
 <meta property="og:title"       content="À propos — ProTIC Editions & Services Bénin">
 <meta property="og:description" content="ProTIC Editions, maison d'édition béninoise depuis 2010. Histoire, équipe, valeurs et FAQ.">
-<meta property="og:image"       content="{{ asset('assets/images/about-og.png','app') }}">
+<meta property="og:image"       content="{{ asset('assets/images/about-hero-bg.png','app') }}">
 <meta name="keywords"           content="ProTIC Editions histoire, maison édition Bénin fondateur, SETONWAN DENIS HOUNGNIMON, équipe édition Cotonou, valeurs édition africaine">
 <link rel="canonical"           href="{{ app.request.uri }}">
 
@@ -32,11 +32,6 @@ Découvrez ProTIC Editions & Services : histoire, mission, valeurs et équipe. M
 {% endblock %}
 
 {% block main %}
-
-{# ══════════════════════════════════════════
-   §1 — HERO À PROPOS
-   IMAGE : about-hero-bg.jpg
-══════════════════════════════════════════ #}
 <section class="ab-hero" aria-label="À propos de ProTIC Editions">
     <div class="ab-hero__bg"
          style="background-image:url('{{ asset('assets/images/about-hero-bg.png','app') }}')"
@@ -84,10 +79,6 @@ Découvrez ProTIC Editions & Services : histoire, mission, valeurs et équipe. M
     </div>
 </section>
 
-{# ══════════════════════════════════════════
-   §2 — HISTOIRE & MISSION (split image/texte)
-   IMAGE : about-mission.jpg
-══════════════════════════════════════════ #}
 <section class="ab-section" id="mission" aria-labelledby="mission-title">
     <div class="container ab-split">
 
@@ -146,9 +137,6 @@ Découvrez ProTIC Editions & Services : histoire, mission, valeurs et équipe. M
     </div>
 </section>
 
-{# ══════════════════════════════════════════
-   §3 — VALEURS
-══════════════════════════════════════════ #}
 <section class="ab-section ab-section--dark" id="valeurs" aria-labelledby="valeurs-title">
     <div class="container">
         <div class="ab-section-header" data-aos="fade-up">
@@ -173,9 +161,6 @@ Découvrez ProTIC Editions & Services : histoire, mission, valeurs et équipe. M
     </div>
 </section>
 
-{# ══════════════════════════════════════════
-   §4 — TIMELINE HISTORIQUE
-══════════════════════════════════════════ #}
 <section class="ab-section" id="histoire" aria-labelledby="histoire-title">
     <div class="container">
         <div class="ab-section-header" data-aos="fade-up">
@@ -203,10 +188,6 @@ Découvrez ProTIC Editions & Services : histoire, mission, valeurs et équipe. M
     </div>
 </section>
 
-{# ══════════════════════════════════════════
-   §5 — ÉQUIPE
-   IMAGES : team/directeur.jpg, team/editorial.jpg, team/distribution.jpg
-══════════════════════════════════════════ #}
 <section class="ab-section ab-section--dark" id="equipe" aria-labelledby="equipe-title">
     <div class="container">
         <div class="ab-section-header" data-aos="fade-up">
@@ -244,9 +225,6 @@ Découvrez ProTIC Editions & Services : histoire, mission, valeurs et équipe. M
     </div>
 </section>
 
-{# ══════════════════════════════════════════
-   §6 — CTA CENTRAL (inviter à l'action)
-══════════════════════════════════════════ #}
 <section class="ab-cta" aria-label="Invitation à agir">
     <div class="ab-cta__bg"
          style="background-image:url('{{ asset('assets/images/about-cta-bg.png','app') }}')"></div>

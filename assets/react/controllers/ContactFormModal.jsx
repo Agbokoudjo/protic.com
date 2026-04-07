@@ -1,15 +1,37 @@
 // assets/react/controllers/ContactFormModal.jsx
-import React from "react";
+import React from 'react';
 import Modal from "./Modal";
+import {useFormSubmission} from "./hooks";
 
+import { countries } from "countries-list";
+import { addParamToUrl } from '@wlindabla/form_validator';
+
+// Construction de la liste complète
+const ALL_COUNTRIES = Object.entries(countries)
+    .map(([code, data]) => {
+        return { 
+            alpha3: data.languages[0] || code,
+            id: code,
+            name: data.name, 
+            emoji: data.emoji 
+        };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name, document.documentElement.lang ?? "fr"));
+    
 export default function ContactFormModal({
     modalSubTitle,
     subject,
-    urlSubmit,
     labelBtnClick,
     classNameBtnClick,
+    bookId
 }) {
+    if (!bookId) {
+        throw new Error("Attention : bookId est manquant dans ContactFormModal !");
+    }
+
     const [isOpen, setIsOpen] = React.useState(false);
+    const formRef = React.useRef(null);
+    const { submit, isLoading } = useFormSubmission(formRef, addParamToUrl("/api/contact-author"),isOpen);
 
     return (
         <React.Fragment>
@@ -17,8 +39,9 @@ export default function ContactFormModal({
             <button
                 className={classNameBtnClick ?? "protic-btn protic-btn--contact protic-btn--full"}
                 onClick={() => setIsOpen(true)}
+                disabled={isLoading}
             >
-                {labelBtnClick ?? "✉️ Contacter l'auteur"}
+                {isLoading ? "Envoi en cours..." : `${ labelBtnClick ??  "✉️ Contacter l'auteur"}`}
             </button>
 
             <Modal
@@ -47,15 +70,32 @@ export default function ContactFormModal({
                 modalBody={
                     <form
                         id="contactForm"
-                        action={urlSubmit}
+                        action="api/contact-author"
+                        name="contact"
+                        ref={formRef} 
+                        onSubmit={submit}
+                        data-turbo="false"
                         style={{ background: "#F8F7F4", borderRadius: "10px", padding: "20px" }}
+                        className="form-validate"
                     >
+                        <input 
+                            type="hidden" 
+                            name="bookId" 
+                            value={bookId} 
+                            readOnly 
+                            style={{ 
+                                position: 'absolute', 
+                                opacity: 0, 
+                                pointerEvents: 'none', 
+                                zIndex: -1 
+                            }} 
+                        />
                         <div className="form-group">
                             <label>Nom complet *</label>
                             <input
                                 type="text"
-                                id="fullName"
-                                name="username"
+                                id="contact_fullName" 
+                                name="fullName"
                                 placeholder="Ex : AGBOKOUDJO Hounha Franck"
                                 data-position-lastname="right"
                                 data-event-validate-blur="blur"
@@ -77,7 +117,7 @@ export default function ContactFormModal({
                                 <input
                                     type="email"
                                     data-type="email"
-                                    id="email"
+                                    id="contact_email"
                                     name="email"
                                     placeholder="Ex : franck@gmail.com"
                                     data-event-validate-blur="blur"
@@ -97,7 +137,7 @@ export default function ContactFormModal({
                                 <input
                                     type="tel"
                                     data-type="tel"
-                                    id="phone"
+                                    id="contact_phone"
                                     name="phone"
                                     placeholder="+229 XX XX XX XX"
                                     data-event-validate-blur="blur"
@@ -112,16 +152,38 @@ export default function ContactFormModal({
                                 <span className="form-error" id="errPhone"></span>
                             </div>
                         </div>
-
+                        <div className="form-group">
+                            <label htmlFor="cf-country">Pays</label>
+                            <select
+                                id="contact_country"
+                                name="country"
+                                defaultValue=""
+                                className="form-control select2 form-select-lg"
+                                aria-label="Sélectionnez votre pays"
+                            >
+                                <option value="" disabled>🌍 Sélectionnez votre pays…</option>
+                                {ALL_COUNTRIES.map(c => (
+                                    <option key={c.id} value={c.alpha3}>
+                                        {c.emoji} {c.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                         <div className="form-group">
                             <label>Objet (auto-détecté)</label>
                             <input
                                 type="text"
-                                id="subject"
+                                id="contact_subject"
                                 name="subject"
                                 readOnly
                                 value={subject ?? ""}
                                 className="form-control"
+                                data-event-validate-blur="blur"
+                                data-event-validate-input="input"
+                                data-pattern="^[\p{L}\p{N}\p{M}\s\-\.\p{P}\,\(\)]+$"
+                                data-escapestrip-html-and-php-tags="true"
+                                maxLength="255"
+                                minLength="6"
                                 style={{ background: "#EDECEA", cursor: "not-allowed" }}
                             />
                         </div>
@@ -129,7 +191,7 @@ export default function ContactFormModal({
                         <div className="form-group">
                             <label>Message *</label>
                             <textarea
-                                id="message"
+                                id="contact_message"
                                 name="message"
                                 rows="5"
                                 data-event-validate-blur="blur"
@@ -153,6 +215,7 @@ export default function ContactFormModal({
                             type="button"
                             className="btn btn-secondary"
                             onClick={() => setIsOpen(false)}
+                            disabled={isLoading}
                         >
                             Fermer
                         </button>
@@ -160,8 +223,8 @@ export default function ContactFormModal({
                             type="submit"
                             className="btn btn-primary btn-full"
                             form="contactForm"
-                        >
-                            📨 Envoyer la demande
+                            disabled={isLoading}
+                        > {isLoading ? "Patientez..." : "📨 Envoyer la demande"}
                         </button>
                     </div>
                 }
@@ -169,3 +232,6 @@ export default function ContactFormModal({
         </React.Fragment>
     );
 }
+
+
+

@@ -21,7 +21,10 @@ use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
 #[ApiResource(
     operations: [
-        new GetCollection(normalizationContext: ['groups' => ['author:list']]),
+        new GetCollection(
+             uriTemplate: 'authors',
+            normalizationContext: ['groups' => ['author:list']
+            ]),
         new Get(normalizationContext: ['groups' => ['author:read']]),
     ]
 )]
@@ -36,6 +39,7 @@ class Author
     #[ORM\GeneratedValue('IDENTITY')]
     #[ORM\Column(type: "integer")]
     #[Groups(['author:list', 'author:read', 'book:list', 'book:read'])]
+    
     private ?int $id = null;
 
     /**

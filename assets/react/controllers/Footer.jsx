@@ -123,6 +123,7 @@ export default function Footer({ config }) {
             borderTop   : '1px solid rgba(255,255,255,0.10)',
             color       : 'rgba(255,255,255,0.65)',
             fontFamily  : "'Segoe UI', system-ui, sans-serif",
+           
         },
         topBar: {
             borderBottom: '1px solid rgba(255,255,255,0.07)',
@@ -256,7 +257,7 @@ export default function Footer({ config }) {
         <footer style={S.footer}>
 
             {/* ── Barre supérieure : slogan + réseaux ── */}
-            <div className="container" style={S.topBar}>
+            <div className="container " style={S.topBar}>
                 <span style={S.topBarText}>
                     📖 Votre partenaire éditorial au Bénin &amp; en Afrique de l'Ouest
                 </span>
@@ -301,9 +302,9 @@ export default function Footer({ config }) {
                 {/* Col 2 — Navigation */}
                 <div data-aos="fade-up" data-aos-delay="100">
                     <ColTitle>Navigation</ColTitle>
-                    <ul style={S.navList}>
+                    <ul style={S.navList} className="protic-footer__links">
                         {[
-                            ['Accueil',     '/home'],
+                            ['Accueil',     '/'],
                             ['Catalogue',   'catalogue'],
                             ['Nos Services','#'],
                             ['À propos',    '/about'],
@@ -319,7 +320,7 @@ export default function Footer({ config }) {
                     <ColTitle>Contact</ColTitle>
 
                     {contact.telephones?.map((tel, i) => (
-                        <div key={i} style={S.contactItem}>
+                        <div key={i} style={S.contactItem} className="protic-footer__contact-list">
                             <span style={S.contactIcon}><Icon name="phone" size={15} /></span>
                             <a href={`tel:${String(tel).replace(/\s/g,'')}`}
                                style={S.contactLink}
@@ -331,7 +332,7 @@ export default function Footer({ config }) {
                     ))}
 
                     {contact.emails?.map((mail, i) => (
-                        <div key={i} style={S.contactItem}>
+                        <div key={i} style={S.contactItem} className="protic-footer__contact-list">
                             <span style={S.contactIcon}><Icon name="mail" size={15} /></span>
                             <a href={`mailto:${mail}`}
                                style={S.contactLink}
@@ -348,7 +349,7 @@ export default function Footer({ config }) {
                     <ColTitle>Informations légales</ColTitle>
                     <ul style={S.legalList}>
                         {[
-                            ['RCCM',     `RB/ABC/${legal.rccm}`],
+                            ['RCCM',     legal.rccm],
                             ['IFU',      legal.ifu],
                             ['CNSS',     legal.cnss],
                             ['Cpte UBA', legal.compte],
@@ -367,7 +368,7 @@ export default function Footer({ config }) {
             <div style={S.divider} />
 
             {/* ── Barre copyright ── */}
-            <div className="container" style={S.bottom}>
+            <div className="container protic-footer__bottom" style={S.bottom}>
                 <span>
                     © {yr} <strong style={S.bottomStrong}>ProTIC Editions &amp; Services</strong>
                     <span style={S.bottomDot} />

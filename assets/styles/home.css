@@ -319,6 +319,42 @@
 @media (max-width: 768px) {
     .protic-hero__floats { display: none; }
     .protic-hero__inner  { padding: 80px 0 60px; }
+    .protic-hero {
+        min-height: 100svh;
+        align-items: flex-start;
+    }
+
+    .protic-hero__inner {
+        padding: 24px 0 48px !important; /* réduit le padding top */
+    }
+
+    .protic-hero__title {
+        font-size: clamp(1.7rem, 8vw, 2.4rem) !important;
+        line-height: 1.2 !important;
+    }
+
+    .protic-hero__sub {
+        font-size: 0.92rem !important;
+        line-height: 1.65 !important;
+    }
+
+    .protic-hero__btns {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .protic-hero__btns .btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    .protic-hero__badge {
+        font-size: 0.72rem !important;
+        padding: 4px 12px !important;
+        max-width: 100% !important;
+        white-space: normal !important;
+        text-align: center !important;
+    }
 }
 
 

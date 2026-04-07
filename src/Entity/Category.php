@@ -17,7 +17,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -35,9 +34,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ApiResource(
     operations: [
-        new GetCollection(normalizationContext: ['groups' => ['category:list']]),
-        new Get(normalizationContext: ['groups' => ['category:read']]),
-    ]
+        new GetCollection(
+            uriTemplate: '/category',
+            normalizationContext: ['groups' => ['category:list', 'category:read']],
+            paginationEnabled: false,
+        ),
+    ],
 )]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[Gedmo\SoftDeleteable]

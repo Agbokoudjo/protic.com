@@ -11,7 +11,7 @@ export default defineConfig({
         symfonyPlugin({
             refresh: false,
              stimulus: true ,
-            viteDevServerHostname: "0.0.0.0"
+            viteDevServerHostname: "127.0.0.1"
         }),
         viteStaticCopy({
             targets: [
@@ -36,7 +36,7 @@ export default defineConfig({
         }
     },
     server: {
-        host  : "0.0.0.0",  // IPv4 forcé
+        host  : "127.0.0.1",  // IPv4 forcé
         port  : 5174,
         strictPort: true,
         cors  : {
@@ -48,7 +48,7 @@ export default defineConfig({
             ]
         },
         hmr: { 
-            host     : "0.0.0.0",
+            host     : "127.0.0.1",
             port     : 5174,
             protocol : "ws"
         }

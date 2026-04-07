@@ -61,7 +61,7 @@ function buildUrl({ page, itemsPerPage, search, genre, sort }) {
 const Skeleton = ({ count = 12, view = "grid" }) => {
     if (view === "list") {
         return (
-            <div className="cat-books-list">
+            <div className="cat-books-list" data-turbo="false">
                 {Array.from({ length: count }).map((_, i) => (
                     <div key={i} className="cat-book-skeleton--list">
                         <div style={{ width: 72, height: 100, background: 'rgba(255,255,255,.07)', borderRadius: 8, flexShrink: 0 }} />
@@ -76,7 +76,7 @@ const Skeleton = ({ count = 12, view = "grid" }) => {
         );
     }
     return (
-        <div className="cat-books-grid">
+        <div className="cat-books-grid" data-turbo="false">
             {Array.from({ length: count }).map((_, i) => (
                 <div key={i} className="cat-book-skeleton--grid">
                     <div className="cat-book-skeleton__cover" />
@@ -105,7 +105,7 @@ const BookCardGrid = ({ book }) => {
         : null;
 
     return (
-        <div className="cat-book-card--grid">
+        <div className="cat-book-card--grid" data-turbo="false">
             <div className="cat-book-card__cover-wrap">
                 <img
                     className="cat-book-card__cover"
@@ -127,6 +127,8 @@ const BookCardGrid = ({ book }) => {
                         book={book}
                         labelBtnClick="📄 Lire le résumé"
                         classNameBtnClick="cat-book-card__action-btn cat-book-card__action-btn--primary"
+                         bookId={book.id}
+                        bookTitle={book.title}
                     />
                     <ContactFormModal
                         modalSubTitle={`📚 ${book.title} — ${book.author?.fullName}`}
@@ -134,6 +136,7 @@ const BookCardGrid = ({ book }) => {
                         urlSubmit="/api/contact-author"
                         labelBtnClick="✉️ Commander"
                         classNameBtnClick="cat-book-card__action-btn cat-book-card__action-btn--secondary"
+                        bookId={book.id}
                     />
                 </div>
             </div>
@@ -146,6 +149,8 @@ const BookCardGrid = ({ book }) => {
                         author={book.author}
                         labelBtnClick="👤 Auteur"
                         classNameBtnClick="cat-book-card__cta"
+                        bookId={book.id}
+                        bookTitle={book.title}
                     />
                 </div>
             </div>
@@ -165,9 +170,8 @@ const BookCardList = ({ book }) => {
     const year = book.publishedAt
         ? new Date(book.publishedAt).getFullYear()
         : null;
-
     return (
-        <div className="cat-book-card--list">
+        <div className="cat-book-card--list" data-turbo="false">
             <img
                 className="cat-book-card--list__cover"
                 src={cover}
@@ -195,6 +199,8 @@ const BookCardList = ({ book }) => {
                     book={book}
                     labelBtnClick="📄 Résumé"
                     classNameBtnClick="cat-book-card__cta"
+                     bookId={book.id}
+                    bookTitle={book.title}
                 />
                 <ContactFormModal
                     modalSubTitle={`📚 ${book.title} — ${book.author?.fullName}`}
@@ -203,6 +209,7 @@ const BookCardList = ({ book }) => {
                     labelBtnClick="✉️ Commander"
                     classNameBtnClick="cat-btn-gold"
                     style={{ padding: '7px 14px', fontSize: '.78rem' }}
+                    bookId={book.id}
                 />
             </div>
         </div>
@@ -230,7 +237,7 @@ const Pagination = ({ currentPage, totalPages, onChange }) => {
     };
 
     return (
-        <nav className="cat-pagination" aria-label="Pagination du catalogue">
+        <nav className="cat-pagination" aria-label="Pagination du catalogue" data-turbo="false">
             <button
                 className="cat-page-btn cat-page-btn--nav"
                 disabled={currentPage === 1}
@@ -261,9 +268,6 @@ const Pagination = ({ currentPage, totalPages, onChange }) => {
     );
 };
 
-/* ══════════════════════════════════════════════════════════════
-   CatalogueGrid — composant principal
-══════════════════════════════════════════════════════════════ */
 export default function CatalogueGrid({ itemsPerPage = 12 }) {
     const [books,      setBooks]      = React.useState([]);
     const [loading,    setLoading]    = React.useState(true);

@@ -16,6 +16,16 @@ class ContactRequestRepository extends ServiceEntityRepository
         parent::__construct($registry, ContactRequest::class);
     }
 
+    public function add(ContactRequest $entity, bool $flush = true): void
+    {
+
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     //    /**
     //     * @return ContactRequest[] Returns an array of ContactRequest objects
     //     */

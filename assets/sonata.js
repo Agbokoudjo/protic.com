@@ -541,5 +541,101 @@ document.addEventListener('click', function (event) {
         toggle.classList.add('active');
     }
 });
+
+
+function dashboard() {
+    /* ── Date live ── */
+    function updateDate() {
+        const el = document.getElementById('dash-live-date');
+        if (!el) return;
+        const now = new Date();
+        el.textContent = now.toLocaleDateString('fr-FR', {
+            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+        });
+    }
+    updateDate();
+
+    /* ── Animation compteur ── */
+    function animateCounter(el, target) {
+        const duration = 900;
+        const start = performance.now();
+        (function tick(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            // easeOutExpo
+            const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+            el.textContent = Math.floor(ease * target);
+            if (progress < 1) requestAnimationFrame(tick);
+            else el.textContent = target;
+        })(start);
+    }
+
+    /* ── Charger une carte ── */
+    async function loadCard(card) {
+        const endpoint = card.dataset.endpoint;
+        const key      = card.dataset.key;
+        const counter  = card.querySelector('.counter');
+        const link     = card.dataset.link;
+
+        // skeleton
+        counter.classList.add('loading');
+        counter.textContent = '';
+
+        try {
+           /* const res  = await fetch(endpoint, {
+                headers: { 'Accept': 'application/ld+json' }
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const json = await res.json();*/
+
+            const value =124 // key.split('.').reduce((obj, k) => obj?.[k], json)
+                      // ?? json['hydra:totalItems'] ?? json['totalItems']
+                       //?? 0;
+
+            counter.classList.remove('loading');
+            card.classList.add('loaded');
+
+            animateCounter(counter, Number(value));
+
+            /* rendre la carte cliquable */
+            if (link) {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', () => { window.location.href = link; });
+            }
+        } catch (err) {
+            counter.classList.remove('loading');
+            counter.classList.add('error');
+            counter.textContent = '—';
+            console.warn('[Dashboard] Échec chargement ' + endpoint, err);
+        }
+    }
+
+    /* ── Lancer au chargement DOM ── */
+    function init() {
+        const cards = document.querySelectorAll('#stats-grid .stat-card');
+        cards.forEach((card, i) => {
+            /* décalage léger pour ne pas surcharger l'API */
+            setTimeout(() => loadCard(card), i * 80);
+        });
+
+        /* refresh discret toutes les 5 minutes */
+        setInterval(() => {
+            cards.forEach((card, i) => setTimeout(() => loadCard(card), i * 80));
+        }, 5 * 60 * 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    /* ── Compatibilité Turbo Drive ── */
+    document.addEventListener('turbo:load', init);
+
+}
 // Lancement automatique au chargement du DOM
-document.addEventListener('DOMContentLoaded', localDatetime);
+document.addEventListener('DOMContentLoaded', ()=>{
+  localDatetime()
+  dashboard();
+});

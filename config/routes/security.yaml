@@ -1,3 +1,6 @@
 _security_logout:
     resource: security.route_loader.logout
     type: service
+sonata_user_admin_security_logout:
+    path: /admin/logout
+    methods: [GET]

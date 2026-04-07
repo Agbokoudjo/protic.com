@@ -20,7 +20,7 @@ final class GlobalSettingCacheSubscriber implements EventSubscriberInterface
         ];
     }
 
-    private function invalidate(PersistenceEvent $event): void
+    public function invalidate(PersistenceEvent $event): void
     {
         $entity = $event->getObject();
 

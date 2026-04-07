@@ -4,12 +4,10 @@
 *{
   margin:0 ;
   padding:0;
-   box-sizing:border-box ;
+  box-sizing:border-box ;
 }
-html {
-    font-size: initial !important;
-    position: relative;
-  }
+
+html ,
 body {
      font-size:1rem;
     font-family: 'Fraunces','Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif , Tahoma, Geneva, Verdana, sans-serif;
@@ -22,16 +20,84 @@ body.prod{
   user-select: none;
 }
 
-@media (max-width: 1024px) {
-            .protic-footer__grid-responsive {
-                grid-template-columns: 1fr 1fr !important;
-                gap: 36px !important;
-            }
-        }
-@media (max-width: 576px) {
-    .protic-footer__grid-responsive {
-        grid-template-columns: 1fr !important;
-        gap: 28px !important;
-        padding: 36px 0 28px !important;
+#main-content{
+    width:100%;
+    min-width:100%;
+    max-width:100%;
+}
+
+@media (max-width: 768px) {
+    .protic-section,
+    .ab-section,
+    .cat-section,
+    .pc-section {
+        padding: 48px 0 !important;
     }
+
+    /* Section headers */
+    .protic-section__header h2,
+    .ab-section-header h2,
+    .cat-section-header h2 {
+        font-size: clamp(1.4rem, 6vw, 1.9rem) !important;
+    }
+
+    .protic-section__header p,
+    .ab-section-header p,
+    .cat-section-header p {
+        font-size: 0.88rem !important;
+    }
+}
+
+/* Masquer l'ancien select de manière propre */
+.ts-hidden-accessible {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+}
+
+/* Conteneur principal (Wrapper) */
+.ts-wrapper.form-control {
+    background-color: #1a252f !important; /* Bleu nuit assorti à tes cartes */
+    border: 1px solid rgba(225, 177, 44, 0.3) !important;
+    border-radius: 8px !important;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2) !important;
+}
+.ts-wrapper.form-control:focus{
+     border-color: #e1b12c !important; /* Or ProTIC */
+        box-shadow: 0 0 10px rgba(225, 177, 44, 0.15) !important;
+}
+/* L'item sélectionné (ex: "Angola") */
+.ts-wrapper.single .ts-control .item {
+    color: rgb(0, 0, 0)important; 
+    font-weight: 500;
+}
+
+/* Le bouton de suppression (plugin remove_button) */
+.ts-wrapper .plugin-remove_button .item .remove {
+    border-left: 1px solid rgba(0,0,0,0.1) !important;
+    color: inherit !important;
+}
+
+.ts-dropdown .option{
+    padding: 12px 15px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+}
+
+.ts-dropdown .option.active {
+    background-color: #e1b12c !important; /* Fond Or */
+    color: #1a252f !important; /* Texte sombre pour contraste */
+}
+
+.ts-dropdown {
+    background: #1a252f !important;
+    border: 1px solid #e1b12c !important;
+    border-radius: 0 0 8px 8px !important;
+    color: #f5f6fa !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
 }

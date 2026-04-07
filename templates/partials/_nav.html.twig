@@ -44,9 +44,6 @@
     </div>
 </nav>
 
-{# ══════════════════════════════════════════
-   OFFCANVAS — menu mobile (slide depuis droite)
-══════════════════════════════════════════ #}
 <div class="offcanvas offcanvas-end protic-offcanvas"
      tabindex="-1"
      id="navOffcanvas"
@@ -67,39 +64,39 @@
     <div class="offcanvas-body protic-offcanvas__body">
         <ul class="list-unstyled protic-offcanvas__links">
             <li>
-                <a class="protic-offcanvas__link {% if app.request.attributes.get('_route') == 'app_home' %}is-active{% endif %}"
-                   href="#" data-bs-dismiss="offcanvas">
+                <a class="protic-offcanvas__link js-offcanvas-link {% if app.request.attributes.get('_route') == 'app_home' %}is-active{% endif %}"
+                   href="{{path('app_home')}}">
                     <i class="bi bi-house-door"></i> Accueil
                 </a>
             </li>
             <li>
-                <a class="protic-offcanvas__link {% if app.request.attributes.get('_route') starts with 'app_catalogue' %}is-active{% endif %}"
-                   href="#" data-bs-dismiss="offcanvas">
+                <a class="protic-offcanvas__link js-offcanvas-link {% if app.request.attributes.get('_route') starts with 'app_catalogue' %}is-active{% endif %}"
+                   href="{{path('app_catalogue')}}">
                     <i class="bi bi-book"></i> Catalogue
                 </a>
             </li>
             <li>
-                <a class="protic-offcanvas__link {% if app.request.attributes.get('_route') starts with 'app_services' %}is-active{% endif %}"
-                   href="#" data-bs-dismiss="offcanvas">
+                <a class="protic-offcanvas__link js-offcanvas-link {% if app.request.attributes.get('_route') starts with 'app_services' %}is-active{% endif %}"
+                   href="#">
                     <i class="bi bi-briefcase"></i> Nos Services
                 </a>
             </li>
             <li>
-                <a class="protic-offcanvas__link {% if app.request.attributes.get('_route') == 'app_about' %}is-active{% endif %}"
-                   href="#" data-bs-dismiss="offcanvas">
+                <a class="protic-offcanvas__link js-offcanvas-link {% if app.request.attributes.get('_route') == 'app_about' %}is-active{% endif %}"
+                   href="{{path('app_about')}}">
                     <i class="bi bi-info-circle"></i> À propos
                 </a>
             </li>
             <li>
-                <a class="protic-offcanvas__link {% if app.request.attributes.get('_route') == 'app_contact' %}is-active{% endif %}"
-                   href="#" data-bs-dismiss="offcanvas">
+                <a class="protic-offcanvas__link js-offcanvas-link {% if app.request.attributes.get('_route') == 'app_contact' %}is-active{% endif %}"
+                   href="{{path('app_contact')}}">
                     <i class="bi bi-envelope"></i> Contact
                 </a>
             </li>
         </ul>
 
         <div class="mt-auto pt-4 border-top border-white border-opacity-10">
-            <a href="{{ path('app_admin_user_login') }}" class="protic-btn-admin w-100 justify-content-center">
+            <a data-turbo="false" href="{{ path('app_admin_user_login') }}" class="protic-btn-admin w-100 justify-content-center">
                 <i class="bi bi-shield-lock protic-btn-admin__icon"></i>
                 <span class="protic-btn-admin__label">Administration</span>
             </a>

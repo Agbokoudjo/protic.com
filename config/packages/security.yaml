@@ -39,12 +39,12 @@ security:
         main:
             lazy: true
             provider: users_in_memory
-    # access_control:
-    #     - { path: ^/admin/form/login$, role: PUBLIC_ACCESS }
+    access_control:
+        - { path: ^/admin/form/login$, role: PUBLIC_ACCESS }
     #     - { path: ^/profile, roles: PUBLIC_ACCESS }
-    #     - { path: ^/admin/logout$, role: PUBLIC_ACCESS }
+        - { path: ^/admin/logout$, role: PUBLIC_ACCESS }
     #     - {path: ^/verify-email/* ,role: PUBLIC_ACCESS }
-    #     - { path: ^/admin/*, roles: ROLE_ADMIN }
+        - { path: ^/admin/*, roles: ROLE_ADMIN }
 
 when@test:
     security:

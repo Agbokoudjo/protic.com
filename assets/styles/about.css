@@ -136,6 +136,50 @@
 @media(max-width:768px){
     .ab-timeline__line{left:20px;}
     .ab-timeline-item--right{flex-direction:column;}
+
+    .ab-hero__inner {
+        padding: 36px 0 48px !important;
+    }
+
+    .ab-hero__title {
+        font-size: clamp(1.6rem, 7.5vw, 2.2rem) !important;
+        line-height: 1.22 !important;
+    }
+
+    .ab-hero__sub {
+        font-size: 0.9rem !important;
+    }
+
+    /* ✅ FIX boutons À propos mobile */
+    .ab-hero__btns {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+
+    .ab-btn-gold,
+    .ab-btn-glass {
+        width: 100% !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding: 13px 20px !important;
+        font-size: 0.88rem !important;
+        box-sizing: border-box !important;
+    }
+
+    /* KPIs hero about */
+    .ab-hero__kpis {
+        flex-wrap: wrap !important;
+        gap: 0 !important;
+    }
+
+    .ab-kpi {
+        padding: 8px 16px !important;
+        min-width: 50% !important;
+    }
+
+    .ab-kpi__sep { display: none !important; }
 }
 .ab-timeline-item{
     display:flex;align-items:flex-start;gap:32px;margin-bottom:36px;

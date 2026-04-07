@@ -8,12 +8,14 @@ export default function AuthorBioModal({
     labelBtnClick,
     classNameBtnClick,
     styleBtnClick,
-    onTrigger,       // callback optionnel : ferme la modale parente avant d'ouvrir celle-ci
+    onTrigger,   
+    bookId,
+    bookTitle
 }) {
     const [isOpen, setIsOpen] = React.useState(false);
 
     const handleOpen = () => {
-        if (onTrigger) onTrigger(); // ferme la modale parente (BookSummaryModal) si besoin
+        if (onTrigger) onTrigger();      
         setIsOpen(true);
     };
 
@@ -113,12 +115,12 @@ export default function AuthorBioModal({
                     /* ContactFormModal gère son propre état */
                     <ContactFormModal
                         modalSubTitle={`Auteur : ${author?.fullName} `}
-                        subject={`Contact — ${author?.fullName}`}
+                        subject={`Contact — ${bookTitle}`}
                         urlSubmit="/api/contact-author"
                         labelBtnClick="📩 Contacter cet auteur"
                         classNameBtnClick="btn btn-primary btn-full"
                         onTrigger={() => setIsOpen(false)}
-                        
+                        bookId={bookId}
                     />
                 }
             />

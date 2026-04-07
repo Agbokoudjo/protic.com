@@ -169,7 +169,7 @@
                 <td class="info-label">Téléphone</td>
                 <td class="info-value">
                     {% if submission.phone is not null %}
-                        
+                        {% set value = submission.phone  %}
                         <a href="tel:+{{ value.countryCode }}{{ value.nationalNumber }}" style="color:#1a3a8f;">
                            +{{ value.countryCode }} {{ value.nationalNumber }}
                         </a>

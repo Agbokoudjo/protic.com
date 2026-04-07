@@ -12,22 +12,23 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\SonataUser;
-use App\Service\CanonicalFieldsUpdaterInterface;
+use App\Service\CanonicalFieldsUpdater;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\DependencyInjection\Attribute\WhenNot;
 
+#[WhenNot('prod')]
 class SonataUserFixtures extends Fixture implements FixtureGroupInterface
 {
     public const USER_REFERENCE_PREFIX = 'sonata_user_';
 
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher,
-        private readonly PhoneNumberUtil             $phoneNumberUtil,
-        private CanonicalFieldsUpdaterInterface $canonicalFieldsUpdater,
+        private CanonicalFieldsUpdater $canonicalFieldsUpdater,
         private readonly string                      $projectDir,
     ) {}
 
@@ -48,7 +49,7 @@ class SonataUserFixtures extends Fixture implements FixtureGroupInterface
         }
 
         $loaded = 0;
-
+        $phoneNumberUtil = PhoneNumberUtil::getInstance();
         foreach ($data as $index => $item) {
             $user = new SonataUser();
 
@@ -77,7 +78,7 @@ class SonataUserFixtures extends Fixture implements FixtureGroupInterface
 
             // ── Téléphone ─────────────────────────────────────
             try {
-                $phone = $this->phoneNumberUtil->parse($item['phone'], null);
+                $phone = $phoneNumberUtil->parse($item['phone'], null);
                 $user->setPhone($phone);
             } catch (\libphonenumber\NumberParseException $e) {
                 echo sprintf("⚠️  Téléphone invalide pour %s : %s\n", $username, $e->getMessage());

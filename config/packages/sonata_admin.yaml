@@ -16,6 +16,9 @@ sonata_admin:
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
         groups:
+            app.admin.group.user:
+                label: Administration
+                keep_open: true
             app.admin.group.catalogue:
                 keep_open: true
                 label: Catalogue
@@ -28,6 +31,9 @@ sonata_admin:
                  keep_open: true
                  icon: bi bi-cogs
                  label: Configuration
+            app.admin.group.faq:
+                label: Gestion du Contenu
+                keep_open: true
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:

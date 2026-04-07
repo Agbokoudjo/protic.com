@@ -89,9 +89,6 @@ Découvrez le catalogue complet de ProTIC Editions &amp; Services : romans, poé
     </div>
 </section>
 
-{# ══════════════════════════════════════════
-   §2 — BARRE CTA HAUTE (invitation action)
-══════════════════════════════════════════ #}
 <div class="cat-cta-bar" aria-label="Actions rapides">
     <div class="container cat-cta-bar__inner">
         <p class="cat-cta-bar__text">
@@ -109,16 +106,13 @@ Découvrez le catalogue complet de ProTIC Editions &amp; Services : romans, poé
     </div>
 </div>
 
-{# ══════════════════════════════════════════
-   §3 — SECTION PRINCIPALE : Filtres + BooksGrid React
-══════════════════════════════════════════ #}
 <section class="cat-section" id="catalogue" aria-labelledby="catalogue-title">
     <div class="container">
 
         <div class="cat-main-grid">
 
             {# ── SIDEBAR FILTRES (gauche) ── #}
-            <aside class="cat-sidebar" aria-label="Filtres du catalogue" id="cat-sidebar">
+            <aside class="cat-sidebar" aria-label="Filtres du catalogue" id="cat-sidebar" data-turbo="false">
 
                 {# Toggle mobile #}
                 <button class="cat-sidebar__mobile-toggle d-lg-none"
@@ -266,9 +260,6 @@ Découvrez le catalogue complet de ProTIC Editions &amp; Services : romans, poé
     </div>
 </section>
 
-{# ══════════════════════════════════════════
-   §4 — BANDEAU CTA "Auteur" (milieu de page)
-══════════════════════════════════════════ #}
 <section class="cat-author-cta" aria-label="Invitation aux auteurs">
     <div class="cat-author-cta__bg"
          style="background-image:url('{{ asset('assets/images/catalogue-author-cta-bg.png','app') }}')"></div>
@@ -327,9 +318,6 @@ Découvrez le catalogue complet de ProTIC Editions &amp; Services : romans, poé
     </div>
 </section>
 
-{# ══════════════════════════════════════════
-   §5 — GENRES EN VEDETTE
-══════════════════════════════════════════ #}
 <section class="cat-section cat-section--dark" id="genres" aria-labelledby="genres-title">
     <div class="container">
         <div class="cat-section-header" data-aos="fade-up">
@@ -398,4 +386,5 @@ Découvrez le catalogue complet de ProTIC Editions &amp; Services : romans, poé
 
 {% block scripts_extra %}
 {{ vite_entry_script_tags('catalogue') }}
+{{ vite_entry_script_tags('form_validator',[],'app') }} 
 {% endblock %}
