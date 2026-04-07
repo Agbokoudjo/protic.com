@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Http\Controller\Admin\Logout;
+namespace App\Controller\Admin;
 
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Attribute\Route;
