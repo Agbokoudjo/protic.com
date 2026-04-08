@@ -125,7 +125,7 @@ final class ContactAuthorController extends AbstractController
         }
 
         /* ── Persistance ─────────────────────────────────────── */
-        //$this->entityManager->getRepository(Book::class)->add($contactRequest);
+        $this->entityManager->getRepository(Book::class)->add($contactRequest);
 
         /* ── Envoi email via SupportMailer via en async  ───────────────────── */
          $this->asyncMethodDispatcher->dispatch(
