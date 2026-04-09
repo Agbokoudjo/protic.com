@@ -10,6 +10,8 @@
 /public/uploads/
 /var/
 /vendor/
+/var/uploads/manuscripts/
+/var/fixtures_tmp/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###

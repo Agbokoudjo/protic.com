@@ -80,16 +80,16 @@ final class ContactAuthorController extends AbstractController
 
         $countryAlpha2 = $raw['country'] ?? null;
 
-        if ($countryAlpha2 && strlen($countryAlpha2) === 2) {
+        if ($countryAlpha2 && strlen($countryAlpha2) <= 2) {
             try {
                 // Convertit 'BJ' en 'BEN', 'FR' en 'FRA', etc.
-                $countryAlpha3 = Countries::getAlpha3Code($countryAlpha2);
+                $countryAlpha3 = Countries::getAlpha3Code(strtoupper($countryAlpha2));
                 $raw['country'] = $countryAlpha3;
             } catch (\Exception $e) {
-                // Si le code est invalide, on laisse la validation de l'entité gérer l'erreur
+                $raw['country']="BEN";
             }
         }
-        
+       
         try {
             /** @var ContactRequest $contactRequest */
             $contactRequest = $this->denormalizer->denormalize(
@@ -119,13 +119,13 @@ final class ContactAuthorController extends AbstractController
             foreach ($violations as $v) {
                 /* Convertit le propertyPath "fullName" → clé lisible */
                 $field          = $v->getPropertyPath();
-                $errors[$field] = $v->getMessage();
+                $errors[$field] = [$v->getMessage()];
             }
             return $this->json($errors, 422);
         }
 
         /* ── Persistance ─────────────────────────────────────── */
-        $this->entityManager->getRepository(Book::class)->add($contactRequest);
+        $this->entityManager->getRepository(ContactRequest::class)->add($contactRequest);
 
         /* ── Envoi email via SupportMailer via en async  ───────────────────── */
          $this->asyncMethodDispatcher->dispatch(

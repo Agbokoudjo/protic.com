@@ -46,14 +46,14 @@ final class AuthorCommandNotificationHandler{
             $this->supportMailer->sendManager(
                 recipientEmail: $author->getEmail(),
                 subject: '[ProTIC] Nouvelle demande — ' . $contactRequest->getSubject(),
-                htmlTemplate: 'emails/contact_author_notification.html.twig',
+                htmlTemplate: 'email/contact_author_notification.html.twig',
                 context: [
                     'contact' => $contactRequest,
                     'book'    => $book,
                     'authorFullName'  => $author->getFullName()
                 ],
                 senderEmail: null,            // utilise la config 'support'
-                replyToEmail: $contactRequest->getEmail(),
+                replyToEmail: $contactRequest->getFullName() . ' <' . $contactRequest->getEmail() . '>',
             );
         } catch (\Throwable) {
             /* L'email échoue silencieusement — la demande est déjà sauvegardée */

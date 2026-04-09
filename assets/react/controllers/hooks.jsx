@@ -8,7 +8,9 @@ import {
     FormSubmitFailedEvent,
     showSuccessDialog,
     showErrorDialog,
-    fetchErrorTranslator
+    fetchErrorTranslator,
+    handleErrorsManyForm,
+    ApiError
 } from '@wlindabla/form_validator';
 
 import { HttpFetchError } from "@wlindabla/http_client";
@@ -63,6 +65,8 @@ export function useFormSubmission(formRef, url, isOpen) {
             responseType:"json"
         });
 
+        submission.withHandleErrorsManyForm(false);
+
         submission.confirmMethodRequest = async (message) => {
             const result = await Swal.fire({
                 title: 'Confirmer l\'envoi',
@@ -94,9 +98,13 @@ export function useFormSubmission(formRef, url, isOpen) {
 }
 
 /**
- * @param {FormSubmitSuccessEvent} event
+ * @param {CustomEvent} e
  */
-const handleSuccess = (event) => {
+const handleSuccess = (e) => {
+    /***
+     * @type {FormSubmitSuccessEvent} 
+    */
+    const event = e.detail;
     const res = event.resultHttpResponse.fetchResponse;
     const form = event.formElement;
 
@@ -109,14 +117,18 @@ const handleSuccess = (event) => {
 
 /**
  * 
- * @param {FormSubmitRequestErrorEvent}  event 
+ * @param {CustomEvent}  e
  * @returns 
  */
-const handleNetworkError = (event) => {
-    console.error('[Network Error]', event.requestError.message);
+const handleNetworkError = (e) => {
+     /**
+      * @type {FormSubmitRequestErrorEvent}  
+      */
+    const event = e.detail;
+    const error = event.requestError
+    console.error('[Network Error]', error);
      event.stopPropagation();
 
-    const error =  event.requestError;
     if (!(error instanceof HttpFetchError) || !(error.cause instanceof Error)) {
         return;
     }
@@ -131,17 +143,41 @@ const handleNetworkError = (event) => {
 };
 
 /**
- * 
- * @param {FormSubmitFailedEvent} event 
+ * @param {CustomEvent} e 
  */
-const handleSubmitServerError = (event) => {
-    const { statusCode, data } = event.response;
+const handleSubmitServerError = (e) => {
+    const event = e.detail;
+    const error_res = event.response;
 
-    if (statusCode !== 422) {
+    // Si ce n'est pas une erreur de validation (422)
+    if (error_res.statusCode !== 422) {
+        // Symfony peut renvoyer .detail (RFC 7807) ou .message
+        const msg = error_res.data?.errors || error_res.data?.detail || error_res.data?.message || "Erreur serveur";
         showErrorDialog({
-        title: 'Erreur',
-        message: data.errors,
-    })
-    
+            title: 'Erreur',
+            message: msg,
+        });
+        return;
+    }
+
+    // Récupération des données (On vérifie si c'est déjà un objet ou s'il faut parser)
+    let errorData;
+    if (typeof error_res.data === 'string') {
+        try {
+            errorData = JSON.parse(error_res.data);
+        } catch (e) {
+            console.error("Impossible de parser le JSON d'erreur", error_res.data);
+            return;
+        }
+    } else {
+        errorData = error_res.data; // C'est déjà l'objet { "country": "..." }
+    }
+    // Application des erreurs au formulaire
+    try {
+        const form = event.formElement;
+
+        handleErrorsManyForm(form.name, form.id,errorData);
+    } catch (error) {
+        console.error("Erreur lors du traitement handleErrorsManyForm:", error,errorData);
     }
 };

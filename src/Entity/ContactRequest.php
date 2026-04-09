@@ -142,7 +142,7 @@ class ContactRequest
         message: '{{ value }} n\'est pas un code pays valide (ISO 3166-1 alpha-3).',
         alpha3: true
     )]
-    #[Assert\Length(min: 3, max: 200)]
+    #[Assert\Length(min: 2, max: 200)]
     #[ORM\Column(type: 'string', length: 200, nullable: true)]
     #[Groups(['contact_request:write'])]
     protected ?string $country;

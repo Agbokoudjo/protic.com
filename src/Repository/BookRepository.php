@@ -16,6 +16,16 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
+    public function add(Book $entity, bool $flush = true): void
+    {
+
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 //    /**
 //     * @return Book[] Returns an array of Book objects
 //     */
