@@ -2,6 +2,7 @@
 // Composant catalogue avec recherche, filtres genre, tri, pagination
 import '@vitejs/plugin-react/preamble';
 import React from "react";
+import { createRoot } from "react-dom/client";
 import { safeFetch } from '@wlindabla/http_client';
 import { addParamToUrl } from "@wlindabla/form_validator";
 import BookSummaryModal from "./BookSummaryModal";
@@ -43,8 +44,7 @@ function buildUrl({ page, itemsPerPage, search, genre, sort }) {
     if (search?.trim()) {
         params['title']                  = search.trim();
         // API Platform SearchFilter partial sur author.lastName
-        params['author.lastName']        = search.trim();
-        params['author.firstName']       = search.trim();
+        params['author.fullName']        = search.trim();
     }
 
     // Filtre genre (slug de la catégorie)
@@ -59,7 +59,7 @@ function buildUrl({ page, itemsPerPage, search, genre, sort }) {
    Skeleton
 ══════════════════════════════════════════════════════════════ */
 const Skeleton = ({ count = 12, view = "grid" }) => {
-    if (view === "list") {
+    if (view === "list") {  
         return (
             <div className="cat-books-list" data-turbo="false">
                 {Array.from({ length: count }).map((_, i) => (
@@ -439,3 +439,16 @@ export default function CatalogueGrid({ itemsPerPage = 12 }) {
         </React.Fragment>
     );
 }
+
+
+/* ══════════════════════════════════════════════════════════════
+   Montage React — CatalogueGrid
+══════════════════════════════════════════════════════════════ */
+export const mountCatalogue = () => {
+    const root = document.getElementById('catalogue-books-root');
+    if (!root || root.dataset.mounted) return;
+    root.dataset.mounted = 'true';
+
+    const perPage = parseInt(root.dataset.perPage ?? '12', 10);
+    createRoot(root).render(<CatalogueGrid itemsPerPage={perPage} />);
+};

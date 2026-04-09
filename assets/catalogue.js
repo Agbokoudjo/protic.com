@@ -1,18 +1,11 @@
 
 import './styles/book.css'
 import './styles/catalogue.css';
-import { select2 } from "./utils";
-import { mountCatalogue  } from "./react/lazy-mount.jsx";
+import { mountCatalogue  } from "./react/controllers/CatalogueGrid";
 
-/* ══════════════════════════════════════════════════════════════
-   Helpers — dispatch events vers React
-══════════════════════════════════════════════════════════════ */
 const dispatch = (type, detail) =>
     document.dispatchEvent(new CustomEvent(type, { detail }));
 
-/* ══════════════════════════════════════════════════════════════
-   Recherche — Hero search + Sidebar search
-══════════════════════════════════════════════════════════════ */
 const initSearch = () => {
     // Sidebar
     const sidebarInput = document.getElementById('cat-search-input');
@@ -233,7 +226,6 @@ const init = () => {
     initViewToggle();
     initReset();
     initSidebarToggle();
-    select2(document);
 };
 
 document.addEventListener('DOMContentLoaded', init);

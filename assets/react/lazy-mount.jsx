@@ -1,6 +1,5 @@
 import { createRoot } from "react-dom/client";
 import BooksGrid from "./controllers/BooksGrid";
-import CatalogueGrid from './controllers/CatalogueGrid';
 import Footer from "./controllers/Footer";
 /**
  * Map des composants disponibles pour le lazy mount
@@ -65,17 +64,6 @@ export const initLazyMounts = () => {
         .forEach(lazyMount);
 };
 
-/* ══════════════════════════════════════════════════════════════
-   Montage React — CatalogueGrid
-══════════════════════════════════════════════════════════════ */
-export const mountCatalogue = () => {
-    const root = document.getElementById('catalogue-books-root');
-    if (!root || root.dataset.mounted) return;
-    root.dataset.mounted = 'true';
-
-    const perPage = parseInt(root.dataset.perPage ?? '12', 10);
-    createRoot(root).render(<CatalogueGrid itemsPerPage={perPage} />);
-};
 
 export const mountFooter = () => {
     const rootEl = document.getElementById('protic-footer-root');

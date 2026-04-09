@@ -58,9 +58,9 @@ export const config=Config.getInstance();
      * @param {string} APP_ENV 
      * @returns 
      */
-export function disableUserInteractions(idMeta="sonata-config") {
-    if (config.param('DEBUG',idMeta) === true &&
-        config.param('APP_ENV',idMeta) === "dev") { return; }
+export function disableUserInteractions(APP_ENV = 'prod', DEBUG = false) {
+    if (DEBUG === true && APP_ENV === "dev") { return; }
+
       jQuery(document).on('contextmenu', function(e) {
             e.preventDefault(); // Empêche le comportement par défaut du clic droit
       });

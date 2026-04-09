@@ -3,33 +3,42 @@ import { startStimulusApp } from "vite-plugin-symfony/stimulus/helpers"
 import '@vitejs/plugin-react/preamble';
 import './styles/app.css';
 import 'bootstrap/dist/js/bootstrap.min.js'
-import { disableUserInteractions } from './utils';
+import { disableUserInteractions,config } from './utils';
 import { mountFooter } from "./react/lazy-mount.jsx"
 import jQuery from 'jquery';
-import { Logger } from "@wlindabla/form_validator";
+import { Logger,appTranslation, toBoolean } from "@wlindabla/form_validator";
 
 window.jQuery = jQuery;
 window.$ = jQuery;
-Logger.config("dev",true)
+/**
+ * @type string
+ */
+const APP_ENV = config.param('APP_ENV', "iws-config");
+/**
+ * @type boolean
+ */ 
+const DEBUG = config.param('DEBUG', "iws-config");
+
+Logger.config(APP_ENV,DEBUG)
 const app = startStimulusApp();
 registerReactControllerComponents(import.meta.glob('./react/controllers/**/*.js(x)\?',{ eager: true })); 
 import.meta.glob('./images/**/*', { eager: true });
 
 window.addEventListener('DOMContentLoaded', () => {
-    disableUserInteractions("iws-config");
+    disableUserInteractions(APP_ENV,DEBUG);
+    mountFooter();
+    SpeedometerScroll();
+    window.jQuery = window.$ = jQuery;
+    translation();
+})
+
+document.addEventListener('turbo:load', () => {
+    disableUserInteractions(APP_ENV,DEBUG);
     mountFooter();
     SpeedometerScroll();
     bootstrapHandler();
-    window.AOS.refresh();
     window.jQuery = window.$ = jQuery;
-})
-
-window.addEventListener('turbo:load', () => {
-    disableUserInteractions("iws-config");
-    mountFooter();
-    SpeedometerScroll();
-    bootstrapHandler()
-    window.AOS.refresh();
+    translation();
 })
 
 function navOffcanvas() {
@@ -154,4 +163,20 @@ function bootstrapHandler() {
     } else {
         console.warn("Bootstrap object not found. Make sure Bootstrap CDN is loaded before your custom script.");
     }
+}
+    
+async function translation() {
+    window.SonataTranslator = appTranslation;
+
+     // Récupère le hash actuel des traductions
+    const currentHash = document.querySelector('meta[name="sonata-translations-hash"]').getAttribute('content');
+    const cachedHash = localStorage.getItem('sonata_translations_hash');
+    
+    // Si le hash a changé, vide le cache
+    if (currentHash && cachedHash !== currentHash) {
+        await appTranslation.clearCache();
+        localStorage.setItem('sonata_translations_hash', currentHash);
     }
+
+    await appTranslation.preload('sonata-translations');
+}

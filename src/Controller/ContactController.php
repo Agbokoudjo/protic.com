@@ -33,15 +33,11 @@ final class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-
             if (!$form->isValid()) {
                 return $this->json([
                     'title' => 'Erreur de validation',
                     'details' => 'Certaines informations sont invalides ou manquantes. Veuillez corriger les champs concernés et réessayer.',
-                    'violations' => $formErrorHandle->handle(
-                        $form,
-                        'validators',
-                        $request->getLocale()
+                    'violations' => $formErrorHandle->handle($form,'validators',$request->getLocale()
                     ),
                     'formName' => $form->getName()
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -66,17 +62,14 @@ final class ContactController extends AbstractController
                 [$submission->getId()]
             );
 
-            /* ── 6. Flash + redirect (PRG pattern) ── */
-            $this->addFlash(
-                'contact_success',
-                sprintf(
+            return $this->json([
+                'title'=> 'Demande envoyée !',
+                'message' => sprintf(
                     'Merci %s ! Votre demande a bien été reçue. Nous vous répondrons sous 48h à l\'adresse %s.',
                     htmlspecialchars($submission->getFullName()),
                     htmlspecialchars($submission->getEmail())
                 )
-            );
-
-            return $this->redirectToRoute('app_contact',['_fragment' => 'container-succcess']);
+            ]);
         }
 
         return $this->render('contact/index.html.twig', [

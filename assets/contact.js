@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ══════════════════════════════════════════
        5. SUBMIT — spinner + shake sur erreur Symfony
     ══════════════════════════════════════════ */
-    if (form && submitBtn) {
+    /*if (form && submitBtn) {
         form.addEventListener('submit', () => {
             // Vérification native rapide
             if (!form.checkValidity()) {
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (spinner)  spinner.style.display  = 'flex';
             submitBtn.disabled = true;
         });
-    }
+    }*/
 
     /* Shake si erreurs Symfony présentes au chargement */
     const hasErrors = form?.querySelectorAll('.pc-field-error li').length > 0;

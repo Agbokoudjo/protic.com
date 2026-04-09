@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{app.locale}}">
+<html lang="{{app.locale}}" data-turbo="false">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,22 @@
                           LOCALE: app.locale ?? 'fr',
                           ENABLE_LOCALE: app.enabled_locales ?? []
                       }|json_encode()|e('html_attr') }}">
-                      
+    {% block meta_sonata_translation %}
+        {% set translations =  {
+            CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle',app.locale),
+            LABEL_BTN_CONFIRM: 'label_btn_confirm'|trans({}, 'SonataAdminBundle',app.locale),
+            LABEL_BTN_CANCEL: 'label_btn_cancel'|trans({}, 'SonataAdminBundle',app.locale),
+            ACTION_CANCELLED_SUCCESS : 'action_cancelled_success'|trans({}, 'SonataAdminBundle',app.locale),
+            FORM_SUBMISSION_PROGRESS_MESSAGE: 'form_submission_progress_message'|trans({}, 'SonataAdminBundle',app.locale),
+            FORM_SUBMISSION_PROGRESS_TITLE: 'form_submission_progress_title'|trans({}, 'SonataAdminBundle',app.locale),
+            ACTION_PENDING_RESEND_EMAIL_VERIFCATION_MESSAGE:'action_pending_resend_verification_message'|trans({}, 'SonataUserBundle',app.locale),
+            ACTION_PENDING_TITLE: 'action.pending.title'|trans({}, 'SonataAdminBundle',app.locale),
+            ACTION_PENDING_MESSAGE: 'action.pending.message'|trans({}, 'SonataAdminBundle',app.locale),
+        }   
+        %}
+        <meta name="sonata-translations" content='{{ translations|json_encode()|e('html_attr')}}'>
+        <meta name="sonata-translations-hash" content="{{TRANSLATION_HASH}}">
+    {% endblock %}
     <link rel="icon" href="{{ asset('assets/images/logo.png','app') }}" width="75" height="75">
 
     {# ── AOS animations ── #}
@@ -47,6 +62,11 @@
             }
         </script>
     {% endblock %}
+     {# Scripts Vite (React, app JS) #}
+    {% block javascripts %}
+        {{ vite_entry_script_tags('app') }}
+
+    {% endblock %}
 </head>
 <body class="protic-body {{app.environment}}">
     {% block header %}
@@ -68,23 +88,35 @@
     {# AOS — animations au scroll #}
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
+        function initAOS() {
         AOS.init({
             duration        : 700,
             easing          : 'ease-out-cubic',
-            once            : true,
+            once            : false, 
             offset          : 80,
             anchorPlacement : 'top-bottom',
         });
-        window.AOS=AOS ;
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initAOS();
+        window.AOS = AOS;
+    });
+
+    document.addEventListener('turbo:load', () => {
+        const aosElements = document.querySelectorAll('.aos-animate');
+        aosElements.forEach(el => el.classList.remove('aos-animate', 'aos-init'));
+        
+        initAOS(); 
+        
+        if (typeof jQuery !== 'undefined') {
+            window.jQuery = window.$ = jQuery;
+        }
+    });
     </script>
 
     {# Three.js — injecté uniquement sur les pages qui en ont besoin #}
     {% block threejs %}{% endblock %}
-
-    {# Scripts Vite (React, app JS) #}
-    {% block javascripts %}
-        {{ vite_entry_script_tags('app') }}
-    {% endblock %}
 
     {% block scripts_extra %}{% endblock %}
 </body>

@@ -223,6 +223,8 @@ export default function ContactFormModal({
                             type="submit"
                             className="btn btn-primary btn-full"
                             form="contactForm"
+                            data-iwas-confirm="Voulez-vous vraiment envoyer votre demande ?"
+                            data-submits-with="Envoi en cours…"
                             disabled={isLoading}
                         > {isLoading ? "Patientez..." : "📨 Envoyer la demande"}
                         </button>

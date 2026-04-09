@@ -44,23 +44,25 @@ final class AdminManuscriptNotificationHandler
 
         $emailContact = $this->settingProvider->getSettings()->getEmailContact();
 
-        // Construction du chemin
-        $uploadDir = sprintf(
-            '%s/var/uploads/manuscripts/%s',
-            $this->params->get('kernel.project_dir'),
-            $submissionRequest->getManuscriptfilename()
-        );
-
-        // Nettoyage du nom pour la pièce jointe
-        $fullName = trim(preg_replace('/\s+/', '_', $submissionRequest->getFullName()));
-        $fileName = sprintf('Manuscript_%s.pdf', $fullName);
-
         // Préparation des pièces jointes (seulement si le fichier existe)
         $attachments = [];
-        if (file_exists($uploadDir)) {
-            $attachments[$uploadDir] = $fileName;
-        }
+        if($manuscriptfilename= $submissionRequest->getManuscriptfilename()){
+            // Construction du chemin
+            $uploadDir = sprintf(
+                '%s/var/uploads/manuscripts/%s',
+                $this->params->get('kernel.project_dir'),
+                $manuscriptfilename
+            );
 
+            // Nettoyage du nom pour la pièce jointe
+            $fullName = trim(preg_replace('/\s+/', '_', $submissionRequest->getFullName()));
+            $fileName = sprintf('Manuscript_%s.pdf', $fullName);
+
+            if (file_exists($uploadDir)) {
+                $attachments[$uploadDir] = $fileName;
+            }
+        }
+        
         $this->supportMailer->sendManager(
             recipientEmail: $emailContact,
             subject: $submissionRequest->getSubject() ?? 'Nouvelle soumission de manuscrit',

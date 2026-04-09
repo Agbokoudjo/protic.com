@@ -105,8 +105,8 @@ final class Book
     #[Groups(['book:read'])]
     #[Assert\Length(max: 50)]
     #[Assert\Isbn(
-        type: Assert\Isbn::ISBN_10,
-        message: "Le numéro ISBN saisi n'est pas un code ISBN-13 valide.",
+        type: null,
+        message: "Le numéro ISBN saisi n'est pas un code ISBN valide.",
     )]
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $isbn = null;

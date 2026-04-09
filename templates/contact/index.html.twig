@@ -168,7 +168,8 @@ Soumettez votre manuscrit à ProTIC Editions &amp; Services, maison d'édition b
                     attr: {
                         id: 'pc-manuscript-form',
                         enctype: 'multipart/form-data',
-                        class: 'pc-form form-validate',
+                        class: 'pc-form form-validate form-submission-handle-auto',
+                        'data-turbo': false
                         
                     }
                 }) }}
@@ -312,7 +313,10 @@ Soumettez votre manuscrit à ProTIC Editions &amp; Services, maison d'édition b
                     {# ── Bouton soumettre ── #}
                     <div class="pc-submit-wrap"
                          data-aos="zoom-in-up" data-aos-duration="600" data-aos-delay="520">
-                        <button type="submit" class="pc-submit-btn" id="pc-submit-btn">
+                        <button type="submit" class="pc-submit-btn" id="pc-submit-btn" 
+                        data-submits-with="Envoi en cours…"
+                        data-iwas-confirm="Voulez-vous vraiment envoyer votre demande ?"
+                        >
                             <span class="pc-submit-btn__label" id="pc-btn-label">
                                 <i class="bi bi-send-fill"></i>
                                 Envoyer ma demande
@@ -340,7 +344,7 @@ Soumettez votre manuscrit à ProTIC Editions &amp; Services, maison d'édition b
 
 {% block scripts_extra %}
 {{ vite_entry_script_tags('contact') }}
-{{ vite_entry_script_tags('form_validator',[],'app') }} 
+{{ vite_entry_script_tags('form',[],'app') }} 
 {% if app.flashes('contact_success') is not empty %}
     <script>
         window.addEventListener('load', function() {

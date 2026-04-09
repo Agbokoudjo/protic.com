@@ -142,7 +142,6 @@ file that was distributed with this source code.
                 </script>
             {% endif %}
         {% endif %}  #}
-        {{ vite_entry_script_tags('form_validator',[],'admin') }} 
     {% endblock %}
     
     {% block favicon %}
@@ -488,5 +487,6 @@ file that was distributed with this source code.
         {% endif %}
     {% endblock %} {# endblock javascript_inline  #}
     <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/js/fontawesome.min.js" integrity="sha256-YbayIEYGVLmyi3xj7wG91wgAa+Iz3qf7HuK6e1N40/w=" crossorigin="anonymous"></script>
+    {{ vite_entry_script_tags('form',[],'admin') }} 
 </body>
 </html>

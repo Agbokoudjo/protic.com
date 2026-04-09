@@ -212,7 +212,7 @@
             <tr class="info-row">
                 <td class="info-label">Date de soumission</td>
                 <td class="info-value">
-                    {{ submission.submittedAt|date('l d MMMM Y à HH:mm', 'Africa/Porto-Novo', locale='fr') }}
+                    {{ submission.submittedAt|date('l d MMMM Y à HH:mm', 'Africa/Porto-Novo') }}
                 </td>
             </tr>
         </table>
@@ -262,7 +262,7 @@
 
     {# ── Manuscrit joint ── #}
         <div class="section-title">📎 Manuscrit joint</div>
-        {# {% if submission.manuscriptFilename %} #}
+        {% if submission.manuscriptFilename %}
             <div class="file-badge">
                 <span class="file-badge__icon">📄</span>
                 <div>
@@ -272,9 +272,9 @@
                     </div>
                 </div>
             </div>
-        {# {% else %}
+        {% else %}
             <p class="no-file">Aucun fichier manuscrit joint à cette soumission.</p>
-        {% endif %} #}
+        {% endif %}
 </div>
 </div>
 

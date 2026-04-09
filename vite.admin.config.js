@@ -31,7 +31,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 sonata: "./assets/sonata.js",
-                form_validator: 'assets/form_validator.js',
+                form: 'assets/form.js',
                 login : "./assets/login.js",
             },
         }

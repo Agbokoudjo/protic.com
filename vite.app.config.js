@@ -29,7 +29,7 @@ export default defineConfig({
                 app: "./assets/app.js",
                 home: "./assets/home.js",
                 contact: "./assets/contact.js",
-                form_validator: 'assets/form_validator.js',
+                form: 'assets/form.js',
                 catalogue: "./assets/catalogue.js",
                 about : "./assets/about.js"
             },

@@ -93,13 +93,10 @@ export function useFormSubmission(formRef, url, isOpen) {
     return { submit, isLoading };
 }
 
-
-const handleSuccess = (e) => {
-    /**
-     * 
-     * @type {FormSubmitSuccessEvent} 
-     */
-    const event = e.detail;
+/**
+ * @param {FormSubmitSuccessEvent} event
+ */
+const handleSuccess = (event) => {
     const res = event.resultHttpResponse.fetchResponse;
     const form = event.formElement;
 
@@ -110,13 +107,12 @@ const handleSuccess = (e) => {
     form.reset();
 };
 
-
-const handleNetworkError = (e) => {
-    /**
-     * 
-     * @type {FormSubmitRequestErrorEvent} 
-     */
-    const event = e.detail;
+/**
+ * 
+ * @param {FormSubmitRequestErrorEvent}  event 
+ * @returns 
+ */
+const handleNetworkError = (event) => {
     console.error('[Network Error]', event.requestError.message);
      event.stopPropagation();
 
@@ -134,12 +130,11 @@ const handleNetworkError = (e) => {
     })
 };
 
-const handleSubmitServerError = (e) => {
-    /**
-     * 
-     * @type {FormSubmitFailedEvent}
-     */
-    const event = e.detail;
+/**
+ * 
+ * @param {FormSubmitFailedEvent} event 
+ */
+const handleSubmitServerError = (event) => {
     const { statusCode, data } = event.response;
 
     if (statusCode !== 422) {
