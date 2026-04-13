@@ -4,7 +4,7 @@
         {% set formattedPhones = [] %}
         {% if settings and settings.phonePrimary is not empty %}
             {% for p in settings.phonePrimary %}
-                {% set formattedPhones = formattedPhones|merge(['+' ~ p.countryCode ~ ' ' ~ p.nationalNumber]) %}
+                {% set formattedPhones = formattedPhones|merge(['+' ~ p.countryCode ~ ' 0' ~ p.nationalNumber]) %}
             {% endfor %}
         {% else %}
             {% set formattedPhones = ['+229 01 95 86 99 51', '+229 0162 013 868', '+229 0164 303 819'] %}

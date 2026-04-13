@@ -641,28 +641,28 @@
             
       <trans-unit id="label_regenerate_password">
         <source>label_regenerate_password</source>
-        <target>Générer Mot de Passe Temporaire</target>
+        <target>Générer Mot de Passe</target>
       </trans-unit>
             
       <trans-unit id="link_title_regenerate_password">
         <source>link_title_regenerate_password</source>
-        <target>Générer et envoyer un nouveau mot de passe temporaire à l'utilisateur.</target>
+        <target>Générer et envoyer un nouveau mot de passe à l'utilisateur.</target>
       </trans-unit>
             
       <trans-unit id="confirm_regenerate_password">
         <source>confirm_regenerate_password</source>
-        <target>Êtes-vous certain de vouloir générer un nouveau mot de passe temporaire pour l' utilisateur  %username% ? Cela remplacera l'ancien et lui sera envoyé immédiatement par email.</target>
+        <target>Êtes-vous certain de vouloir générer un nouveau mot de passe  pour l' utilisateur  %username% ? Cela remplacera l'ancien et lui sera envoyé immédiatement par email.</target>
       </trans-unit>
 
             <!-- Clés pour les messages flash de succès et d'erreur (optionnel, mais recommandé) -->
       <trans-unit id="flash_success_regenerate_password">
         <source>flash_success_regenerate_password</source>
-        <target>Le nouveau mot de passe temporaire a été généré avec succès et envoyé par email à l'utilisateur.</target>
+        <target>Le nouveau mot de passe a été généré avec succès et envoyé par email à l'utilisateur.</target>
       </trans-unit>
 
       <trans-unit id="flash_error_regenerate_password">
         <source>flash_error_regenerate_password</source>
-        <target>Une erreur est survenue lors de la génération du mot de passe temporaire.</target>
+        <target>Une erreur est survenue lors de la génération du mot de passe .</target>
       </trans-unit>
       <!-- TEXTES INDICATIFS (PLACEHOLDER)  -->
       <trans-unit id="filter.placeholder_email">
