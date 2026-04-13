@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ProTIC Editions & Services{% endblock %}</title>
+    {% if app.environment =="prod" %}
+        <meta name="google-site-verification" content="sK4Cxnn6-s7_Z7zrC8ipxZH5jgcHykHQYyBCtnhRzMQ" />
+    {% endif %}
     <meta name="description" content="{% block meta_description %}Maison d'édition béninoise engagée pour la promotion du livre et des auteurs.{% endblock %}">
     <meta name="iws-config" content="{{ {
                           DEBUG: app.debug ?? false,

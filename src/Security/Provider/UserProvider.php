@@ -21,6 +21,7 @@ use App\Persistance\UserManagerInterface;
 use App\Queue\AsyncMethodDispatcherInterface;
 use App\Serializer\SerializerFacade;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
@@ -38,6 +39,7 @@ class UserProvider implements UserProviderInterface
 {
     public function __construct(
         private UserManagerInterface $userManager,
+        #[Target('session.cache_pool')]
         private  TagAwareCacheInterface $userCacheProvider,
         private SerializerFacade $serializer,
         private AsyncMethodDispatcherInterface $asyncDispatcher

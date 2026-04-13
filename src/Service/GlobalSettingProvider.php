@@ -32,7 +32,7 @@ final class GlobalSettingProvider
     {
         return $this->cache->get('global_site_settings', function (ItemInterface $item) {
             // Expire après 24h par sécurité
-            $item->expiresAfter(86400);
+            $item->expiresAfter(604800);
 
             // Ajout d'un tag pour une invalidation plus facile
             //$item->tag(['settings_tag']);
