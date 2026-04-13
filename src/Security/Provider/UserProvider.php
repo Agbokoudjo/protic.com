@@ -153,7 +153,13 @@ class UserProvider implements UserProviderInterface
     public function invalidateUserCache(int|string $userId): void
     {
         try {
-            $cacheKeyUser = 'user_login_' . md5($userId);
+            $freshUser = $this->userManager->find($userId);
+
+            if (!($freshUser instanceof BaseUserInterface)) {
+                return ;
+            }
+
+            $cacheKeyUser = 'user_login_' . $freshUser->getUserIdentifier();
             $this->userCacheProvider->invalidateTags(['user_id_' . $userId, 'ADMIN', 'users']);
             $this->userCacheProvider->delete($cacheKeyUser) ;
         } catch (\Throwable $th) {
