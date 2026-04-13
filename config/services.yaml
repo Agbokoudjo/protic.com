@@ -19,6 +19,9 @@ services:
         autoconfigure: true 
     App\:
         resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Kernel.php'
 
     pentatrion_vite.asset_strategy_app:
         parent: Pentatrion\ViteBundle\Asset\ViteAssetVersionStrategy
@@ -63,6 +66,41 @@ services:
         arguments:
             $fromAddresses: '%app.mail.from%'
 
+    App\Controller\ArgumentResolver\IdEncryptionRequestArgumentValueResolver:
+        autowire: true
+        autoconfigure: false
+        public: true    
+        tags:
+          - name: 'controller.argument_value_resolver'
+            priority: 999
+
+    App\Security\Encryption\IdEncryptionService:
+        autowire: true
+        autoconfigure: false
+        public: false
+        arguments:
+            $encryptionKey: '%env(APP_ID_ENCRYPTION_KEY)%'
+
+    Sonata\AdminBundle\Route\DefaultRouteGenerator:
+        autowire: true
+        autoconfigure: false
+        public: false
+
+    App\Route\SonataRouteGenerator:
+        autowire: true
+        autoconfigure: false
+        public: false
+        arguments:
+            - '@sonata.admin.route.default_generator'
+
+    #Hash
+    App\Security\Hash\NativeTokenHasher:
+        arguments:
+            $algorithm: !php/const PASSWORD_ARGON2ID
+            $options:
+                memory_cost: 65536  # 64 MB
+                time_cost: 4
+                threads: 2
 when@dev:
     services:
         _defaults:

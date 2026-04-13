@@ -17,9 +17,9 @@
         "@symfony/ux-turbo": "^2.34.0",
         "@types/aos": "^3.0.7",
         "@vitejs/plugin-react": "^6.0.1",
-        "react": "^19.2.4",
-        "react-dom": "^19.2.4",
-        "vite": "^8.0.7",
+        "react": "^19.2.5",
+        "react-dom": "^19.2.5",
+        "vite": "^8.0.8",
         "vite-plugin-static-copy": "^4.0.1",
         "vite-plugin-symfony": "^8.2.4"
     },
@@ -34,7 +34,7 @@
         "concurrently": "^9.2.1",
         "countries-list": "^3.3.0",
         "icheck": "^1.0.2",
-        "qs": "^6.15.0",
+        "qs": "^6.15.1",
         "tom-select": "^2.5.2"
     }
 }

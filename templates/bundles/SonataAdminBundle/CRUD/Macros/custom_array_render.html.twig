@@ -21,9 +21,15 @@
 {% macro render_list(value, icon = 'fa-check-circle') %}
     <ul class="list-unstyled" style="margin-bottom: 0;">
         {% for item in value %}
-            <li style="margin-bottom: 3px;">
-                <i class="fas {{ icon }} text-info" style="font-size: 0.8em; margin-right: 5px;"></i>
-                {{ item }}
+            <li style="margin-bottom: 3px; color:#000 ;">
+                <i class="fas {{ icon }}" style="font-size: 0.8em; margin-right: 5px;"></i>
+                {% if item.countryCode is defined  and item.nationalNumber is defined %}
+                        {# Formatage manuel : +229 195869951 #}
+                        +{{ item.countryCode }} {{ item.nationalNumber }}
+                    {% else %}
+                        {# Pour les emails ou autres strings #}
+                        {{ item }}
+                    {% endif %}
             </li>
         {% endfor %}
     </ul>

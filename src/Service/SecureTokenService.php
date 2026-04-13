@@ -22,7 +22,7 @@ use App\Exception\EmailAlreadyVerifiedException;
 use App\Exception\InvalidTokenException;
 use App\Persistance\UserManagerInterface;
 use App\Security\Generator\TokenGeneratorInterface;
-use App\Security\Hash\TokenHasherInterface;
+use App\Security\Hash\NativeTokenHasher;
 use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface ;
@@ -41,8 +41,9 @@ final class SecureTokenService
     
     public function __construct(
         private readonly TokenGeneratorInterface $tokenGenerator,
-        private readonly TokenHasherInterface $tokenHasher,
-        private readonly EventDispatcherInterface $eventBusDispatcher
+        private readonly NativeTokenHasher $tokenHasher,
+        private readonly EventDispatcherInterface $eventBusDispatcher,
+        private UserManagerInterface $userManager,
     ) {}
 
     /**
@@ -70,35 +71,31 @@ final class SecureTokenService
      */
     public function generateEmailConfirmationToken(
         BaseUserInterface $user,
-        UserManagerInterface $userManager,
         int $length=TokenGeneratorInterface::DEFAULT_EMAIL_TOKEN_LENGTH
         ): void
     {
         try {
             // 1. Validation des données utilisateur
             $this->validateUser($user);
-
+           
             // 2. Vérification du rate limiting
             $this->enforceTokenGenerationCooldown($user);
-
             // 3. Génération du token en clair (cryptographiquement sécurisé)
             $plainToken = $this->tokenGenerator->generate($length);
- 
             // 4. Hachage du token pour stockage sécurisé
             $hashedToken = $this->tokenHasher->hash($plainToken);
-
             // 5. Mise à jour de l'entité utilisateur
             $user->setConfirmationToken($hashedToken);
             $user->setTokenRequestedAt(new \DateTime()); //Car le type est date_time en BDD
 
             // 6. Persistance en base de données
-            $userManager->save($user);
-
+            $this->userManager->save($user);
+          
             // 7. Déclenchement de l'événement pour envoi d'email
             $event = new UserAccountEmailVerificationEvent(
                 $user->getUsername(),
                 $user->getEmail(),
-                $user->getSlug(),
+                $user->getId(),
                 $plainToken
             );
             $this->eventBusDispatcher->dispatch($event);

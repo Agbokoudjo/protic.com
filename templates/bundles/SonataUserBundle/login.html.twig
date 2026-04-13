@@ -79,7 +79,6 @@
 
                 <div class="login-field">
                     <label for="username" class="login-label">
-                        {# <i class="fas fa-user"></i> #}
                         {{ ux_icon('fa:user') }}
                         Identifiant
                     </label>
@@ -103,7 +102,6 @@
 
                 <div class="login-field">
                     <label for="password" class="login-label">
-                        {# <i class="fas fa-lock"></i> #}
                         {{ ux_icon('fa:lock') }}
                         Mot de passe
                     </label>
@@ -115,7 +113,7 @@
                                placeholder="Votre mot de passe"
                                autocomplete="current-password"
                                 maxlength="255"
-                                minlength="16"
+                                minlength="8"
                                 data-event-validate-blur="blur"
                                 data-event-validate-input="input"
                                 data-enable-scoring="false"

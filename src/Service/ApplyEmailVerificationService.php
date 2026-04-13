@@ -28,19 +28,24 @@ use Psr\Log\LoggerInterface;
 final readonly class ApplyEmailVerificationService 
 {
     public function __construct(
-        private AsyncMethodDispatcher $asyncMethodDispatcher
+        private AsyncMethodDispatcher $asyncMethodDispatcher,
+        private UserManagerInterface $userManager
     ) {}
     
     /**
-     * @param  BaseUserInterface $user L'utilisateur dont l'email a été vérifié
-     * @param  UserManagerInterface $userManager Le gestionnaire d'utilisateurs pour la persistance
-     * 
+     * @param string|int $userId de L'utilisateur dont l'email a été vérifié
      * @return void
      */
     public function handle(
-        BaseUserInterface $user,
-        UserManagerInterface $userManager
+        string |int $userId,
         ):void{
+        
+        /**
+         * @var BaseUserInterface|null $user
+         */
+        $user=$this->userManager->find($userId) ;
+
+        if(!$user) { return ;}
         
         // Marquer l'email comme vérifié
         $user->setIsEmailVerified(true);
@@ -62,6 +67,6 @@ final readonly class ApplyEmailVerificationService
             ]
         );
         // Persistance des changements
-        $userManager->save($user);
+        $this->userManager->save($user);
     }
 }

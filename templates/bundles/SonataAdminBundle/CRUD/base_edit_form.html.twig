@@ -14,8 +14,9 @@
               action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {(admin.idParameter): objectId, 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
               {% if form.vars.multipart %} enctype="multipart/form-data"{% endif %}
               method="POST"
-              class="form-validate form-submit crud-entity"
+              class="form-validate form-submit crud-entity form-submission-handle-auto {{'form' ~ url}}"
               name="{{admin.uniqId}}"
+              id="{{admin.uniqId}}"
               {{
                 stimulus_controller('sonata-confirm-exit')|
                 stimulus_controller('sonata-edit') 
@@ -130,13 +131,17 @@
                             {% endblock %}
                         {% endif %}
                         {% if objectId is not null %}
-                            {% block btn_update_and_edit %}
+                            {# {% block btn_update_and_edit %}
                                 <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fas fa-save" aria-hidden="true"></i> {{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
-                            {% endblock %}
+                            {% endblock %} #}
 
                             {% if admin.hasRoute('list') and admin.hasAccess('list') %}
                                 {% block btn_update_and_list %}
-                                    <button type="submit" class="btn btn-success" name="btn_update_and_list"><i class="fas fa-save"></i> <i class="fas fa-list" aria-hidden="true"></i> {{ 'btn_update_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                                    <button type="submit" class="btn btn-success" 
+                                    name="btn_update_and_list"
+                                    data-submits-with="Envoi en cours…"
+                                    data-iwas-confirm="Voulez-vous vraiment enregistrer les modifications dans la base de données ?"
+                                    ><i class="fas fa-save"></i> <i class="fas fa-list" aria-hidden="true"></i> {{ 'btn_update_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
                                 {% endblock %}
                             {% endif %}
 
@@ -151,17 +156,25 @@
                             {% endif %}
                         {% else %}
                             {% if admin.hasroute('edit') and admin.hasAccess('edit') %}
-                                {% block btn_create_and_edit %}
+                                {# {% block btn_create_and_edit %}
                                     <button class="btn btn-success" type="submit" name="btn_create_and_edit"><i class="fas fa-save" aria-hidden="true"></i> {{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
-                                {% endblock %}
+                                {% endblock %} #}
                             {% endif %}
                             {% if admin.hasroute('list') and admin.hasAccess('list') %}
                                 {% block btn_create_and_list %}
-                                    <button type="submit" class="btn btn-success" name="btn_create_and_list"><i class="fas fa-save"></i> <i class="fas fa-list" aria-hidden="true"></i> {{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                                    <button type="submit" 
+                                    class="btn btn-success" 
+                                     data-submits-with="Envoi en cours…"
+                                    data-iwas-confirm="Voulez-vous vraiment enregistrer ce nouvel ajout dans la base de données ?"
+                                    name="btn_create_and_list"><i class="fas fa-save"></i> 
+                                    <i class="fas fa-list" aria-hidden="true"></i> {{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
                                 {% endblock %}
                             {% endif %}
                             {% block btn_create_and_create %}
-                                <button class="btn btn-success" type="submit" name="btn_create_and_create"><i class="fas fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}</button>
+                                <button class="btn btn-success" type="submit"
+                                data-submits-with="Envoi en cours…"
+                                   data-iwas-confirm="Voulez-vous vraiment enregistrer cet ajout et en créer un nouveau ?" 
+                                name="btn_create_and_create"><i class="fas fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}</button>
                             {% endblock %}
                         {% endif %}
                     {% endif %}

@@ -570,6 +570,6 @@
         <source>action_dowload_support_media</source>
         <target>Cliquez ici pour télécharger le "%media_type%"</target>
     </trans-unit>
-    </body> 
+    </body>      
   </file>
 </xliff>

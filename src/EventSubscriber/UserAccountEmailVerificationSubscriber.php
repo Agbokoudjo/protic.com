@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\EventSubscriber;
 
 use App\Event\UserAccountEmailVerificationEvent;
+use App\Security\Encryption\IdEncryptionInterface;
 use App\Service\Mailing\PriorityInterface;
 use App\Service\Mailing\SystemMailer;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -35,7 +36,8 @@ final class UserAccountEmailVerificationSubscriber implements EventSubscriberInt
     public function __construct(
         private readonly SystemMailer $systemMailer,
         private UrlGeneratorInterface $router,
-        private ParameterBagInterface $params
+        private ParameterBagInterface $params,
+        private IdEncryptionInterface $idEncriptionService
     ) {}
     
     public static function getSubscribedEvents(): array
@@ -47,10 +49,11 @@ final class UserAccountEmailVerificationSubscriber implements EventSubscriberInt
 
     public function onUserAccountCreated(UserAccountEmailVerificationEvent $event):void{
 
+        $idEncription=$this->idEncriptionService->encryptId($event->getUserId());
         $confirmationUrl=$this->router->generate(
             'app.verify.email',[
                 'token' => $event->getRawToken(),
-                'slug'=>$event->getSlug()
+                'id'=>$idEncription
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
         );

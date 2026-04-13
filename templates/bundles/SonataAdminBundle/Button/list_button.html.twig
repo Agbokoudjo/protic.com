@@ -11,7 +11,7 @@ file that was distributed with this source code.
 
 {% if admin.hasAccess('list') and admin.hasRoute('list') %}
     <li>
-        <a class="btn sonata-action-element text-decoration-none btn-list" href="{{ admin.generateUrl('list') }}">
+        <a class="btn sonata-action-element text-decoration-none btn-list list-action" href="{{ admin.generateUrl('list') }}">
             <i class="fas fa-list" aria-hidden="true"></i>
             {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
         </a>

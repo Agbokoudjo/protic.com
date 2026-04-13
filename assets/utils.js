@@ -1,4 +1,9 @@
- import { getMetaContent ,Logger} from "@wlindabla/form_validator";
+import {
+    getMetaContent,
+    Logger,
+     CRUDActionConfirmationHandle,
+    processCRUDAction
+} from "@wlindabla/form_validator";
 import TomSelect from 'tom-select';
 
 class Config {
@@ -143,3 +148,112 @@ export function select2(subject=document) {
       });
     });
   }
+
+
+/**
+ * Gère le clic sur le bouton 'toggle account' et affiche la modale de confirmation.
+ * 
+ *  * Gère l'action de renvoi d'email de vérification via SweetAlert2.
+ * * Ce script est conçu pour écouter les clics sur les boutons ayant l'attribut 
+ * data-action-confirm, ce qui déclenche la modale de confirmation.
+ * 
+ * * @fileoverview Gestionnaire d'événements pour la régénération de mot de passe temporaire via AJAX/PATCH.
+ * Nécessite jQuery et le composant de gestion de flash messages de votre application (si utilisé).
+ */
+export function crudAccountHandle() {
+    jQuery(document).on(
+        'click', 
+        `a.btn-toggle-account,
+        a.btn-resend-email-verification,
+        a.js-regenerate-password-btn`,
+        async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+            const currentTarget = event.currentTarget;
+            
+         try {
+            await CRUDActionConfirmationHandle({
+            element:currentTarget ,
+             eventName:jQuery(currentTarget).attr('data-event-name'),
+             confirmDialogConfig: {
+                icon: 'question',
+                background: '#00427E',
+                color: '#fff',
+                position:"top",
+                showCancelButton: true,
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                    cancelButton: 'btn btn-secondary me-2'
+                },
+                reverseButtons: true,
+                confirmButtonText: await SonataTranslator.trans('LABEL_BTN_CONFIRM','sonata-translations'),
+                cancelButtonText: await SonataTranslator.trans('LABEL_BTN_CANCEL','sonata-translations'),
+                showClass: {
+                    popup: 'animate__animated animate__bounceIn'
+                }
+            }, 
+             cancelDialogConfig: {
+                icon: 'info',
+                title: await SonataTranslator.trans('ACTION_CANCELLED_SUCCESS','sonata-translations'),
+                 timer: 45000,
+                position: 'top',
+                showConfirmButton: false,
+                showCloseButton: true,
+            }
+        });
+         } catch (error) {
+             console.error(error);
+         }
+    });
+};
+
+export function crudUserAccountListener() {
+    jQuery(document).on(
+        `resend:email:verificatio:password:confirmed 
+         create:action:generate:password:confirmed
+         account:toggle:confirmed
+         `,
+        async (event) =>{
+        event.preventDefault();
+        event.stopPropagation();
+        const detail = event.detail;
+            try {
+            const { title, message }= actionTranslator(detail.element);
+            const response = await processCRUDAction({
+                eventDetail: detail ,
+                httpMethod: detail.httpMethodRequestAction,
+                retryCount: 2,
+                loadingConfig: {
+                    background: '#00427E',
+                    color: '#fff',
+                    title: await SonataTranslator.trans(title, 'sonata-translations'),
+                    text: await SonataTranslator.trans(message, 'sonata-translations')
+                },
+                translator: (key, error, lang) => {
+                    if (error) {
+                        return fetchErrorTranslator.translate(error.name, error, lang);
+                    }
+                    return translations[key] || key; 
+                },
+            });
+            Logger.log(response)
+        } catch (error) {
+            Logger.log(error);
+        }
+    })
+}
+
+/**
+ * @param {HTMLElement} element
+ * @return {
+ *    title: string,
+ *     message: string  
+ * }
+ */
+function actionTranslator(element) {
+    const target = jQuery(element);
+    return {
+        title: target.attr("data-loading-config-key-title") ?? "FORM_SUBMISSION_PROGRESS_TITLE" ,
+        message:target.attr("data-loading-config-key-message") ?? "FORM_SUBMISSION_PROGRESS_MESSAGE" 
+    }
+}

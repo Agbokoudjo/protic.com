@@ -65,7 +65,7 @@ interface EmailVerificationInterface
      *                               - Code CODE_ALREADY_USED (1003) : Token déjà consommé
      *                               - Code CODE_USER_NOT_FOUND (1004) : Utilisateur introuvable
      */
-    public function verifyEmail(string $rawToken, string $slug): void;
+    public function verifyEmail(string $rawToken, string $id): void;
 
 
     /**
@@ -87,5 +87,5 @@ interface EmailVerificationInterface
      *                               ou si le délai minimum entre demandes n'est pas respecté
      * @throws \RuntimeException Si la génération ou le hachage du token échoue
      */
-    public function resendVerificationEmail(string $slug): void;
+    public function resendVerificationEmail(string $id): void;
 }

@@ -34,3 +34,110 @@ body {
         #2040a0 100%
     ) !important;
 }
+
+.user-menu .container-menue {
+    width: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 0;
+}
+
+/* Header de la modale (Partie bleue) */
+.user-header {
+    background: linear-gradient(135deg,  #0d1f4e, #1a3a8f) !important;
+    padding: 25px 15px;
+    text-align: center;
+    color: var(--protic-white) !important;
+    display:flex;
+    flex-direction: column ;
+    justify-content:center;
+    align-content: center;
+}
+
+.user-header img {
+    width: 90px;
+    height: 90px;
+    border: 3px solid var(--protic-glass-bdr);
+    margin-bottom: 10px;
+}
+
+.user-header p {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    color:#fff ;
+}
+
+/* Badge du Rôle (Administrateur) */
+.user-header .btn {
+    background: var(--protic-glass-bg);
+    border: 1px solid var(--protic-glass-bdr);
+    color: var(--protic-white);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 5px 15px;
+    margin: 8px 0;
+    pointer-events: none; /* Aspect badge uniquement */
+    backdrop-filter: blur(4px);
+}
+
+.user-header small {
+    color: var(--protic-white-70);
+    display: block;
+    font-size: 0.8rem;
+}
+
+/* Corps de la modale (Stats: Followers, Sales, Friends) */
+.user-body {
+    padding: 15px;
+    border-bottom: 1px solid var(--protic-white-15);
+    background-color: var(--protic-white);
+}
+
+.user-body a {
+    color: var(--protic-blue-light);
+    font-weight: 500;
+    text-decoration: none;
+    transition: var(--protic-transition);
+}
+
+.user-body a:hover {
+    color: var(--protic-blue-deep);
+}
+
+/* Footer de la modale (Boutons Profil et Déconnexion) */
+.user-footer {
+    padding: 15px;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-footer .btn-default {
+    background: var(--protic-white);
+    border: 1px solid #ddd;
+    color: var(--protic-blue-deep);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    transition: var(--protic-transition);
+}
+
+.user-footer .btn-default:hover {
+    background: var(--protic-blue-light);
+    color: var(--protic-white);
+    border-color: var(--protic-blue-light);
+}
+
+/* Style spécifique pour le bouton Déconnexion */
+.user-footer .float-end {
+    color: #dc3545; /* Rouge discret pour la sortie */
+}
+
+.user-footer .float-end:hover {
+    background: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
+}

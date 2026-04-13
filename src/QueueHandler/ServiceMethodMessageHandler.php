@@ -19,6 +19,9 @@ namespace App\QueueHandler;
 use App\CommandHandler\AdminManuscriptNotificationHandler;
 use App\CommandHandler\AuthorCommandNotificationHandler;
 use App\CommandHandler\AuthorManuscriptConfirmationHandler;
+use App\CommandHandler\GenerateTemporaryPasswordHandler;
+use App\CommandHandler\ToggleUserAccountHandler;
+use App\CommandHandler\UpdateUserProfileHandler;
 use App\Queue\Message\ServiceMethodMessage;
 use App\QueueHandler\ServiceMethodMessageHandlerInterface;
 use App\Service\ApplyEmailVerificationService;
@@ -63,7 +66,10 @@ final class ServiceMethodMessageHandler implements ServiceSubscriberInterface,Se
             AuthorManuscriptConfirmationHandler::class,
             SupportMailer::class,
             SystemMailer::class,
-            AuthorCommandNotificationHandler::class
+            AuthorCommandNotificationHandler::class,
+            ToggleUserAccountHandler::class,
+            UpdateUserProfileHandler::class,
+            GenerateTemporaryPasswordHandler::class
         ];
     }
 

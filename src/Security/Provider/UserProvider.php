@@ -142,7 +142,7 @@ class UserProvider implements UserProviderInterface
             );
 
             $freshUser = $this->findUser($user->getUserIdentifier());
-            if (!$freshUser instanceof UserInterface) {
+            if (!($freshUser instanceof UserInterface)) {
                 throw new UserNotFoundException(\sprintf('User with ID "%s" could not be reloaded.', $user->getId() ?? ''));
             }
 
@@ -150,9 +150,15 @@ class UserProvider implements UserProviderInterface
         }
     }
 
-    public function invalidateUserCache(int $userId): void
+    public function invalidateUserCache(int|string $userId): void
     {
-        $this->userCacheProvider->invalidateTags(['user_id_' . $userId]);
+        try {
+            $cacheKeyUser = 'user_login_' . md5($userId);
+            $this->userCacheProvider->invalidateTags(['user_id_' . $userId, 'ADMIN', 'users']);
+            $this->userCacheProvider->delete($cacheKeyUser) ;
+        } catch (\Throwable $th) {
+            
+        }
     }
 
     /**

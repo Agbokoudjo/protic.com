@@ -41,8 +41,8 @@ final class NativeTokenHasher implements TokenHasherInterface
      * Algorithme de hachage par défaut (Argon2id).
      * Fallback vers bcrypt si indisponible.
      */
-    private const DEFAULT_ALGORITHM = PASSWORD_ARGON2ID;
-
+    // private const DEFAULT_ALGORITHM = PASSWORD_ARGON2ID;
+    private const DEFAULT_ALGORITHM = PASSWORD_DEFAULT;
     /**
      * Algorithme de fallback si Argon2id n'est pas disponible.
      */
@@ -52,12 +52,17 @@ final class NativeTokenHasher implements TokenHasherInterface
     /**
      * Options par défaut pour Argon2id.
      */
+    // private const ARGON2_OPTIONS = [
+    //     'memory_cost' => 65536,  // 64 MB
+    //     'time_cost'   => 4,      // 4 itérations
+    //     'threads'     => 2,      // 2 threads parallèles
+    // ];
+    // Testez avec des options très basses pour voir si ça passe
     private const ARGON2_OPTIONS = [
-        'memory_cost' => 65536,  // 64 MB
-        'time_cost'   => 4,      // 4 itérations
-        'threads'     => 2,      // 2 threads parallèles
+        'memory_cost' => 16384,  // Réduisez à 16 MB au lieu de 64
+        'time_cost'   => 2,      // Réduisez à 2 itérations au lieu de 4
+        'threads'     => 1,      // Forcez 1 seul thread
     ];
-
     /**
      * Options par défaut pour bcrypt.
      */
@@ -86,12 +91,12 @@ final class NativeTokenHasher implements TokenHasherInterface
     public function hash(string $plainToken): string
     {
         //La couche de presentation faire deja la validation
-
         try {
-            $hash = password_hash($plainToken, $this->algorithm, $this->options);
-
-            if (!$hash) {
-                throw new RuntimeException('Le hachage du token a échoué');
+            $hash = \password_hash($plainToken, PASSWORD_DEFAULT);
+           
+            if ($hash === false || $hash === null) {
+                $this->logger?->error('password_hash a retourné false');
+                throw new RuntimeException('Le hachage a échoué.');
             }
 
             $this->logger?->debug('Token hashé avec succès', [

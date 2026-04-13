@@ -22,14 +22,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use libphonenumber\PhoneNumber;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Attribute as Vich;
-use App\Entity\BaseUserInterface;
-use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
@@ -40,11 +36,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[Vich\Uploadable]
 #[Gedmo\SoftDeleteable]
 class SonataUser extends AbstractUser implements
-    BaseUserInterface,
-    UserInterface,
-    LegacyPasswordAuthenticatedUserInterface,
-    PasswordAuthenticatedUserInterface,
-    EquatableInterface
+    UserInterface
 {
     use SoftDeleteableEntity ;
     public const ROLE_DEFAULT = 'ROLE_ADMIN';
@@ -55,17 +47,37 @@ class SonataUser extends AbstractUser implements
     #[Groups(['user:cache', 'user:security', 'user:read'])]
     protected int|string|null $id = null;
 
-    #[Assert\NotBlank()]
-    #[Assert\Length(min: 3,max:255)]
-    #[Assert\NotNull]
-    #[ORM\Column(type: "string", length: 255, unique: true)]
+    #[Assert\NotBlank(message: 'Le nom complet est obligatoire.')]
+    #[Assert\NotNull(message: 'Le nom complet ne peut pas être nul.')]
+    #[Assert\Length(
+        min: 6,
+        max: 255,
+        minMessage: 'Le nom complet doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le nom complet ne peut pas dépasser {{ limit }} caractères.',
+    )]
+    #[Assert\Regex(
+        pattern: '/^[\p{L}\p{N}\p{M}\s\.]{6,255}$/iu',
+        message: 'Le nom ne peut contenir que des lettres (toutes langues), chiffres, espaces, et points.',
+    )]
+    #[ORM\Column(length: 255, unique: true)]
     #[Groups(['user:cache', 'user:security', 'user:read'])]
     protected ?string $username = null;
 
-    #[Assert\NotBlank()]
-    #[Assert\Length(min: 6, max: 200)]
-    #[Assert\NotNull]
-    #[Assert\Email()]
+    #[Assert\NotNull(message: 'L\'email ne peut pas être nul.')]
+    #[Assert\Length(
+        min: 6,
+        max: 200,
+        minMessage: 'L\'email doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'L\'email ne peut pas dépasser {{ limit }} caractères.',
+    )]
+    #[Assert\Email(
+        message: '{{ value }} n\'est pas une adresse email valide.',
+        mode: 'html5',
+    )]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/',
+        message: 'L\'adresse email contient des caractères non autorisés.',
+    )]
     #[ORM\Column(type: "string", length: 200, unique: true)]
     #[Groups(['user:cache', 'user:security', 'user:read'])]
     protected ?string $email = null;
@@ -143,7 +155,17 @@ class SonataUser extends AbstractUser implements
     #[Groups(['user:cache', 'user:read'])]
     protected ?string $avatarName = null;
 
+    #[Assert\Length(
+        min: 6,
+        max: 200,
+        minMessage: 'Le profile complet doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le profile complet ne peut pas dépasser {{ limit }} caractères.',
+    )]
     #[ORM\Column(type: 'string',length: 200, nullable: true)]
+    #[Assert\Regex(
+        pattern: '/^[\p{L}\p{N}\p{M}\s\-\.&]{6,200}$/iu',
+        message: 'Le profile ne peut contenir que des lettres (toutes langues), chiffres, espaces, tirets, et points.',
+    )]
     #[Groups(['user:cache','user:read'])]
     protected ?string $profile = null;
 
@@ -153,8 +175,12 @@ class SonataUser extends AbstractUser implements
     #[Assert\NotNull]
     #[ORM\Column(type: 'phone_number',length:80)]
     #[Groups(['user:read'])]
-    protected ?PhoneNumber $phone = null; 
+    protected ?PhoneNumber $phone = null;
 
+    #[Assert\Country(
+        message: '{{ value }} n\'est pas un code pays valide (ISO 3166-1 alpha-3).',
+        alpha3: true
+    )]
     #[Assert\Length(min:3, max: 200)]
     #[ORM\Column(type: 'string', length: 200, nullable: true)]
     #[Groups(['user:read'])]

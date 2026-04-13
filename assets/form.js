@@ -16,6 +16,9 @@ import {
     handleErrorsManyForm,
      formatterEvent 
 } from '@wlindabla/form_validator';
+
+import { CollectionValidator } from './collection-validator.js';
+
 import Swal from 'sweetalert2';
 
 window.addEventListener('DOMContentLoaded',()=>{
@@ -75,6 +78,16 @@ window.addEventListener('DOMContentLoaded',()=>{
            form_validate.clearErrorDataChildren(target);
         }
     });
+
+     // ── NOUVEAU : gestion des collections dynamiques ──────────────────────
+  const collectionValidator = new CollectionValidator(
+    form_validate,
+    addHashToIds,
+    FieldValidationFailed
+  );
+
+  // Stocker pour pouvoir détruire si navigation SPA
+  window.__collectionValidator = collectionValidator;
 })
 
 export class FormSubmissionSubscriber extends HttpRequestSubscriber
@@ -109,6 +122,7 @@ export class FormSubmissionSubscriber extends HttpRequestSubscriber
         const form = event.formElement;
         if (!form.classList.contains('form-submission-handle-auto')) { return; }
 
+        Swal.close();
         showLoadingDialog({config:{
             title: await window.SonataTranslator.trans('FORM_SUBMISSION_PROGRESS_TITLE','sonata-translations'),
             text: await window.SonataTranslator.trans('FORM_SUBMISSION_PROGRESS_MESSAGE','sonata-translations')
@@ -131,11 +145,13 @@ export class FormSubmissionSubscriber extends HttpRequestSubscriber
 
         const { fetchResponse } = event.resultHttpResponse;
         const { title, message } = fetchResponse.data;
+        Swal.close();
+        form.reset();
         await showSuccessDialog({
             title: title || 'Success',
             message: message
         })
-        form.reset();
+        
     }
 
     /**
@@ -152,15 +168,19 @@ export class FormSubmissionSubscriber extends HttpRequestSubscriber
         const form = event.formElement;
         if (!form.classList.contains('form-submission-handle-auto')) { return; }
 
-        const { fetchResponse } = event.resultHttpResponse;
+       const fetchResponse = event.response;
         const { title, errorMessage,violations,details } = fetchResponse.data;
         
-        handleErrorsManyForm(
+       if (fetchResponse.statusCode === 422) {
+           handleErrorsManyForm(
                 form.name ?? form.id,
                 form.id,
               violations
         )
-    
+       }
+        
+       
+        Swal.close() ;
         await showErrorDialog({
             title: title || 'Success',
             message: errorMessage || details
@@ -185,6 +205,7 @@ document.addEventListener('submit', async (event) => {
             },
         responseType: "json",
         timeout: 60000,
+        retryOnStatusCode: false
     },
      false,
         eventDispatcherBrowser
@@ -201,7 +222,9 @@ document.addEventListener('submit', async (event) => {
                 confirmButtonColor: '#2D3099', 
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Oui, envoyer !',
-                cancelButtonText: 'Annuler'
+                cancelButtonText: 'Annuler',
+                background: "#00427E",
+                color: "#fff"
             });
 
             return result.isConfirmed;
@@ -217,6 +240,23 @@ document.addEventListener('submit', async (event) => {
 document.addEventListener('DOMContentLoaded', () => {
     formformatterEventHandle();
     eventDispatcherBrowser.addSubscriber(new FormSubmissionSubscriber());
+});
+
+// Réinitialiser si la page SPA chargée contient un formulaire
+document.addEventListener('spa:dom:ready', ({ detail }) => {
+  const { container } = detail;
+  const form_exist = container.querySelector('form.form-validate');
+  if (!form_exist) return;
+
+  // Relancer toute la logique pour la nouvelle page
+  // (déclencher DOMContentLoaded manuellement n'est pas possible
+  //  donc on réinstancie directement)
+  const form_validate = new FormValidateController('.form-validate');
+  window.__collectionValidator = new CollectionValidator(
+    form_validate,
+    addHashToIds,
+    FieldValidationFailed
+  );
 });
 
 function formformatterEventHandle() {

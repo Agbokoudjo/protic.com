@@ -21,19 +21,19 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 
 /**
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
  * @package <https://github.com/Agbokoudjo/>
  */
 #[Route(
-    '/verify-email/{token}/{slug}',
+    '/verify-email/{token}/{id}',
     name: 'app.verify.email',
+    methods: ['GET'],
     requirements: [
-        'token' => '[a-zA-Z0-9]{32,64}',
-        'slug' => '[a-f0-9]{32,40}',
+        'token' => '[a-zA-Z0-9]{32,64}'
     ],
-    methods: ['GET']
 )]
 final class EmailVerificationController extends AbstractController
 {
@@ -44,16 +44,16 @@ final class EmailVerificationController extends AbstractController
 
     public function __invoke(
         string $token,
-        string $slug
+        int $id
     ):Response{
         $page_redirection_route_name= "app_catalogue";
         try {
 
-            $this->verificationService->verifyEmail($token, $slug);
+            $this->verificationService->verifyEmail($token, (string) $id);
             $this->addFlash('success', 'Votre email a été vérifié avec succès ! Vous pouvez maintenant vous connecter.');
 
             return $this->render('/email/security/checkEmail.html.twig', [
-                'page_login_url' =>  $page_redirection_route_name
+                'page_login_url' =>  'app_admin_user_login'
             ]);
             
         } catch (InvalidTokenException $e) {
@@ -65,7 +65,7 @@ final class EmailVerificationController extends AbstractController
                 );
 
                 // Renvoyer un email 
-                $this->verificationService->resendVerificationEmail($slug);
+                $this->verificationService->resendVerificationEmail((string) $id);
 
                 return $this->render('/email/security/checkEmail.html.twig', [
                         'page_login_url' => $page_redirection_route_name
@@ -141,7 +141,7 @@ final class EmailVerificationController extends AbstractController
             'error',
             '⚠️ Une erreur est survenue. Veuillez réessayer plus tard ou contacter le support.'
         );
-
+       
         return $this->render('/email/security/checkEmail.html.twig', [
             'page_redirection_url' => 'app_home',
             'page_label' => 'Aller a la page d\'accueill'

@@ -48,7 +48,7 @@ class GlobalSetting
         new Assert\NotBlank(message: "L'adresse ne peut pas etre vide Ex:Campus d'Abomey-Calavi
                                         K61-62 Rectorat annexe, Bénin"),
         new Assert\Regex(
-                pattern: '/^[\p{L}\p{N}\p{M}\s\-\.]{6,255}$/iu',
+                pattern: '/^[\p{L}\p{N}\p{M}\s\-\.\p{P}]{6,255}$/iu',
                 message: 'L\'adresse ne peut contenir que des lettres (toutes langues), chiffres, espaces, tirets, et points.',
             )
     ])]

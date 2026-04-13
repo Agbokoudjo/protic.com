@@ -1,6 +1,5 @@
 import { startStimulusApp,registerControllers  } from "vite-plugin-symfony/stimulus/helpers"
 import * as stimulus from '@hotwired/stimulus';
-import TomSelect from 'tom-select';
 import jQuery from 'jquery';
 import 'bootstrap/dist/js/bootstrap.js'
 import './styles/sonata.css';
@@ -18,6 +17,8 @@ import './admin/main.js';
 import './admin/books_rain.js';
 import './admin/batch-actions.js';
 import {basicLightboxImage,basicLightboxDocument} from  './basicLightbox.js';
+import { SpaRouter } from './admin/router.js';
+import { DomManager } from './admin/dom-manager.js';
 
 window.$ = jQuery;
 window.jQuery = jQuery;
@@ -30,7 +31,11 @@ import {
     appTranslation,
     fetchErrorTranslator
 } from '@wlindabla/form_validator';
-import { config,select2 } from "./utils.js";
+import {
+  config, select2,
+  crudAccountHandle,
+    crudUserAccountListener 
+  } from "./utils.js";
 
 import.meta.glob('./images/**/*', { eager: true });
 
@@ -41,9 +46,6 @@ import.meta.glob('./images/**/*', { eager: true });
         {
         // pensez à ajouter le suffixe "?stimulus"
         //query: "?stimulus",
-
-        // les imports dynamiques et les `Lazy-`contrôleurs sont gérés en interne, dans tous les
-        // cas il faut spécifier eager à true pour éviter des imbrications de promesses.
         eager: true,
         },
     ),
@@ -53,8 +55,6 @@ import.meta.glob('./images/**/*', { eager: true });
     "../vendor/sonata-project/admin-bundle/assets/js/controllers/*_controller.[jt]s",
         { eager: true });
     Object.entries(sonataControllers).forEach(([filePath, module]) => {
-    // Extraire le nom du controller depuis le chemin
-    // Ex: ".../filter_list_controller.js" → "filter-list"
     const match = filePath.match(/([^/]+)_controller\.[jt]sx?$/);
     if (!match) return;
 
@@ -66,10 +66,22 @@ import.meta.glob('./images/**/*', { eager: true });
         sonataApplication.register(identifier, controller);
     }
 });
-console.log("🚀 Stimulus est prêt et les contrôleurs sont chargés :",sonataApplication)
 
-jQuery(async function init() {
-    window.SonataTranslator = appTranslation;
+class AppRouter extends SpaRouter {
+  async navigate(url) {
+    await super.navigate(url);
+
+    const content = document.getElementById('app-content');
+    const header  = document.getElementById('app-content-header');
+
+    // Réinitialiser les deux zones mises à jour
+    if (content) DomManager.reinitialize(content);
+    if (header)  DomManager.reinitialize(header);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  window.SonataTranslator = appTranslation;
      // Récupère le hash actuel des traductions
     const currentHash = jQuery('meta[name="sonata-translations-hash"]').attr('content');
     const cachedHash = localStorage.getItem('sonata_translations_hash');
@@ -85,23 +97,28 @@ jQuery(async function init() {
   window.fetchErrorTranslator = fetchErrorTranslator 
   basicLightboxImage();
   basicLightboxDocument();
-})
+  localDatetime()
+  dashboard();
+  crudAccountHandle();
+  crudUserAccountListener();
+   window.appRouter = new AppRouter();
 
+});
 
-/**
- * Remplacement de SonataCore pour les Flashmessages
- * Suppression de la dépendance jQuery et iCheck
- */
+document.addEventListener('spa:navigated', ({ detail }) => {
+    const { main } = detail;
+
+    // Ré-exécuter les scripts injectés dans #app-main
+  DomManager.reExecuteScripts(main);
+   Admin.shared_setup(document)
+window.__collectionValidator?.destroy();
+  window.__collectionValidator = null;
+});
+  
 const SonataCoreModern = {
-  // Remplace remove_iCheck_in_flashmessage
   cleanFlashMessages() {
-    // Au lieu de 'destroy' via iCheck, on s'assure juste que 
-    // les éléments ont un comportement de checkbox standard.
     const elements = document.querySelectorAll('.read-more-state');
     elements.forEach(el => {
-      // Si iCheck avait ajouté des wrappers div ou des classes, 
-      // on pourrait les nettoyer ici, mais souvent le simple fait 
-      // de ne pas appeler iCheck suffit.
       el.style.display = 'inline-block'; // Force l'affichage si masqué par un vieux CSS
     });
   },
@@ -630,12 +647,6 @@ function dashboard() {
         init();
     }
 
-    /* ── Compatibilité Turbo Drive ── */
-    document.addEventListener('turbo:load', init);
-
 }
-// Lancement automatique au chargement du DOM
-document.addEventListener('DOMContentLoaded', ()=>{
-  localDatetime()
-  dashboard();
-});
+
+

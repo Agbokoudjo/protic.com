@@ -51,7 +51,7 @@ final class EmailVerificationService implements EmailVerificationInterface
      * 
      * @throws InvalidTokenException Si le token est invalide, expiré ou déjà utilisé
      */
-    public function verifyEmail(string $rawToken, string $slug): void
+    public function verifyEmail(string $rawToken, string|int $id): void
     {
         $this->asyncMethodDispatcher->dispatch(
             LoggerInterface::class,
@@ -59,12 +59,12 @@ final class EmailVerificationService implements EmailVerificationInterface
             [
                 'Tentative de vérification d\'email',
                 [
-                    'slug' => $slug
+                    'id' => $id
                 ]
             ]
         ) ;
 
-        $user = $this->userManager->findUserBySlug($slug);
+        $user = $this->userManager->find($id);
 
         if ($user === null) {
             $this->asyncMethodDispatcher->dispatch(
@@ -73,7 +73,7 @@ final class EmailVerificationService implements EmailVerificationInterface
                 [
                     'Utilisateur non trouvé pour la vérification d\'email',
                     [
-                        'slug' => $slug
+                        'id' => $id
                     ]
                 ]
             );
@@ -132,8 +132,7 @@ final class EmailVerificationService implements EmailVerificationInterface
                 [
                     'Token de vérification invalide (hash mismatch)',
                     [
-                        'user_id' => $user->getId(),
-                        'slug' => $slug,
+                        'user_id' => $user->getId()
                     ]
                 ]
             );
@@ -160,7 +159,7 @@ final class EmailVerificationService implements EmailVerificationInterface
         $this->asyncMethodDispatcher->dispatch(
             ApplyEmailVerificationService::class,
             'handle',
-            [$user,$this->userManager]
+            [$user->getId()]
         );
 
         $this->asyncMethodDispatcher->dispatch(
@@ -208,7 +207,7 @@ final class EmailVerificationService implements EmailVerificationInterface
         return (new \DateTimeImmutable())->setTimestamp($expirationTimestamp);
     }
 
-    public function resendVerificationEmail(string $slug): void
+    public function resendVerificationEmail(string|int $id): void
     {
         $this->asyncMethodDispatcher->dispatch(
             LoggerInterface::class,
@@ -216,14 +215,14 @@ final class EmailVerificationService implements EmailVerificationInterface
             [
                 'Demande de renvoi d\'email de vérification',
                 [
-                    'slug' => $slug
+                    'id' => $id
                 ]
             ]
         );
-
+        
         // 1. Récupération de l'utilisateur
-        $user = $this->userManager->findUserBySlug($slug);
-
+        $user = $this->userManager->find($id);
+       
         if ($user === null) {
             $this->asyncMethodDispatcher->dispatch(
                 LoggerInterface::class,
@@ -231,14 +230,13 @@ final class EmailVerificationService implements EmailVerificationInterface
                 [
                     'Utilisateur non trouvé pour renvoi de vérification',
                     [
-                        'slug' => $slug
+                        'id' => $id
                     ]
                 ]
             );
 
             throw InvalidTokenException::userNotFound();
         }
-
         // 2. Vérification si l'email est déjà vérifié
         if ($user->isEmailVerified()) {
             $this->asyncMethodDispatcher->dispatch(
@@ -258,8 +256,7 @@ final class EmailVerificationService implements EmailVerificationInterface
 
         try {
             // Le service s'occupe de tout : cooldown, génération, hachage, persistance et dispatch de l'événement.
-            $this->secureTokenService->generateEmailConfirmationToken($user, $this->userManager);
-
+            $this->secureTokenService->generateEmailConfirmationToken($user);
             $this->asyncMethodDispatcher->dispatch(
                 LoggerInterface::class,
                 'info',

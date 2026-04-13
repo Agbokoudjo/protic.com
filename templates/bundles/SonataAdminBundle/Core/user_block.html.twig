@@ -18,19 +18,11 @@ file that was distributed with this source code.
         <span class="d-none d-md-inline user-identify">{{user.username}}</span>
           </i> <i class="fas fa-caret-down" aria-hidden="true"></i>
     </a>  
-    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-         <li class="user-header text-bg-primary">
-            {{_self.img_cache(user,'user-image-modale')}}
+    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end container-menue">
+         <li class="user-header">
+            {{_self.img_cache(user,'user-image-modale img-fluid img-center text-center')}}
             <p>{{user.username}} <br> 
             <button class="btn"> {{ user.rolePrincipal|trans({},'role',app.locale) }}</button>
-               {# createdAt vient de Doctrine: \DateTimeImmutable stocké en UTC #}
-                {% set createdAt = user.createdAt|date('c','UTC') %}
-                <small>
-                   {{ 'member.since'|trans({},'user',app.locale) }}
-                    <span 
-                        {{ stimulus_controller('date',{'date':createdAt,'locale':app.locale}) }}
-                    ></span>
-                </small>
             </p>
         </li>
         <li class="user-body">
@@ -72,7 +64,7 @@ file that was distributed with this source code.
                 class="rounded-circle shadow {{imgClassCss}}"
             >
          {% else %}
-            <img src="{{asset('bundles/sonatauser/default_avatar.png')}}"
+            <img src="{{asset('image/sonatauser/profile.jpg','admin')}}"
                 class="rounded-circle shadow {{imgClassCss}}"
                 alt="User Image"
                 />

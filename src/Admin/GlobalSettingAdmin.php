@@ -133,7 +133,10 @@ final class GlobalSettingAdmin extends WlindablaAdmin
                         'entry_type' => TextareaType::class,
                         'by_reference' => false,
                         'auto_initialize' => false,
-                        'entry_options' => ['attr' => ['class' => 'form-control', 'rows' => 2]],
+                        'entry_options' => ['attr' => [
+                            'class' => 'form-control', 'rows' => 2,
+                            'data-pattern'=> '^[\p{L}\p{N}\p{M}\s\-\.\p{P}]$'
+                            ]],
                     ])
                 ->end() // Ferme le groupe 'Coordonnées Multiples'
             ->end() // Ferme l'onglet 'Contacts & Adresses'

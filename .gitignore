@@ -39,7 +39,7 @@ var/certificates/
 .DS_Store
 Thumbs.db
 ###< OS ###
-
+/templates/tremplate.html
 ###> logs ###
 *.log
 ###< logs ###

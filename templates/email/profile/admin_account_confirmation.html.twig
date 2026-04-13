@@ -1,4 +1,12 @@
-{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de compte </title>
+</head>
+<body>
+    
     {% set primary_color = '#007BFF' %} {# Bleu professionnel pour l'action #}
     {% set border_color = '#DDDDDD' %}
     {% set accent_color = '#F5F5F5' %}
@@ -12,7 +20,7 @@
         </div>
 
         <div style="padding: 20px 0;">
-            <p style="font-size: 16px; margin-bottom: 20px;">Bonjour <strong>{{ username }}</strong> ,</p>
+            <p style="font-size: 16px; margin-bottom: 20px;">Salut <strong>{{ username }}</strong> ,</p>
 
             <p style="margin-bottom: 20px;">
                 Nous vous confirmons que votre compte  pour l'application <strong>{{ siteName }}</strong> a été créé avec succès .
@@ -53,4 +61,5 @@
             </p>
         </div>
     </div>
-{% endblock %}
+</body>
+</html>

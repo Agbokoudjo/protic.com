@@ -21,7 +21,7 @@ final readonly class UserAccountEmailVerificationEvent{
     public function __construct(
         private string $username,
         private string $email,
-        private string $slug,
+        private string|int $userId,
         private string $rawToken 
     ){}
   
@@ -35,9 +35,9 @@ final readonly class UserAccountEmailVerificationEvent{
         return $this->email;
     }
    
-    public function getSlug(): string
+    public function getUserId(): string|int
     {
-        return $this->slug;
+        return $this->userId;
     }
 
     public function getRawToken(): string

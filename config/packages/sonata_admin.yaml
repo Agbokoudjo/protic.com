@@ -5,6 +5,8 @@ sonata_admin:
         use_select2: true
     title: 'Sonata Admin'
     title_logo: 'images/logo.png'
+    persist_filters: true
+    
     assets:
         remove_stylesheets:
             ["bundles/sonataadmin/app.css"]
@@ -12,6 +14,11 @@ sonata_admin:
             ["bundles/sonataadmin/app.js"]
     templates:
         layout: 'bundles/SonataAdminBundle/standard_layout.html.twig'
+
+    default_admin_services:
+        route_generator: App\Route\SonataRouteGenerator
+    default_controller: App\Controller\Admin\WlindablaAdminCRUDController
+    
     dashboard:
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }

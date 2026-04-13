@@ -8,9 +8,5 @@ framework:
             support: '%env(SUPPORT_MAILER_DSN)%'
         dkim_signer:
             key: 'file://%kernel.project_dir%/var/certificates/dkim.pem'
-            domain: 'protic.com'
+            domain: 'proticeditions.com'
             select: 's1'
-        smime_signer:
-            key: '%kernel.project_dir%/var/certificates/smime.key'
-            certificate: '%kernel.project_dir%/var/certificates/smime.crt'
-            passphrase: ''

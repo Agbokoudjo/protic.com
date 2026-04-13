@@ -16,8 +16,8 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>

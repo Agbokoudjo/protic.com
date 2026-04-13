@@ -134,14 +134,6 @@ file that was distributed with this source code.
                 <script src="{{ asset(javascript.path, javascript.package_name) }}" defer></script>
             {% endfor %} #}
         {% endblock %}
-            {# localize select2 #}
-        {# {% if sonata_config.getOption('use_select2') %}
-            {% set localeForSelect2 = canonicalize_locale_for_select2() %}
-            {% if localeForSelect2 %}
-                <script src="{{ asset('bundles/sonataadmin/select2-locale/' ~ localeForSelect2 ~ '.js', 'sonata_admin') }}" defer>
-                </script>
-            {% endif %}
-        {% endif %}  #}
     {% endblock %}
     
     {% block favicon %}
@@ -233,17 +225,7 @@ file that was distributed with this source code.
                                         <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
                                     </a>
                                 </div>
-                                {% block sonata_top_nav_menu_add_block %}
-                                    {% set addBlock = include(get_global_template('add_block')) %}
-                                    {% if addBlock|trim is not empty %}
-                                        <div class="nav-item dropdown">
-                                            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#">
-                                                <i class="fas fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fas fa-caret-down" aria-hidden="true"></i>
-                                            </a>
-                                            {{ addBlock|raw }}
-                                        </div>
-                                    {% endif %}
-                                {% endblock %} {# endblock sonata_top_nav_menu_add_block #}
+                                
                                 {% if app.user %}
                                     {% block sonata_top_nav_menu_user_block %}
                                         {% set userBlock = include(get_global_template('user_block')) %}
@@ -277,13 +259,22 @@ file that was distributed with this source code.
                     </div>
                         <div class="sidebar-wrapper" id="sidebar-wrapper">
                             {% block sonata_side_nav %}
-                                <nav class="mt-2 sidebar-nav-container">
+                                <nav class="mt-2 sidebar-nav-container sonata-admin-sidebar" id="sonata-admin-sidebar">
                                     {% block side_bar_before_nav %} {% endblock %} {# endblock side_bar_before_nav #}
                                     {% block side_bar_nav %}
                                         {{ knp_menu_render('sonata_admin_sidebar', {template: get_global_template('knp_menu_template')}) }}
                                     {% endblock side_bar_nav %} {# endblock side_bar_nav #}
                                     {% block side_bar_after_nav %}
-                                            {% block side_bar_after_nav_content %} {% endblock %}
+                                            {% block side_bar_after_nav_content %}
+                                                 <ul style="margin-top:auto;padding:16px 0; border-top:2px solid rgba(255,255,255,0.1);" class="nav sidebar-menu flex-column">
+                                                    <li class="nav-item">
+                                                        <a href="{{path('app_catalogue')}}" class="nav-link text-white fw-bolder  text-decoration-none" target="_blank">
+                                                            <p class="linkElement fs-4">🌐 Voir le site</p> 
+                                                        </a>
+                                    
+                                                    </li>
+                                                </ul> 
+                                            {% endblock %}
                                     {% endblock %}
                                 </nav>
                            {% endblock sonata_side_nav %} {# endblock sonata_side_nav #}
@@ -336,7 +327,7 @@ file that was distributed with this source code.
                                                         {% block sonata_admin_content_actions_wrappers %}
                                                             {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
                                                                 <li class="nav-item">
-                                                                    <ul class="nav navbar-nav navbar-right">
+                                                                    <ul class="nav navbar-nav navbar-right container-sonata-actions" id="container-sonata-actions">
                                                                         {% if _actions|split('</a>')|length > 2 %}
                                                                             <li class="dropdown sonata-actions">
                                                                                 <a href="#" class="btn text-white border text-decoration-none dropdown-toggle
@@ -404,13 +395,13 @@ file that was distributed with this source code.
                                 {% endif %}
 
                                 {% if _list_filters is not empty %}
-                                    <div class="row">
+                                    <div class="row sonata-ba-filter">
                                         {{ _list_filters|raw }}
                                     </div>
                                 {% endif %}
 
                                 {% if _list_table is not empty %}
-                                    <div class="row">
+                                    <div class="row sonata-ba-list">
                                         {{ _list_table|raw }}
                                     </div>
                                 {% endif %}

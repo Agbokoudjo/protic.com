@@ -16,12 +16,19 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\BaseUserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
  * @package <https://github.com/Agbokoudjo/>
  */
-abstract class AbstractUser implements BaseUserInterface ,\Stringable
+abstract class AbstractUser implements BaseUserInterface ,\Stringable,
+    LegacyPasswordAuthenticatedUserInterface,
+    PasswordAuthenticatedUserInterface,
+    EquatableInterface
 {
     /**
      * @var int|string|null
@@ -409,6 +416,23 @@ abstract class AbstractUser implements BaseUserInterface ,\Stringable
     public function setSlug(?string $slug): void
     {
         $this->slug = $slug;
+    }
+
+    public function isEqualTo(UserInterface $user): bool
+    {
+        if (!$user instanceof self) {
+            return false;
+        }
+
+        if ($this->password !== $user->getPassword()) {
+            return false;
+        }
+
+        if ($this->getUserIdentifier() !== $user->getUserIdentifier()) {
+            return false;
+        }
+
+        return true;
     }
 }
 
