@@ -71,7 +71,8 @@ final class GlobalSettingAdmin extends WlindablaAdmin
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('export');
-        //$collection->remove('delete');
+        $collection->remove('delete');
+        $collection->remove('create');
     }
     protected function configureFormFields(FormMapper $form): void
     {
@@ -193,7 +194,6 @@ final class GlobalSettingAdmin extends WlindablaAdmin
                     'edit'   => [
                         'icon' => 'edit',
                     ],
-                    'delete'=>[]
                 ],
             ]);
     }

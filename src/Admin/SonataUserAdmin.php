@@ -363,6 +363,7 @@ final class SonataUserAdmin extends WlindablaAdmin
                 'actions' => [
                     'show'   => [],
                     'edit'   => [],
+                    'delete'=>[],
                 'toggle_enabled_user_account' => [
                     'template' => 'bundles/SonataAdminBundle/CRUD/list_action_toggle_enabled_user_account.html.twig',
                 ],
