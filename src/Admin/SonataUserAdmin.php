@@ -117,7 +117,6 @@ final class SonataUserAdmin extends WlindablaAdmin
             methods: ['PATCH'],
         );
 
-        $collectionRoutes->remove('delete');
     }
 
     protected function prePersist(object $object): void

@@ -55,7 +55,7 @@ interface EmailVerificationInterface
      * - Les comptes Admin/Member nécessitent une activation manuelle par un administrateur
      *
      * @param string $rawToken Le token en clair reçu via l'URL de vérification
-     * @param string $slug Le slug unique de l'utilisateur
+     * @param string|int $id l'identifiant unique de l'utilisateur
      * 
      * @return void
      * 
@@ -65,7 +65,7 @@ interface EmailVerificationInterface
      *                               - Code CODE_ALREADY_USED (1003) : Token déjà consommé
      *                               - Code CODE_USER_NOT_FOUND (1004) : Utilisateur introuvable
      */
-    public function verifyEmail(string $rawToken, string $id): void;
+    public function verifyEmail(string $rawToken, string|int $id): void;
 
 
     /**
@@ -79,7 +79,7 @@ interface EmailVerificationInterface
      * 5. Hashe et stocke le token
      * 6. Déclenche l'événement d'envoi d'email
      *
-     * @param string $slug Le slug unique de l'utilisateur
+     * @param string|int $id l'identifiant unique de l'utilisateur
      * 
      * @return void
      * 
@@ -87,5 +87,5 @@ interface EmailVerificationInterface
      *                               ou si le délai minimum entre demandes n'est pas respecté
      * @throws \RuntimeException Si la génération ou le hachage du token échoue
      */
-    public function resendVerificationEmail(string $id): void;
+    public function resendVerificationEmail(string|int $id): void;
 }

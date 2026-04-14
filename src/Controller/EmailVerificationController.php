@@ -21,7 +21,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Requirement\Requirement;
 
 /**
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
@@ -49,7 +48,7 @@ final class EmailVerificationController extends AbstractController
         $page_redirection_route_name= "app_catalogue";
         try {
 
-            $this->verificationService->verifyEmail($token, (string) $id);
+            $this->verificationService->verifyEmail($token,$id);
             $this->addFlash('success', 'Votre email a été vérifié avec succès ! Vous pouvez maintenant vous connecter.');
 
             return $this->render('/email/security/checkEmail.html.twig', [
@@ -65,7 +64,7 @@ final class EmailVerificationController extends AbstractController
                 );
 
                 // Renvoyer un email 
-                $this->verificationService->resendVerificationEmail((string) $id);
+                $this->verificationService->resendVerificationEmail($id);
 
                 return $this->render('/email/security/checkEmail.html.twig', [
                         'page_login_url' => $page_redirection_route_name

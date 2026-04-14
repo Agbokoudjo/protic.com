@@ -3,7 +3,7 @@ sonata_admin:
     options:
         use_icheck: false
         use_select2: true
-    title: 'Sonata Admin'
+    title: 'ProTIC Editions & Services'
     title_logo: 'images/logo.png'
     persist_filters: true
     
