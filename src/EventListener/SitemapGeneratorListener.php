@@ -38,7 +38,7 @@ final class SitemapGeneratorListener
     public function __invoke(SitemapPopulateEvent $event): void
     {
         $this->addStaticPages($event->getUrlContainer());
-        $this->addCategories($event->getUrlContainer());
+        //$this->addCategories($event->getUrlContainer());
     }
 
     private function addStaticPages(UrlContainerInterface $urls): void

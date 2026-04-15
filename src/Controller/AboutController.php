@@ -8,7 +8,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/about', name: 'app_about',methods: ['GET'])]
+#[Route('/about', 
+    name: 'app_about',
+    methods: ['GET'],
+    options: [
+        'sitemap' => ['priority' => 0.7, 'changefreq' => 'daily']
+    ]
+)]
 class AboutController extends AbstractController
 {
     public function __invoke(): Response

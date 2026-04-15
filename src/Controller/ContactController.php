@@ -16,7 +16,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/contact', name: 'app_contact', methods: ['GET', 'POST'])]
+#[Route('/contact', 
+        name: 'app_contact', 
+        methods: ['GET', 'POST'],
+        options: [
+            'sitemap' => ['priority' => 0.7, 'changefreq' => 'daily']
+        ]
+ )]
 final class ContactController extends AbstractController
 {
     public function __construct(
