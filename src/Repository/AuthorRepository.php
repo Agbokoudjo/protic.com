@@ -16,6 +16,28 @@ class AuthorRepository extends ServiceEntityRepository
         parent::__construct($registry, Author::class);
     }
 
+    public function findAllForSitemap(int $batchSize = 100): \Generator
+    {
+        $offset = 0;
+        do {
+            $results = $this->createQueryBuilder('a')
+                ->select('partial a.{id, updatedAt}')
+                ->orderBy('a.id', 'ASC')
+                ->setMaxResults($batchSize)
+                ->setFirstResult($offset)
+                ->getQuery()
+                ->toIterable();
+
+            $count = 0;
+            foreach ($results as $author) {
+                yield $author;
+                $count++;
+            }
+
+            $offset += $batchSize;
+        } while ($count === $batchSize);
+    }
+    
     //    /**
     //     * @return Author[] Returns an array of Author objects
     //     */

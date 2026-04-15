@@ -16,6 +16,28 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    public function findAllForSitemap(int $batchSize = 50): \Generator
+    {
+        $offset = 0;
+        do {
+            $results = $this->createQueryBuilder('c')
+                ->select('partial c.{id}')
+                ->orderBy('c.id', 'ASC')
+                ->setMaxResults($batchSize)
+                ->setFirstResult($offset)
+                ->getQuery()
+                ->toIterable();
+
+            $count = 0;
+            foreach ($results as $category) {
+                yield $category;
+                $count++;
+            }
+
+            $offset += $batchSize;
+        } while ($count === $batchSize);
+    }
+    
     //    /**
     //     * @return Category[] Returns an array of Category objects
     //     */
