@@ -73,12 +73,12 @@ function navOffcanvas() {
 }
 
 function SpeedometerScroll() {
-    let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    let lastScrollTop = document.documentElement.scrollTop;
     let lastTimestamp = Date.now();
     let scrollTimeout;
 
     // Configuration
-    const SPEED_THRESHOLD = 5; // Ajuste cette valeur (ex: 2.5px/ms est déjà très rapide)
+    const SPEED_THRESHOLD = 2.5; // Ajuste cette valeur (ex: 2.5px/ms est déjà très rapide)
     const TOOLTIP_ID = 'scroll-speed-alert';
 
     // Création de l'infobulle (Toast)

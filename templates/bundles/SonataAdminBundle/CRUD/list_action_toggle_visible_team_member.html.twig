@@ -1,0 +1,29 @@
+{#
+  Template : list_action_toggle_visible_team_member.html.twig
+  Emplacement : templates/bundles/SonataAdminBundle/CRUD/
+  Usage : bouton "Basculer visibilité" dans la liste des membres de l'équipe.
+#}
+
+{% set action = admin.createToggleVisibleAction(object) %}
+{% set csrf_token = csrf_token('toggle_visible_team_member_' ~ object.id) %}
+{% set visibility_state = { status : object.visible ? 'false' : 'true' }  %}
+{% if action %}
+    <a
+        href="{{ action.url }}"
+        title="{{ action.title | trans({}, 'SonataAdminBundle') }}"
+        class="btn btn-sm {{ object.visible ? 'btn-warning' : 'btn-success' }} js-toggle-visible-btn"
+        data-bs-toggle="tooltip" 
+        data-bs-placement="top" 
+        data-additional="{{visibility_state |json_encode()}}"
+        data-action-confirm="{{ action.confirm }}"
+        data-loading-config-key-title="ACTION_PENDING_TITLE"
+        data-loading-config-key-message="ACTION_PENDING_MESSAGE"
+        data-http-method-request-action="PATCH"
+        data-event-name="account:toggle-visible-team-member"
+        data-target="{{ action.target }}"
+        data-csrf="{{ csrf_token }}"
+    >
+        <i class="{{ action.icon }}"></i>
+        <span class="d-none d-md-inline">{{ action.label | trans({}, 'SonataAdminBundle') }}</span>
+    </a>
+{% endif %}            

@@ -5,3 +5,5 @@ list__app_admin_contactrequest: "Listes des demandes reçues"
 list__app_admin_manuscriptsubmission: "Liste des manuscrits reçus"
 list__app.admin.global_setting: "Gestion des Paramètres Généraux "
 list__app_admin_faq: Liste des FAQ
+permission_role: "Liste des rôles et permissions disponibles"
+permission_user: "Liste des rôles et permissions attribués aux utilisateurs"

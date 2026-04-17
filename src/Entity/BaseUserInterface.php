@@ -137,4 +137,12 @@ interface BaseUserInterface
     public function getSlug(): ?string;
 
     public function setSlug(?string $slug): void;
+
+    public function isSuperAdmin(): bool ;
+
+    public function setSuperAdmin(bool $boolean): void ;
+
+    public function isFounder(): bool;
+
+    public function isAdmin(): bool;
 }

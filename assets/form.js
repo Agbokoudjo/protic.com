@@ -169,21 +169,23 @@ export class FormSubmissionSubscriber extends HttpRequestSubscriber
         if (!form.classList.contains('form-submission-handle-auto')) { return; }
 
        const fetchResponse = event.response;
-        const { title, errorMessage,violations,details } = fetchResponse.data;
+        const { title, errorMessage,violations,details,message } = fetchResponse.data;
         
-       if (fetchResponse.statusCode === 422) {
-           handleErrorsManyForm(
+       if (fetchResponse.statusCode === 422 || 
+          fetchResponse.statusCode === 400) {
+           if (violations) {
+               handleErrorsManyForm(
                 form.name ?? form.id,
                 form.id,
               violations
-        )
+            )
+           }
        }
         
-       
         Swal.close() ;
         await showErrorDialog({
-            title: title || 'Success',
-            message: errorMessage || details
+            title: title || 'Error',
+            message: errorMessage || details || message || fetchResponse.data //lorsque le serveur renvoie une exception que nous controllons pas
         })
     }
 }

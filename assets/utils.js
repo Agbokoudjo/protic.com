@@ -165,7 +165,8 @@ export function crudAccountHandle() {
         'click', 
         `a.btn-toggle-account,
         a.btn-resend-email-verification,
-        a.js-regenerate-password-btn`,
+        a.js-regenerate-password-btn,
+        a.js-toggle-visible-btn`,
         async (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -212,17 +213,29 @@ export function crudUserAccountListener() {
         `resend:email:verificatio:password:confirmed 
          create:action:generate:password:confirmed
          account:toggle:confirmed
+         account:toggle-visible-team-member
          `,
         async (event) =>{
         event.preventDefault();
         event.stopPropagation();
-        const detail = event.detail;
+            const detail = event.detail;
+            let headers = {
+                 'X-Requested-With': 'XMLHttpRequest',
+                 'Accept'          : 'application/json',
+            }
+
+        const csrf = detail.sourceElement.dataset.csrf ?? null;
+            if (csrf) {
+                headers['X-CSRF-TOKEN'] = csrf;
+            }
+
             try {
             const { title, message }= actionTranslator(detail.element);
             const response = await processCRUDAction({
                 eventDetail: detail ,
                 httpMethod: detail.httpMethodRequestAction,
                 retryCount: 2,
+                optionsHeaders:headers,
                 loadingConfig: {
                     background: '#00427E',
                     color: '#fff',

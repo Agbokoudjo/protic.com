@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ProTIC Editions & Services{% endblock %}</title>
+    <!--
+        Plateforme développée par INTERNATIONALES WEB APPS & SERVICES
+        Développeur : AGBOKOUDJO Franck
+        Email       : internationaleswebservices@gmail.com
+        Téléphone   : +229 01 67 25 18 86
+        GitHub      : https://github.com/Agbokoudjo/
+        LinkedIn    : https://www.linkedin.com/in/internationales-web-apps-services-120520193/
+        © {{ "now"|date("Y") }} — Tous droits réservés
+    -->
     {% if app.environment =="prod" %}
         <meta name="google-site-verification" content="sK4Cxnn6-s7_Z7zrC8ipxZH5jgcHykHQYyBCtnhRzMQ" />
         <!-- Google tag (gtag.js) -->
@@ -20,13 +29,17 @@
     <meta property="og:description" content="{% block og_description %}{{ block('meta_description') }}{% endblock %}">
     <meta property="og:image"       content="{% block og_image %}{{ absolute_url(asset('assets/images/catalogue-og.png','app')) }}{% endblock %}">
     <meta property="og:site_name"   content="ProTIC Éditions & Services">
-    <meta name="author"      content="ProTIC Éditions & Services">
     <meta name="robots"      content="index, follow">
     <meta name="description" content="{% block meta_description %}Maison d'édition béninoise engagée pour la promotion du livre et des auteurs.{% endblock %}">
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:title"       content="{{ block('og_title') }}">
     <meta name="twitter:description" content="{{ block('og_description') }}">
     <meta name="twitter:image"       content="{{ block('og_image') }}">
+    {# Crédit développeur — indexé par Google #}
+    <meta name="author"      content="AGBOKOUDJO Franck — INTERNATIONALES WEB APPS & SERVICES">
+    <meta name="developer"   content="INTERNATIONALES WEB APPS & SERVICES — internationaleswebservices@gmail.com">
+    <meta name="generator"   content="Développé par INTERNATIONALES WEB APPS & SERVICES — https://github.com/Agbokoudjo/">
+
     <meta name="iws-config" content="{{ {
                           DEBUG: app.debug ?? false,
                           APP_ENV: app.environment ?? 'prod',
@@ -80,7 +93,17 @@
                 "telephone": ["+229 0195869951"],
                 "email": "direction@proticeditions.com",
                 "sameAs": [],
-                "foundingDate": "2010"
+                "foundingDate": "2010",
+                "creator": {
+                    "@type": "Organization",
+                    "name": "INTERNATIONALES WEB APPS & SERVICES",
+                    "email": "internationaleswebservices@gmail.com",
+                    "telephone": "+22901672518 86",
+                    "sameAs": [
+                        "https://github.com/Agbokoudjo/",
+                        "https://www.linkedin.com/in/internationales-web-apps-services-120520193/"
+                    ]
+                }
             }
         </script>
     {% endblock %}

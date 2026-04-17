@@ -1,0 +1,56 @@
+permission_role_general: Nom & Context
+permission_role_description_general: Description 
+user_permission_role_general: "Attribution des rôles aux utilisateurs"
+
+forms:
+  #PermissionRole
+  permission_role_name: "Nom du rôle"
+  permission_role_context: "Contexte du rôle"
+  permsiion_role_description: Description 
+
+  permission_role_name_placeholder: "Ex : PROJECT_MANAGER"
+  permission_role_context_placeholder: "Ex : Domaine = UI/UX Design"
+  
+  permission_role_description_placeholder: |
+    Ex :Le rôle PROJECT_MANAGER est attribué aux 
+      utilisateurs responsables de la supervision,
+      de la planification et de l'exécution des projets....
+
+  #UserpermissionRole
+  user_permission_user_list: "Utilisateurs"
+  user_permission_role: "Rôle / Permission & Contexte de promotion"
+  user_permission_role_placeholder: "Choisissez un rôle"
+  user_permission_scope: "Contexte (facultatif)"
+  user_permission_scope_placeholder: "Ex: Projet Alpha, Département RH"
+  user_permission_assigned_at: "Date d’attribution"
+  user_permission_user_type: "Type d’utilisateur"
+  user_permission_user_type_placeholder: "Choisissez un type (Admin, Membre…)"
+  user_permission_user_list_placeholder: "Sélectionnez un utilisateur"
+
+list:
+  permission_role_name: Nom
+  permission_role_context: Context
+  permission_role_description: Description
+  permission_role_createdBy: Créer par
+
+filter:
+  name: |
+     Filtre par nom de role Ex: PROJECT_MANAGER
+  context: | 
+    Filtre par context Ex: Domaine = UI/UX Design
+  createdBy: |
+    Filtre par créateur du role Ex: WLINDABLA Franck
+    
+user_permission_role:
+    fields:
+        id: "ID"
+        permission_role: "Rôle de Permission Assigné"
+        user_type: "Type d'Utilisateur"
+        user_id: "ID de l'Utilisateur"
+        scope: "Portée/Contexte"
+        assigned_at: "Date d'Assignation"
+        assigned_by_user: "Assigné par"
+    show:
+        group:
+            general: "Informations Générales"
+            details: "Détails d'Assignation"

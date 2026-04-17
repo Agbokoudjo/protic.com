@@ -5,6 +5,15 @@ framework:
 
         pools:
             # On crée un pool spécifique qui supporte les tags
+            app.rate_limiter:
+                adapter: cache.adapter.apcu
+
+            cache.rate_limiter:
+                adapter: cache.adapter.redis
+                provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'
+                default_lifetime: 3600   # 1h — les fenêtres glissantes sont bien inférieures
+                tags: false              # Pas besoin de tags pour le rate limiting
+                
             app.cache.taggable:
                 adapter: cache.adapter.redis
                 provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'

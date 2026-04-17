@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace App\CommandHandler;
 
+use App\CommandHandler\UpdatePasswordUserHandler;
 use App\Event\UpdatePasswordUserEvent;
 use App\Persistance\UserManagerInterface;
 use App\Service\GenerateTemporaryPasswordService;
@@ -26,22 +27,16 @@ final readonly class GenerateTemporaryPasswordHandler
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
         private UserManagerInterface $userManager,
+        private UpdatePasswordUserHandler $updatePasswordService,
         private GenerateTemporaryPasswordService $generateTemporatyPasswordService){}
 
     public function process(int|string $userId):void{
         try {
             $plainTemporyPasswordUser = $this->generateTemporatyPasswordService->generateTemporaryPassword();
+
+            $this->updatePasswordService->handle($userId, $plainTemporyPasswordUser) ;
+            
             $user = $this->userManager->find($userId);
-
-            if (null === $user) {
-                return;
-            }
-
-            $user->setPlainPassword($plainTemporyPasswordUser);
-            $this->userManager->updatePassword($user);
-            $user->preUpdate();
-            $this->userManager->save($user);
-
             $this->eventDispatcher->dispatch(
                 new UpdatePasswordUserEvent($user, $plainTemporyPasswordUser)
             );

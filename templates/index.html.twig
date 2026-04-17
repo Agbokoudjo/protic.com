@@ -4,6 +4,10 @@
 
 {% block meta_description %}
 ProTIC Editions &amp; Services, maison d'édition béninoise à Abomey-Calavi. Publication, impression et distribution de livres au Bénin et en Afrique de l'Ouest. Roman, poésie, essai, théâtre, conte, didactique.
+
+ProTIC Éditions & Services, maison d'édition béninoise spécialisée dans la publication et distribution de livres africains francophones.
+
+Fondée en 2010 par M. SETONWAN DENIS HOUNGNIMON, ProTIC Éditions & Services accompagne les auteurs béninois et africains depuis plus de 15 ans. Plus de 100 livres publiés, 70+ auteurs accompagnés, distribution en Afrique de l'Ouest.
 {% endblock %}
 
 {% block head_extra %}
@@ -13,10 +17,40 @@ ProTIC Editions &amp; Services, maison d'édition béninoise à Abomey-Calavi. P
 <meta property="og:image"       content="{{ asset('assets/images/og-home.png','app') }}">
 <meta property="og:type"        content="website">
 <meta property="og:url"         content="{{ app.request.uri }}">
-<meta name="keywords" content="maison édition Bénin, publier livre Bénin, édition Abomey-Calavi, ProTIC éditions, impression livre Afrique, auteur béninois, dépôt légal Bénin, littérature africaine">
+<meta name="keywords" content="ProTIC éditions histoire, maison édition fondée 2010 Bénin, éditeur africain francophone, auteurs béninois publiés, distribution livre Afrique Ouest, APPEL Bénin,
+édition livre Bénin, maison d'édition africaine, publier livre Afrique, auteur béninois, littérature africaine francophone,
+maison édition Bénin, publier livre Bénin, édition Abomey-Calavi, ProTIC éditions, impression livre Afrique, auteur béninois, dépôt légal Bénin, littérature africaine">
 <link rel="canonical" href="{{ app.request.uri }}">
 
 {{ vite_entry_link_tags('home') }}
+{% endblock %}
+{% block json_ld %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ProTIC Éditions & Services",
+    "url": "https://proticeditions.com",
+    "logo": "{{ absolute_url(asset('assets/images/logo.png','app')) }}",
+    "description": "Maison d'édition béninoise spécialisée dans la publication et distribution de livres africains francophones.",
+    "foundingDate": "2010",
+    "founder": {
+        "@type": "Person",
+        "name": "M. SETONWAN DENIS HOUNGNIMON"
+    },
+    "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Abomey-Calavi",
+        "addressRegion": "Atlantique",
+        "addressCountry": "BJ"
+    },
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "availableLanguage": "French"
+    }
+}
+</script>
 {% endblock %}
 
 {% block main %}

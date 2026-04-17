@@ -1,0 +1,83 @@
+# config/packages/rate_limiter.yaml
+#
+# Configuration du Rate Limiter Symfony pour la protection DDoS.
+#
+# PRÉREQUIS :
+#   composer require symfony/rate-limiter
+#
+# ALGORITHMES DISPONIBLES :
+#   - fixed_window   : fenêtre fixe (simple, moins précis)
+#   - sliding_window : fenêtre glissante (recommandé, plus précis)
+#   - token_bucket   : seau à jetons (idéal pour les bursts légitimes)
+#   - no_limit       : désactiver en dev/test
+#
+# STOCKAGE EN PRODUCTION :
+#   Utiliser Redis (cache.rate_limiter) pour que les limites soient
+#   partagées entre tous les workers FrankenPHP.
+#   Sans Redis, chaque worker a ses propres compteurs → protection inefficace.
+#
+
+framework:
+    rate_limiter:
+
+        # ── Tentatives de connexion / inscription ──────────────────────────
+        # 5 requêtes toutes les 15 minutes par IP
+        # Protection brute-force sur /login, /register, /2fa
+        login_attempts:
+            policy: fixed_window
+            limit: 5
+            interval: '15 minutes'
+            lock_factory: lock.default.factory
+            cache_pool: cache.rate_limiter
+
+        # ── Réinitialisation de mot de passe ──────────────────────────────
+        # 3 demandes toutes les 30 minutes par IP
+        # Protection contre l'énumération de comptes
+        password_reset:
+            policy: fixed_window
+            limit: 3
+            interval: '30 minutes'
+            lock_factory: lock.default.factory
+            cache_pool: cache.rate_limiter
+
+        # ── API anonyme ───────────────────────────────────────────────────
+        # 60 requêtes par minute par IP (1 req/s en moyenne)
+        # Sliding window = plus précis que fixed_window pour les rafales
+        api_anonymous:
+            policy: sliding_window
+            limit: 60
+            interval: '1 minute'
+            lock_factory: lock.default.factory
+            cache_pool: cache.rate_limiter
+
+        # ── API authentifiée ──────────────────────────────────────────────
+        # 300 requêtes par minute (5 req/s) pour les utilisateurs connectés
+        # Adaptable selon les rôles (à implémenter dans RateLimitListener)
+        api_authenticated:
+            policy: sliding_window
+            limit: 300
+            interval: '1 minute'
+            lock_factory: lock.default.factory
+            cache_pool: cache.rate_limiter
+
+        # ── Requêtes globales (pages publiques, admin…) ───────────────────
+        # 120 requêtes par minute par IP (2 req/s)
+        # Protège contre le DDoS sur les pages Twig normales
+        global_requests:
+            policy: sliding_window
+            limit: 120
+            interval: '1 minute'
+            lock_factory: lock.default.factory
+            cache_pool: cache.rate_limiter
+        
+        global_flood:
+          policy: 'token_bucket'
+          limit: 10
+          rate: { interval: '2 minute', amount: 10 }
+          cache_pool: 'app.rate_limiter'
+          
+        manuscript_upload:
+          policy: 'token_bucket'
+          limit: 3
+          rate: { interval: '60 minute', amount: 1 }
+          cache_pool: 'app.rate_limiter'

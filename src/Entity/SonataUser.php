@@ -189,7 +189,55 @@ class SonataUser extends AbstractUser implements
     #[ORM\Column(type: "string", nullable: true)]
     #[Groups(['user:cache', 'user:read'])]
     protected ?string $slug = null;
-    
+
+    /**
+     * Indique si cet utilisateur admin est aussi un membre visible
+     * sur la page "À propos" du site.
+     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    #[Groups(['user:cache', 'user:read'])]
+    protected bool $isMember = false;
+
+    /**
+     * Position d'affichage dans la section équipe (null si pas membre).
+     */
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    #[Groups(['user:cache', 'user:read'])]
+    protected ?int $teamPosition = null;
+
+    /**
+     * Biographie publique affichée côté site (différente du champ "profile" admin).
+     */
+    #[Assert\Length(
+        max: 1000,
+        maxMessage: 'La biographie publique ne peut pas dépasser {{ limit }} caractères.',
+    )]
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['user:cache', 'user:read'])]
+    protected ?string $teamBio = null;
+
+    /**
+     * Initiale affichée si aucune photo n'est disponible (ex: "S", "É").
+     */
+    #[Assert\Length(
+        max: 5,
+        maxMessage: 'L\'initiale ne peut pas dépasser {{ limit }} caractères.',
+    )]
+    #[ORM\Column(length: 5, nullable: true)]
+    #[Groups(['user:cache', 'user:read'])]
+    protected ?string $teamInitial = null;
+
+    /**
+     * Texte alternatif de la photo pour l'accessibilité / SEO.
+     */
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le texte alternatif ne peut pas dépasser {{ limit }} caractères.',
+    )]
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['user:cache', 'user:read'])]
+    protected ?string $teamAltText = null;
+
     // Setter pour l'ID (nécessaire pour la désérialisation)
     public function setId(int|string $id):void
     {
@@ -299,5 +347,75 @@ class SonataUser extends AbstractUser implements
     public function getRolePrincipal(): string
     {
         return self::ROLE_DEFAULT;
+    }
+
+    public function isFounder(): bool
+    {
+        return $this->hasRole('ROLE_FOUNDER');
+    }
+
+    public function isDirector(): bool
+    {
+        return $this->hasRole('ROLE_DIRECTOR');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('ROLE_ADMIN');
+    }
+
+    public function isMember(): bool
+    {
+        return $this->isMember;
+    }
+
+    public function setIsMember(bool $isMember): static
+    {
+        $this->isMember = $isMember;
+        return $this;
+    }
+
+    public function getTeamPosition(): ?int
+    {
+        return $this->teamPosition;
+    }
+
+    public function setTeamPosition(?int $teamPosition): static
+    {
+        $this->teamPosition = $teamPosition;
+        return $this;
+    }
+
+    public function getTeamBio(): ?string
+    {
+        return $this->teamBio;
+    }
+
+    public function setTeamBio(?string $teamBio): static
+    {
+        $this->teamBio = $teamBio;
+        return $this;
+    }
+
+    public function getTeamInitial(): ?string
+    {
+        return $this->teamInitial;
+    }
+
+    public function setTeamInitial(?string $teamInitial): static
+    {
+        $this->teamInitial = $teamInitial;
+        return $this;
+    }
+
+    public function getTeamAltText(): ?string
+    {
+        return $this->teamAltText;
+    }
+
+    public function setTeamAltText(?string $teamAltText): static
+    {
+        $this->teamAltText = $teamAltText;
+        return $this;
     }
 }

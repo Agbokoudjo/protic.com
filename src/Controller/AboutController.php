@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Repository\TeamMemberRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,10 +18,10 @@ use Symfony\Component\Routing\Attribute\Route;
 )]
 class AboutController extends AbstractController
 {
-    public function __invoke(): Response
+    public function __invoke(TeamMemberRepository $repo): Response
     {
         /* ── Membres de l'équipe ── */
-        $team = [
+        /*$team = [
             [
                 'name'    => 'M. SETONWAN DENIS HOUNGNIMON',
                 'role'    => 'Directeur & Fondateur',
@@ -36,7 +37,7 @@ class AboutController extends AbstractController
                 'image'   => 'assets/images/team/editorial.png',
                 'alt'     => 'Équipe éditoriale ProTIC Editions — Conception et mise en page',
                 'initial' => 'É',
-            ],
+            ], 
             [
                 'name'    => 'Équipe Distribution',
                 'role'    => 'Logistique & Distribution',
@@ -45,7 +46,7 @@ class AboutController extends AbstractController
                 'alt'     => 'Équipe distribution ProTIC Editions — Logistique nationale',
                 'initial' => 'D',
             ],
-        ];
+        ];*/
 
         /* ── Valeurs de l'entreprise ── */
         $values = [
@@ -66,6 +67,8 @@ class AboutController extends AbstractController
             ['year' => '2022', 'title' => '100+ livres au catalogue',    'text' => 'Le catalogue dépasse les 100 titres et 70 auteurs. Lancement du processus de soumission en ligne.'],
             ['year' => '2026', 'title' => 'Plateforme numérique',        'text' => 'Lancement du site web moderne ProTIC avec catalogue interactif, soumission de manuscrits en ligne et espace auteurs.'],
         ];
+
+        $team = $repo->findVisibleOrderedByPosition();
 
         return $this->render('about/index.html.twig', [
             'team'       => $team,

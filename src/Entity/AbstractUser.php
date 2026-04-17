@@ -30,6 +30,8 @@ abstract class AbstractUser implements BaseUserInterface ,\Stringable,
     PasswordAuthenticatedUserInterface,
     EquatableInterface
 {
+    public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    
     /**
      * @var int|string|null
      */
@@ -433,6 +435,20 @@ abstract class AbstractUser implements BaseUserInterface ,\Stringable,
         }
 
         return true;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole(static::ROLE_SUPER_ADMIN);
+    }
+
+    public function setSuperAdmin(bool $boolean): void
+    {
+        if (true === $boolean) {
+            $this->addRole(static::ROLE_SUPER_ADMIN);
+        } else {
+            $this->removeRole(static::ROLE_SUPER_ADMIN);
+        }
     }
 }
 

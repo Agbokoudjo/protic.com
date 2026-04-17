@@ -216,9 +216,6 @@ const BookCardList = ({ book }) => {
     );
 };
 
-/* ══════════════════════════════════════════════════════════════
-   Pagination
-══════════════════════════════════════════════════════════════ */
 const Pagination = ({ currentPage, totalPages, onChange }) => {
     if (totalPages <= 1) return null;
 
@@ -337,6 +334,7 @@ export default function CatalogueGrid({ itemsPerPage = 12 }) {
                 timeout: 30000,
                 responseType: "json",
                 methodSend: "GET",
+                credentials: 'include',
                 headers: {
                     'Accept': 'application/ld+json',
                     'X-Requested-With': 'XMLHttpRequest',

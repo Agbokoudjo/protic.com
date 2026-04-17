@@ -141,3 +141,57 @@ body {
     color: #fff;
     border-color: #dc3545;
 }
+
+/*
+* Champs "Membre de l'équipe" — masqués par défaut.
+* Le JS retire display:none au besoin. On définit ici la règle de base
+* pour le cas où JS n'est pas encore exécuté (évite le flash).
+*/
+.js-member-field-wrapper--hidden {
+        display: none;
+    }
+
+/* Conteneur des champs équipe — masqué par défaut */
+  .js-member-fields-wrapper {
+    display: none;
+    border-left: 3px solid #f39c12;
+    padding-left: 15px;
+    margin-top: 10px;
+    transition: opacity 0.2s ease;
+  }
+
+  .js-member-fields-wrapper.is-open {
+    display: block;
+  }
+
+  /* Badge indicateur dans le titre du groupe */
+  .member-badge {
+    display: inline-block;
+    background: #f39c12;
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+
+ /*
+     * Notice "accès refusé" au champ mot de passe
+     */
+.form-control-plaintext.text-warning {
+    color: #d68910 !important;
+    font-style: italic;
+    border: 1px dashed #d68910;
+    border-radius: 4px;
+    padding: .375rem .75rem;
+    background: #fefae9;
+}
+
+/*
+    * Bouton toggle visibilité mot de passe — hover
+    */
+.password-toggle-btn:hover {
+    color: #555 !important;
+}

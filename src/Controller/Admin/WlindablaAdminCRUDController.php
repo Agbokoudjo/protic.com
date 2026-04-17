@@ -304,7 +304,7 @@ class WlindablaAdminCRUDController extends CRUDController {
      * 
      * @throws BadRequestHttpException Si le statut est invalide
      */
-    private function getStatusFromRequest(Request $request): bool{
+    protected function getStatusFromRequest(Request $request): bool{
 
         $status=$request->getPayload()->getBoolean('status');
 
@@ -359,10 +359,17 @@ class WlindablaAdminCRUDController extends CRUDController {
             return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
         }
 
+        $message_trans_key= "flash_create_success" ;
+        if($this->admin->isCurrentRoute('edit',$this->admin->getCode()) ||
+            $request->attributes->get($this->admin->getIdParameter(),null) !==null
+            ){
+                $message_trans_key = "flash_edit_success";
+            }
+
         $this->addFlash(
             'sonata_flash_success',
             $this->trans(
-                'flash_edit_success',
+                $message_trans_key,
                 ['%name%' => $this->escapeHtml($this->admin->toString($object))],
                 'SonataAdminBundle'
             )

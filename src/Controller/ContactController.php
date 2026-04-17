@@ -12,8 +12,11 @@ use App\QueueHandler\AsyncMethodDispatcher;
 use App\Repository\ManuscriptSubmissionRepository;
 use App\Service\ProcessingErrorFormHandle;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/contact', 
@@ -32,8 +35,17 @@ final class ContactController extends AbstractController
 
     public function __invoke(
         Request $request,
+        #[Target('manuscript_upload')]
+        RateLimiterFactoryInterface $manuscriptUploadLimiter,
         ProcessingErrorFormHandle $formErrorHandle): Response
     {
+        $limiter = $manuscriptUploadLimiter->create($request->getClientIp());
+        if (false === $limiter->consume(1)->isAccepted()) {
+            throw new TooManyRequestsHttpException(
+                retryAfter: 60,
+                message:'Trop de tentatives. Réessayez après.');
+        }
+        
         $submission = new ManuscriptSubmission();
         $form  = $this->createForm(ManuscriptSubmissionType::class, $submission);
         $form->handleRequest($request);

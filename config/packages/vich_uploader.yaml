@@ -23,3 +23,14 @@ vich_uploader:
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             delete_on_update: true
             delete_on_remove: true
+            
+        team_photos:
+            uri_prefix: /uploads/team
+            upload_destination: '%kernel.project_dir%/public/uploads/team'
+            namer:
+                service: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            # Suppression du fichier quand l'entité est supprimée (soft-delete = non déclenché)
+            delete_on_remove: true
+            delete_on_update: true
+            # Optionnel : injection du chemin dans l'entité pour éviter les requêtes supplémentaires
+            inject_on_load: false

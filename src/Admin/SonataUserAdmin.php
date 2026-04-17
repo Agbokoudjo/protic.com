@@ -17,8 +17,12 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Controller\Admin\AdminUserCRUDController;
+use App\DataTransformer\RoleArrayTransformer;
 use App\Entity\BaseUserInterface;
+use App\Entity\RoleUser;
 use App\Entity\SonataUser;
+use App\Security\Handler\AdminUserRoleSecurityHandler;
+use App\Security\Voter\PasswordUserVoter;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -30,9 +34,15 @@ use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\StringFilter;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\UX\Dropzone\Form\DropzoneType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -51,14 +61,15 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 #[AutoconfigureTag(
     name: 'sonata.admin',
     attributes: [
-        'id'           => 'app.admin.sonata_user',
-        'code'         => 'app.admin.sonata_user',
-        'admin_code'   => 'app.admin.sonata_user',
+        'id'           => 'sonata.admin.user',
+        'code'         => 'sonata.admin.user',
+        'admin_code'   => 'sonata.admin.user',
         'model_class'  => SonataUser::class,
         'manager_type' => 'orm',
         'group'        => 'app.admin.group.user',
         'label'        => 'Utilisateurs',
         'pager_type'   => 'simple',
+        'security_handler' => AdminUserRoleSecurityHandler::class
     ]
 )]
 final class SonataUserAdmin extends WlindablaAdmin
@@ -69,7 +80,7 @@ final class SonataUserAdmin extends WlindablaAdmin
             'Liste des utilisateurs',
             'Détails de l\'utilisateur',
             'Créer un utilisateur', 
-            'Modifier l\'utilisateur',
+            'Modifier l\'utilisateur'
         );
     }
 
@@ -116,7 +127,6 @@ final class SonataUserAdmin extends WlindablaAdmin
             ],
             methods: ['PATCH'],
         );
-
     }
 
     protected function prePersist(object $object): void
@@ -127,156 +137,13 @@ final class SonataUserAdmin extends WlindablaAdmin
 
     protected function preValidate(object $object): void
     {
-        $object->setRoles(['ROLE_ADMIN','ROLE_ASSISTANCE']) ;
+        
     }
 
     protected function preUpdate(object $object): void
     {
         /** @var SonataUser $object */
         $object->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
-    }
-
-    protected function configureFormFields(FormMapper $form): void
-    {
-        $isEdit = ($this->getSubject()?->getId() !== null);
-
-        $form
-            ->with('Identité', ['class' => 'col-md-6'])
-            ->add('username', TextType::class, [
-                'label'    => 'Nom et Prénoms',
-                'attr'     => [
-                    'placeholder' => 'ex: AGBOKOUDJO Franck',
-                    'autocomplete' => 'on',
-                    'minlength' => 6,
-                    'maxlength' => 255,
-                    'data-pattern' => '^[\p{L}\p{N}\p{M}\s\.]+$',
-                    'data-eg-await' => 'WLINDABABLA Empedocle Brondelle',
-                    'data-escapestrip-html-and-php-tags' => true,
-                    'data-event-validate-blur' => 'blur',
-                    'data-event-validate-input' => 'input',
-                    'data-position-lastname' => "left",
-                    'class' => 'username',
-                    'data-error-message-input' => 'Le nom ne peut contenir que des lettres, chiffres, espaces'
-                    ],
-            'help'     => 'Nom et prénom complets. Unique, entre 6 et 255 caractères.',
-            ])
-            ->add('email', EmailType::class, [
-                'label' => 'Adresse email',
-                'attr'  => [
-                    'placeholder' => 'email@proticeditions.com',
-                    'autocomplete' => 'on',
-                    'data-escapestrip-html-and-php-tags' => false,
-                    'data-event-validate-blur' => 'blur',
-                    'data-event-validate-input' => 'input',
-                    'data-type' => "email",
-                    'minlength' => 6,
-                    'maxlength' => 200,
-                    'data-eg-await' => 'franckagbokoudjo301@gmail.com',
-                    'data-allow-quoted-local' => 'false',
-                    'data-host-whitelist' => "gmail.com,yahoo.com",
-                    'data-error-message-input'          => 'Veuillez saisir une adresse email valide.',
-                    ],
-            ])
-            ->add('profile', TextType::class, [
-                'label'    => 'Profil',
-                'required' => false,
-                'attr'     => [
-                    'placeholder' => 'ex: Directeur ProTIC',
-                    'autocomplete' => 'on',
-                    'minlength' => 6,
-                    'maxlength' => 200,
-                    'data-pattern' => '^[\p{L}\p{N}\p{M}\s\-\.&]+$',
-                    'data-eg-await' => 'Directeur ProTIC',
-                    'data-escapestrip-html-and-php-tags' => true,
-                    'data-event-validate-blur' => 'blur',
-                    'data-event-validate-input' => 'input',
-                    'data-error-message-input' => 'Le profile ne peut contenir que des lettres (toutes langues), chiffres, espaces, tirets, et points.'
-                    ],
-            ])
-            ->end()
-            ->with('Sécurité', [
-                'class' => 'col-md-6',
-            'description' => 'Détails de contact et profil',
-            'box_class'   => 'box box-solid box-solid-with',
-                'label'=> 'Informations sociales'])
-            ->add('phone', PhoneNumberType::class, [
-                'label'       => 'Téléphone',
-                'required'    => true,
-                'default_region' => 'BJ',
-                'format'      => \libphonenumber\PhoneNumberFormat::INTERNATIONAL,
-                'attr'        => [
-                    'placeholder'                       => 'Ex: +229 01 67 25 18 86',
-                    'data-escapestrip-html-and-php-tags' => 'true',
-                    'data-event-validate-blur'          => 'blur',
-                    'minlength' => 8,
-                    'maxlength' => 80,
-                    'data-type'  => 'tel',
-                    "data-eg-await" => '+229 XX XX XX XX',
-                    'data-error-message-input'          => 'Numéro de téléphone invalide.',
-                ],
-                'help'        => 'Numéro international (ex: +229 01 67 25 18 86).',
-            ])
-            ->add('country', CountryType::class, [
-                'label' => 'Pays d\'origine ou de résidence',
-                'label_attr' => ['class' => 'form-label'],
-                'required' => true,
-                "alpha3" => true,
-                'choice_translation_domain' => false,
-                'attr' => [
-                    'data-escapestrip-html-and-php-tags' => true,
-                    'data-event-validate-change' => 'change',
-                    'data-event-validate-blur' => 'blur',
-                    'autocomplete' => 'on',
-                    'minlength' => 3,
-                    'maxlength' => 150,
-                    'data-pattern' => '^[\p{L}\p{M}\s\'-]+$',
-                    'class' => 'form-control select2 form-select',
-                    'data-minimumInputLength' => 1
-                ]
-            ])
-            ->add('avatarFile', DropzoneType::class, [
-                'label'             => 'Photo de profil',
-                'label_attr' => ['class' => 'form-label'],
-                'required'          => false,
-                'attr'              => [
-                    'accept' => 'image/jpeg,image/png,image/webp',
-                    'data-event-validate-blur' => 'blur',
-                    'data-event-validate-change' => 'change',
-                    'data-media-type' => 'image',
-                    'data-type' => 'file',
-                    'data-extentions' => 'jpg,png,jpeg,webp',
-                    'data-unity-max-size-file' => 'MiB',
-                    'data-maxsize-file' => 2,
-                    'data-allowed-mime-type-accept' => 'image/jpeg,image/png,image/webp',
-                    'data-min-width' => 50,
-                    'data-max-width' => 800,
-                    'data-min-height' => 80,
-                    'data-max-height' => 800,
-                    'placeholder'
-                    => "Faites glisser votre fichier d'image ou cliquez pour parcourir.
-                        Format photo d'identité :
-                        - Hauteur maximale : 800px
-                        - Largeur maximale : 800px
-                        - Hauteur minimale : 50px
-                        - Largeur minimale : 50px"
-                ],
-                'help'              => 'Formats acceptés : JPG, PNG, WEBP. Max 2 Mo.',
-            ])
-            /*->add('roles', ChoiceType::class, [
-                'label'    => 'Rôles',
-                'choices'  => [
-                    'Administrateur'       => 'ROLE_ADMIN',
-                    'Super Administrateur' => 'ROLE_SUPER_ADMIN',
-                    'Éditeur'              => 'ROLE_EDITOR',
-                ],
-                'multiple' => true,
-                'expanded' => true,
-            ])
-            ->add('enabled', CheckboxType::class, [
-                'label'    => 'Compte actif',
-                'required' => false,
-            ])*/
-            ->end();
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
@@ -438,12 +305,8 @@ final class SonataUserAdmin extends WlindablaAdmin
                         'label' => 'show.label_roles',
                         'translation_domain' => 'SonataUserBundle',
                         'display' => 'values',
-                        'value_translation_domain' => 'role'
-                    ])
-                    ->add('confirmationToken', null, [
-                        'label' => 'show.label_confirmation_token',
-                        'translation_domain' => 'SonataUserBundle',
-                        'role' => 'ROLE_SUPER_ADMIN'
+                        'value_translation_domain' => 'role',
+                        'class'=>'text-uppercase'
                     ])
                     ->add('tokenRequestedAt', FieldDescriptionInterface::TYPE_DATETIME, [
                         'label' => 'show.label_token_requested_at',
@@ -636,4 +499,400 @@ final class SonataUserAdmin extends WlindablaAdmin
         ];
     }
 
+    //   Onglet 1 — Identité & Contact
+    //     • Groupe "Identité"         (col-md-6)
+    //     • Groupe "Coordonnées"      (col-md-6)
+    //
+    //   Onglet 2 — Membre de l'équipe
+    //     • Groupe "Visibilité site"  (col-md-12)
+    //       - isMember (checkbox principale)
+    //       - teamBio / teamInitial / teamAltText / teamPosition (masqués par JS)
+    //
+    //   Onglet 3 — Sécurité (mot de passe)
+    //     • Groupe "Mot de passe"     (col-md-6)
+    //       → AFFICHÉ uniquement en édition
+    //       → AUTORISÉ uniquement si l'utilisateur courant est le propriétaire
+    //         du compte (vérifié via SonataUserVoter::EDIT_PASSWORD)
+    protected function configureFormFields(FormMapper $form): void
+    {
+        /** @var SonataUser|null $subject */
+        $subject  = $this->getSubject();
+        $isEdit   = true ;// ($subject?->getId() !== null);
+        $isMember = $subject?->isMember() ?? false;
+
+        // Peut-on afficher / traiter le champ mot de passe ?
+        // Le Voter SonataUserVoter::EDIT_PASSWORD vérifie :
+        //   - qu'on est en édition (id != null)
+        //   - que l'utilisateur connecté EST le sujet édité
+        $canEditPassword =$isEdit  && $this->isGranted(PasswordUserVoter::EDIT_PASSWORD, $subject)
+            ;
+        $form
+            ->tab('Identité & Contact', [
+                'label' => 'Identité & Contact',
+            ])
+            ->with('Identité', [
+                'box_class' => 'box box-solid box-solid-with',
+                'class' => 'col-md-6'
+                ])
+                ->add('username', TextType::class, [
+                'label'    => 'Nom et Prénoms *',
+                'attr'     => [
+                    'placeholder' => 'ex: AGBOKOUDJO Franck',
+                    'autocomplete' => 'on',
+                    'minlength' => 6,
+                    'maxlength' => 255,
+                    'data-pattern' => '^[\p{L}\p{N}\p{M}\s\.]+$',
+                    'data-eg-await' => 'WLINDABABLA Empedocle Brondelle',
+                    'data-escapestrip-html-and-php-tags' => true,
+                    'data-event-validate-blur' => 'blur',
+                    'data-event-validate-input' => 'input',
+                    'data-position-lastname' => "left",
+                    'class' => 'username',
+                    'data-error-message-input' => 'Le nom ne peut contenir que des lettres, chiffres, espaces'
+                ],
+                'help'     => 'Nom et prénom complets. Unique, entre 6 et 255 caractères.',
+            ])
+                ->add('email', EmailType::class, [
+                    'label' => 'Adresse email *',
+                    'attr'  => [
+                        'placeholder' => 'email@proticeditions.com',
+                        'autocomplete' => 'on',
+                        'data-escapestrip-html-and-php-tags' => false,
+                        'data-event-validate-blur' => 'blur',
+                        'data-event-validate-input' => 'input',
+                        'data-type' => "email",
+                        'minlength' => 6,
+                        'maxlength' => 200,
+                        'data-eg-await' => 'franckagbokoudjo301@gmail.com',
+                        'data-allow-quoted-local' => 'false',
+                        'data-host-whitelist' => "gmail.com,yahoo.com,proticeditions.com",
+                        'data-error-message-input'          => 'Veuillez saisir une adresse email valide.',
+                    ],
+                ])
+                ->add('profile', TextType::class, [
+                    'label'    => 'Profil (rôle interne) *',
+                    'required' => false,
+                    'attr'     => [
+                        'placeholder'                        => 'ex: Directeur ProTIC',
+                        'autocomplete'                       => 'on',
+                        'minlength'                          => 6,
+                        'maxlength'                          => 200,
+                        'data-pattern'                       => '^[\p{L}\p{N}\p{M}\s\-\.&]+$',
+                        'data-eg-await'                      => 'Directeur ProTIC',
+                        'data-escapestrip-html-and-php-tags' => true,
+                        'data-event-validate-blur'           => 'blur',
+                        'data-event-validate-input'          => 'input',
+                        'data-error-message-input'           => 'Le profil ne peut contenir que des lettres, chiffres, espaces, tirets, et points.',
+                    ],
+                    'help' => 'Fonction interne à l\'administration.',
+                ])
+            ->end()
+            ->with('Coordonnées & Photo', [
+                'class'       => 'col-md-6',
+                'description' => 'Détails de contact et photo de profil',
+                'box_class'   => 'box box-solid box-info box-solid-with',
+            ])
+                ->add('phone', PhoneNumberType::class, [
+                'label'          => 'Téléphone *',
+                'required'       => true,
+                'default_region' => 'BJ',
+                'format'         => \libphonenumber\PhoneNumberFormat::INTERNATIONAL,
+                'attr'           => [
+                    'placeholder'                        => 'Ex: +229 01 67 25 18 86',
+                    'data-escapestrip-html-and-php-tags' => 'true',
+                    'data-event-validate-blur'           => 'blur',
+                    'minlength'                          => 8,
+                    'maxlength'                          => 80,
+                    'data-type'                          => 'tel',
+                    'data-eg-await'                      => '+229 XX XX XX XX',
+                    'data-error-message-input'           => 'Numéro de téléphone invalide.',
+                ],
+                'help' => 'Numéro international (ex: +229 01 67 25 18 86).',
+                ])
+                 ->add('country', CountryType::class, [
+                'label'                     => 'Pays d\'origine ou de résidence',
+                'label_attr'                => ['class' => 'form-label'],
+                'required'                  => true,
+                'alpha3'                    => true,
+                'choice_translation_domain' => false,
+                'attr'                      => [
+                    'data-escapestrip-html-and-php-tags' => true,
+                    'data-event-validate-change'         => 'change',
+                    'data-event-validate-blur'           => 'blur',
+                    'autocomplete'                       => 'on',
+                    'minlength'                          => 3,
+                    'maxlength'                          => 150,
+                    'data-pattern'                       => '^[\p{L}\p{M}\s\'-]+$',
+                    'class'                              => 'form-control select2 form-select',
+                    'data-minimumInputLength'            => 1,
+                ],
+            ])
+            ->add('avatarFile', DropzoneType::class, [
+                'label'             => 'Photo de profil',
+                'label_attr' => ['class' => 'form-label'],
+                'required'          => false,
+                'attr'              => [
+                    'accept' => 'image/jpeg,image/png,image/webp',
+                    'data-event-validate-blur' => 'blur',
+                    'data-event-validate-change' => 'change',
+                    'data-media-type' => 'image',
+                    'data-type' => 'file',
+                    'data-extentions' => 'jpg,png,jpeg,webp',
+                    'data-unity-max-size-file' => 'MiB',
+                    'data-maxsize-file' => 2,
+                    'data-allowed-mime-type-accept' => 'image/jpeg,image/png,image/webp',
+                    'data-min-width' => 50,
+                    'data-max-width' => 800,
+                    'data-min-height' => 80,
+                    'data-max-height' => 800,
+                    'placeholder'
+                    => "Faites glisser votre fichier d'image ou cliquez pour parcourir.
+                        Format photo d'identité :
+                        - Hauteur maximale : 800px
+                        - Largeur maximale : 800px
+                        - Hauteur minimale : 50px
+                        - Largeur minimale : 50px"
+                ],
+                'help'              => 'Formats acceptés : JPG, PNG, WEBP. Max 2 Mo.',
+            ])
+            ->end()
+
+        ->end() // fin tab "Identité & Contact"
+
+            // Stratégie visibilité :
+            //   1. La checkbox isMember est TOUJOURS affichée.
+            //   2. Les champs team* sont dans le DOM mais masqués par CSS/JS.
+            //   3. Le micro-script écoute le change de la checkbox et toggle.
+            //   4. En édition si isMember=true, le div est visible au chargement
+            //      via data-member-fields-open="{{ isMember ? 'true' : 'false' }}".
+            //   5. Le subscriber Doctrine ignore les champs team* si isMember=false.
+            // ══════════════════════════════════════════════════════════════════
+            ->tab('Membre de l\'équipe', [
+                'label' => 'Membre de l\'équipe',
+            ])
+
+            ->with('Visibilité sur le site', [
+                'class'       => 'col-md-12',
+                'description' => 'Cochez pour rendre cet utilisateur visible sur la page "À propos" du site.',
+                'box_class'   => 'box box-solid box-warning box-solid-with',
+            ])
+                ->add('isMember', CheckboxType::class, [
+                    'label'    => 'Afficher comme membre de l\'équipe sur le site',
+                    'required' => false,
+                    'row_attr' => [
+                        'class' => 'form-check form-switch mb-3' 
+                    ],
+                    'label_attr' => ['class' => 'form-label fw-bold form-check-label'],
+                    'attr'     => [
+                        'data-type'=> 'checkbox',
+                        'class'                   => 'js-is-member-toggle form-check-input',
+                        'data-member-fields-open' => $isMember ? 'true' : 'false',
+                    ],
+                    'help' => 'Si coché, les informations ci-dessous seront affichées sur la page "À propos".',
+                    'help_attr' => ['class' => 'form-text d-block'],
+                ])
+                ->add('teamBio', TextareaType::class, [
+                    'label'    => 'Biographie publique',
+                    'sanitize_html' => true,
+                    'required' => false,
+                    'attr'     => [
+                        'placeholder'                        => 'Courte biographie affichée sur la page À propos…',
+                        'rows'                               => 4,
+                        'maxlength'                          => 1000,
+                        'data-escapestrip-html-and-php-tags' => true,
+                        'data-event-validate-blur'           => 'blur',
+                        'data-event-validate-input'          => 'input',
+                        'data-error-message-input'           => 'Maximum 1000 caractères.',
+                        'class'                              => 'js-member-field',
+                    ],
+                    'help' => 'Différente du profil admin. Max 1000 caractères.',
+                ])
+                ->add('teamInitial', TextType::class, [
+                    'label'    => 'Initiale (fallback avatar)',
+                    'required' => false,
+                    'attr'     => [
+                        'placeholder'                        => 'ex: S',
+                        'maxlength'                          => 5,
+                        'data-escapestrip-html-and-php-tags' => true,
+                        'data-event-validate-blur'           => 'blur',
+                        'data-event-validate-input'          => 'input',
+                        'data-error-message-input'           => '1 à 5 caractères.',
+                        'class'                              => 'js-member-field',
+                    ],
+                    'help' => 'Lettre(s) affichées si aucune photo n\'est disponible.',
+                ])
+                ->add('teamAltText', TextType::class, [
+                    'label'    => 'Texte alternatif de la photo (alt)',
+                    'required' => false,
+                    'attr'     => [
+                        'placeholder'                        => 'ex: Photo de M. HOUNGNIMON — Directeur ProTIC',
+                        'maxlength'                          => 255,
+                        'data-escapestrip-html-and-php-tags' => true,
+                        'data-event-validate-blur'           => 'blur',
+                        'data-event-validate-input'          => 'input',
+                        'data-error-message-input'           => 'Maximum 255 caractères.',
+                        'class'                              => 'js-member-field',
+                    ],
+                    'help' => 'Pour l\'accessibilité et le SEO.',
+                ])
+                ->add('teamPosition', IntegerType::class, [
+                    'label'    => 'Position dans l\'équipe',
+                    'required' => false,
+                    'attr'     => [
+                        'min'                                => 0,
+                        'placeholder'                        => 'ex: 0 (premier), 1, 2…',
+                        'data-event-validate-blur'           => 'blur',
+                        'data-event-validate-input'          => 'input',
+                        'data-error-message-input'           => 'Entier positif ou nul.',
+                        'class'                              => 'js-member-field',
+                    ],
+                    'help' => '0 = affiché en premier sur la page.',
+                ])
+            ->end()
+
+        ->end() // fin tab "Membre de l'équipe"
+        ->ifTrue($this->isGranted('ROLE_FOUNDER'))
+            ->tab('roles', [
+                'label' => 'forms.roles',
+                'translation_domain' => 'user',
+            ])
+                ->with('roles', [
+                    'label' => false,
+                    'translation_domain' => 'user',
+                    'class' => 'col-md-12',
+                    'collapsed' => true
+                ])
+                    ->add('roles', ChoiceType::class, [
+                        'label' => false,
+                        'multiple' => false,
+                        'choices' => $this->getAvailableRoles(),
+                        'choice_translation_domain' => 'role',
+                        'required' => true,
+                        'expanded' => true,
+                        'attr' => ['class' => 'text-uppercase d-flex flex-row justify-content-evenly align-self-baseline flex-wrap'],
+                        'help'     => 'Rôle attribué à la création. Un seul rôle est stocké en BDD.'
+                    ], []);
+
+                    if ($form->has('roles')) {
+                        $form->get('roles')
+                            ->addModelTransformer(new RoleArrayTransformer($this->getSubject()));
+                    }
+                $form->end()
+            ->end()
+        ->ifEnd()
+        ;
+
+        // Règles :
+        //   • L'onglet n'est rendu QUE en mode édition.
+        //   • L'accès au champ plainPassword est conditionné par le Voter
+        //     PasswordUserVoter::EDIT_PASSWORD :
+        //       → GRANTED  si l'utilisateur connecté édite SON propre compte
+        //       → DENIED   si un Super Admin édite le compte d'un autre
+        //                  (dans ce cas le groupe "Mot de passe" n'est pas rendu)
+        //   • Le champ est de type RepeatedType pour double saisie / confirmation.
+        //   • Le champ est "not_mapped" et traité manuellement dans
+        //     prePersist / preUpdate via un EventSubscriber ou dans l'Admin.
+        // ══════════════════════════════════════════════════════════════════
+        if ($isEdit) {
+            $form
+                ->tab('Sécurité', [
+                    'label' => 'Sécurité',
+                ])
+                ->with('Mot de passe', [
+                    'class'       => 'col-md-6',
+                    'description' => $canEditPassword
+                        ? 'Laissez vide pour conserver le mot de passe actuel.'
+                        : 'Vous ne pouvez modifier que votre propre mot de passe.',
+                    'box_class'   => 'box box-solid box-danger box-solid-with',
+                ])
+                ->ifTrue($canEditPassword)
+                    ->add('plainPassword', RepeatedType::class, [
+                        'type'            => PasswordType::class,
+                        'mapped'          => false,     
+                        'required'        => false,
+                        'first_options'   => [
+                            'label' => 'Nouveau mot de passe',
+                            'attr'  => [
+                                'placeholder'          => 'Nouveau mot de passe…',
+                                'autocomplete'         => 'new-password',
+                                'data-password-toggle' => 'true',
+                                'minlength'            => 8,
+                                'maxlength'            => 250,
+                                'data-type'=>'password',
+                                'data-escapestrip-html-and-php-tags' => false,
+                                'data-event-validate-blur' => 'blur',
+                                'data-event-validate-input' => 'input',
+                                'data-custom-upper-regex' => "[\p{Lu}]",
+                                'data-custom-lower-regex' => "[\p{Ll}]",
+                                'data-custom-number-regex' => "[\p{N}]",
+                                'data-custom-symbol-regex' => "[\p{S}\p{P}]",
+                                'data-custom-special-char-regex' => "[\p{S}\p{P}\s]",
+                                'data-custom-punctuation-regex' => "[\p{P}]",
+                                'data-pattern' => "^[\p{L}\p{N}\p{M}\p{S}\p{P}\s]+$"
+                            ],
+                            'help'  => 'Minimum 8 caractères. Laissez vide pour ne pas changer.',
+                        ],
+                        'second_options'  => [
+                            'label' => 'Confirmer le mot de passe',
+                            'attr'  => [
+                                'placeholder'          => 'Retapez le mot de passe…',
+                                'autocomplete'         => 'new-password',
+                                'data-password-toggle' => 'true',
+                                'minlength'            => 8,
+                                'maxlength'            => 250,
+                                'data-type' => 'password',
+                                 'data-escapestrip-html-and-php-tags' => false,
+                                'data-event-validate-blur' => 'blur',
+                                'data-event-validate-input' => 'input',
+                                'data-custom-upper-regex'=>"[\p{Lu}]",
+                                'data-custom-lower-regex'=>"[\p{Ll}]",
+                                'data-custom-number-regex'=>"[\p{N}]",
+                                'data-custom-symbol-regex'=>"[\p{S}\p{P}]",
+                                'data-custom-special-char-regex'=>"[\p{S}\p{P}\s]",
+                                'data-custom-punctuation-regex'=>"[\p{P}]",
+                                'data-pattern'=>"^[\p{L}\p{N}\p{M}\p{S}\p{P}\s]+$"
+                            ],
+                        ],
+                        'invalid_message' => 'Les deux mots de passe doivent être identiques.',
+                    ])
+                ->ifEnd()
+                ->ifFalse($canEditPassword)
+                    ->add('_password_notice', TextType::class, [
+                        // Champ fictif non mappé, lecture seule, juste pour afficher une notice
+                        'mapped'   => false,
+                        'required' => false,
+                        'data'     => 'Vous n\'êtes pas autorisé à modifier le mot de passe de ce compte.',
+                        'attr'     => [
+                            'readonly' => true,
+                            'class'    => 'form-control-plaintext text-warning',
+                        ],
+                        'label'    => 'Information',
+                    ])
+                ->ifEnd()
+            ->end()
+        ->end() // fin tab "Sécurité"
+            ;
+        }
+    }
+
+    /**
+     * Traduit tous les cas (cases) de l'énumération RoleUser pour les utiliser dans un ChoiceType.
+     * * @return array<string, string> Les clés sont les libellés traduits, les valeurs sont les valeurs des rôles (ex: ROLE_MINISTER).
+     */
+    private function getAvailableRoles(): array
+    {
+        $choices_roles = [];
+
+        foreach (RoleUser::cases() as $roleCase) {
+
+            $choices_roles[$roleCase->name] = $roleCase->value;
+        }
+
+        // Filtrer selon l'acteur : le Directeur ne peut pas créer un SUPER_ADMIN
+        if (!$this->isGranted('ROLE_SUPER_ADMIN') || !$this->isGranted('ROLE_FOUNDER')) {
+            unset($choices_roles['ROLE_FOUNDER'], $choices_roles['ROLE_DIRECTOR']);
+        }
+
+        return $choices_roles;
+    }
 }

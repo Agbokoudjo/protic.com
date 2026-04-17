@@ -28,6 +28,7 @@ window.sonataApplication = sonataApplication;
 sonataApplication.debug = true;
 
 import {
+  addParamToUrl,
     appTranslation,
     fetchErrorTranslator
 } from '@wlindabla/form_validator';
@@ -101,8 +102,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   dashboard();
   crudAccountHandle();
   crudUserAccountListener();
-   window.appRouter = new AppRouter();
-
+  window.appRouter = new AppRouter();
+  initDynamicInjection();
 });
 
 document.addEventListener('spa:navigated', ({ detail }) => {
@@ -649,4 +650,44 @@ function dashboard() {
 
 }
 
+ /**
+     * Fonction principale d'initialisation
+     */
+const initDynamicInjection = () => {
+  const scriptId = 'sonata-user-form-extra-script';
+  const targetClass = '.sonata-ba-form';
+  const scriptPath = addParamToUrl('build/assets/admin/sonata_user_form_extra.js'); // Vérifie bien le chemin public
+
+  // 1. Vérifier si l'élément cible existe dans le DOM
+  const formExists = document.querySelector(targetClass);
+  
+  // 2. Vérifier si le script n'est pas déjà injecté
+  const alreadyInjected = document.getElementById(scriptId);
+
+  if (formExists && !alreadyInjected) {
+      console.log('Formulaire Sonata détecté. Injection du script extra...');
+
+      // Récupération du contenu du fichier JS
+      fetch(scriptPath)
+          .then(response => {
+              if (!response.ok) throw new Error("Erreur lors de la récupération du fichier JS");
+              return response.text();
+          })
+          .then(code => {
+              // Création de la balise script
+              const scriptTag = document.createElement('script');
+              scriptTag.id = scriptId;
+              scriptTag.type = 'text/javascript';
+              scriptTag.textContent = code; // Injection du code en ligne
+
+              // Injection à la fin du body
+              document.body.appendChild(scriptTag);
+              
+              console.log('Script injecté avec succès (ID: ' + scriptId + ')');
+          })
+          .catch(error => {
+              console.error('Erreur d\'injection :', error);
+          });
+  }
+};
 

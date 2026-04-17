@@ -4,6 +4,7 @@
 
 {% block meta_description %}
 Découvrez ProTIC Editions & Services : histoire, mission, valeurs et équipe. Maison d'édition béninoise fondée en 2010 par M. SETONWAN DENIS HOUNGNIMON. Membre APPEL-Bénin. 120+ livres publiés.
+ProTIC Éditions & Services accompagne les auteurs béninois et africains depuis plus de 15 ans. Plus de 100 livres publiés, 70+ auteurs accompagnés, distribution en Afrique de l'Ouest.
 {% endblock %}
 
 {% block head_extra %}
@@ -19,7 +20,7 @@ Découvrez ProTIC Editions & Services : histoire, mission, valeurs et équipe. M
   "@type": "Organization",
   "name": "ProTIC Editions & Services",
   "foundingDate": "2010",
-  "founder": { "@type": "Person", "name": "SETONWAN DENIS HOUNGNIMON" },
+  "founder": { "@type": "Person", "name": "SETONWAN DENIS HOUNGNIMON", "jobTitle": "Directeur & Fondateur" },
   "description": "Maison d'édition béninoise engagée pour la promotion du livre et des auteurs",
   "address": { "@type": "PostalAddress", "streetAddress": "Campus d'Abomey-Calavi, K61-62", "addressLocality": "Abomey-Calavi", "addressCountry": "BJ" },
   "telephone": "+22995869951",
@@ -202,8 +203,8 @@ Découvrez ProTIC Editions & Services : histoire, mission, valeurs et équipe. M
                      data-aos-duration="700"
                      data-aos-delay="{{ loop.index0 * 120 }}">
                 <div class="ab-team-card__img-wrap">
-                    <img src="{{ asset(member.image,'app') }}"
-                         alt="{{ member.alt }}"
+                    <img src="{{ vich_uploader_asset(member,'imageFile') }}"
+                         alt="{{ member.altText }}"
                          class="ab-team-card__img"
                          loading="lazy" width="300" height="300"
                          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">

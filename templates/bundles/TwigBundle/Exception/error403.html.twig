@@ -1,0 +1,30 @@
+{# templates/bundles/TwigBundle/Exception/error403.html.twig #}
+{% set base = layout|default('@SonataAdmin/standard_layout.html.twig') %}
+{% extends base %}
+{% block title %}{{ 'title_403' |trans([],'Access_Denied', app.locale) }} (403) {% endblock %}
+{% block sonata_admin_content %}
+    <div class="container mt-5">
+        <div class="alert alert-danger text-center shadow-lg p-4 rounded">
+            <h1 class="display-5 mb-3">
+                <i class="fa fa-ban text-danger"></i>
+                 {{ 'title_403' |trans([],'Access_Denied', app.locale) }} (403)
+            </h1>
+
+            {% if app.user %}
+                {% set username = app.user.username  %}
+
+                <p class="lead">
+                    {{ 'message_with_user_403' |trans({'%username%': username},'Access_Denied', app.locale)|raw }} 
+                </p>
+            {% else %}
+                <p class="lead">
+                    {{ 'message_without_user_403' |trans([],'Access_Denied', app.locale) }}
+                </p>
+            {% endif %}
+
+            <a href="{{ path('sonata_admin_dashboard') }}" class="btn redirection mt-3">
+                <i class="fa fa-home"></i>  {{ 'label_cta' |trans([],'Access_Denied', app.locale) }}
+            </a>
+        </div>
+    </div>
+{% endblock %}

@@ -244,6 +244,7 @@ async function fetchRequestBooks(page, itemsPerPage) {
         retryOnStatusCode: true,
         methodSend: "GET",
         keepalive: true,
+        credentials: 'include',
         headers: {
             'Accept': 'application/ld+json',
             'X-Requested-With': 'XMLHttpRequest',

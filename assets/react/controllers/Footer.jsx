@@ -375,8 +375,16 @@ export default function Footer({ config }) {
                     Tous droits réservés
                 </span>
                 <span>
-                    Développé par{' '}
-                    <strong style={S.bottomStrong}>INTERNATIONALES WEB APPS &amp; SERVICES</strong>
+                    Plateforme développée par {' '}
+                    <a href="https://github.com/Agbokoudjo/" 
+                    target="_blank" 
+                    rel="noopener"
+                    class="text-decoration-none"
+                    title="INTERNATIONALES WEB APPS & SERVICES — Agence web Bénin">
+                        <strong style={S.bottomStrong}>INTERNATIONALES WEB APPS &amp; SERVICES</strong>
+                            {' '}
+                        &mdash; AGBOKOUDJO Franck &mdash; +229 01 67 25 18 86
+                    </a>
                 </span>
             </div>
 

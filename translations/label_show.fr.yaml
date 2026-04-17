@@ -5,3 +5,7 @@ show__app_admin_contactrequest: "Détails de la demande de %name%"
 show__app_admin_manuscriptsubmission: "Détails de demande Manuscrit de soumission de %name%"
 show__app.admin.global_setting: "Récapitulatif des coordonnées et identifiants fiscaux "
 show__app_admin_faq: Détails de la FAQ
+permission_role: DÉTAIL SUR LE RÔLE
+user_permission_role: "DÉTAIL SUR LA RESPONSABILTÉ ATTRIBUÉE  "
+user_permission_role_admin: À L'ADMINISTRATEUR
+user_permission_role_member: AU MEMBRE

@@ -1,8 +1,50 @@
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
+    role_hierarchy:
+        # Niveau 0 — Fondateur : hérite de tout
+        ROLE_SUPER_ADMIN: 
+            - ROLE_FOUNDER
+
+        # Niveau 0 — Fondateur : hérite de tout
+        ROLE_FOUNDER: 
+            - ROLE_DIRECTOR
+            - ROLE_SONATA_ADMIN_USER_ALL 
+            - ROLE_SONATA_ADMIN_TEAM_MEMBER_ALL
+        # Niveau 1 — Directeur : hérite des 4 pôles + accès Sonata de base
+        ROLE_DIRECTOR:  
+            - ROLE_EDITORIAL_MGR
+            - ROLE_CONTENT_MGR
+            - ROLE_MODERATION_MGR
+            - ROLE_TECH_MGR
+            - ROLE_ADMIN
+            - ROLE_SONATA_ADMIN_USER_CREATE,
+            - ROLE_SONATA_ADMIN_TEAM_MEMBER_CREATE,
+            - ROLE_SONATA_ADMIN_TEAM_MEMBER_EDIT
+            - ROLE_SONATA_ADMIN_TEAM_MEMBER_DELETE
+
+        # Niveau 2 — Responsables de pôle
+        ROLE_EDITORIAL_MGR:  [ROLE_EDITOR_SENIOR, ROLE_ADMIN]
+        ROLE_CONTENT_MGR:    [ROLE_REDACTEUR, ROLE_ADMIN]
+        ROLE_MODERATION_MGR: [ROLE_MODERATEUR, ROLE_REVIEWER, ROLE_ADMIN]
+        ROLE_TECH_MGR:       [ROLE_DEV, ROLE_ADMIN]
+
+        # Niveau 3 — Agents opérationnels
+        ROLE_EDITOR_SENIOR:  [ROLE_EDITOR_JUNIOR, ROLE_ADMIN]
+        ROLE_EDITOR_JUNIOR:  [ROLE_ADMIN]
+        ROLE_REDACTEUR:      [ROLE_ADMIN]
+        ROLE_MODERATEUR:     [ROLE_ADMIN]
+        ROLE_REVIEWER:       [ROLE_ADMIN]
+        ROLE_DEV:            [ROLE_ADMIN]
+
+        ROLE_ADMIN: 
+            - ROLE_SONATA_ADMIN_USER_LIST  
+            - ROLE_SONATA_ADMIN_USER_VIEW
+            - ROLE_SONATA_ADMIN_USER_EDIT
+            - ROLE_SONATA_ADMIN_TEAM_MEMBER_LIST 
+            - ROLE_SONATA_ADMIN_TEAM_MEMBER_VIEW 
+            
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         users_in_memory: { memory: null }

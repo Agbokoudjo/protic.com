@@ -231,7 +231,7 @@
 /* ── Formulaires ─────────────────────────────────────────── */
 /* ── 7. INPUTS — fond et texte visibles ───────────────────────── */
 #app-main .sonata-ba-form .form-control,
-#app-main .sonata-ba-form input,
+#app-main .sonata-ba-form input:not([type="radio"]):not([type="checkbox"]),
 #app-main .sonata-ba-form textarea,
 #app-main .sonata-ba-form select {
     background: rgba(255, 255, 255, 0.07) !important;

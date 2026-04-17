@@ -20,7 +20,9 @@ use App\CommandHandler\AdminManuscriptNotificationHandler;
 use App\CommandHandler\AuthorCommandNotificationHandler;
 use App\CommandHandler\AuthorManuscriptConfirmationHandler;
 use App\CommandHandler\GenerateTemporaryPasswordHandler;
+use App\CommandHandler\TeamMemberSyncHandler;
 use App\CommandHandler\ToggleUserAccountHandler;
+use App\CommandHandler\UpdatePasswordUserHandler;
 use App\CommandHandler\UpdateUserProfileHandler;
 use App\Queue\Message\ServiceMethodMessage;
 use App\QueueHandler\ServiceMethodMessageHandlerInterface;
@@ -69,7 +71,9 @@ final class ServiceMethodMessageHandler implements ServiceSubscriberInterface,Se
             AuthorCommandNotificationHandler::class,
             ToggleUserAccountHandler::class,
             UpdateUserProfileHandler::class,
-            GenerateTemporaryPasswordHandler::class
+            GenerateTemporaryPasswordHandler::class,
+            TeamMemberSyncHandler::class,
+            UpdatePasswordUserHandler::class
         ];
     }
 

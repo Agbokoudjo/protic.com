@@ -1,0 +1,43 @@
+member:
+    since: "Membre depuis" 
+
+ADMIN: ADMINISTRATEUR
+MEMBER: MEMBRE
+SIMPLE: SIMPLE
+CLIENT: CLIENT
+FOUNDER: FONDATEUR
+CO_FOUNDER: CO FONDATEUR
+SUPER_ADMIN: SUPER ADIMINISTRATEUR
+MINISTER: MINISTRE
+USER: UTILISATEUR
+
+forms:
+    label_tab_infos_generale: RENSEIGNEMENTS 
+    with_generale: GÉNÉRALES
+    roles: RÔLE MÉTIER PRINCIPAL
+    roles_matrix: ROLES MATRICIELS
+    label_phone: Numéro de téléphone
+    label_geolocalisation: GÉOLOCALISATIONS
+    country.placeholder: "Choississez votre pays"
+    label_username: Nom & Prénom (s)
+    label_email: Adresse email
+    label_avatar: PHOTO
+    label_identitydocument: Pièce d'identité (Carte d'identité ou Passeport)
+    mission_profil: PROFILE & PARCOUR PROFESSION
+    label_profile: Profile de la mission 
+    label_profile_placeholder: |
+        Ex: DEVELOPPEUR FULL-STACK SYMFONY & REACTJS
+    uploader_placeholder_avatar: |
+        Faites glisser votre fichier d'image ou cliquez pour parcourir.
+        Format photo d'identité :
+        - Hauteur maximale : 800px
+        - Largeur maximale : 800px
+        - Hauteur minimale : 50px
+        - Largeur minimale : 50px
+
+    identity_document_placeholder: |
+        Faites glisser le document résumant votre pièce d'identité nationale ou cliquez pour parcourir.
+        Les deux faces doivent être incluses dans le même document.
+        - Format : PDF
+        - Lisibilité : Bonne
+        - Taille maximale : 8 MiB

@@ -62,7 +62,8 @@ export function useFormSubmission(formRef, url, isOpen) {
                 'X-Requested-With': 'XMLHttpRequest'
             },
             mustRedirect: false,
-            responseType:"json"
+            responseType: "json",
+            credentials: 'include'
         });
 
         submission.withHandleErrorsManyForm(false);

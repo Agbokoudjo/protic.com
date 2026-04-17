@@ -101,6 +101,34 @@ services:
                 memory_cost: 65536  # 64 MB
                 time_cost: 4
                 threads: 2
+     # Validateur de requêtes navigateur
+    App\Security\BrowserRequestValidator:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    # Event listener pour intercepter les requêtes
+    App\EventListener\BrowserValidationListener:
+        autowire: true
+        autoconfigure: true
+        public: false
+        arguments:
+            $validator: '@App\Security\BrowserRequestValidator'
+            $logger: '@logger'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, priority: 1000 }
+
+    App\EventListener\RateLimitListener:
+        arguments:
+            $loginAttemptsLimiter:      '@limiter.login_attempts'
+            $passwordResetLimiter:      '@limiter.password_reset'
+            $apiAnonymousLimiter:       '@limiter.api_anonymous'
+            $apiAuthenticatedLimiter:   '@limiter.api_authenticated'
+            $globalRequestsLimiter:     '@limiter.global_requests'
+            $logger:                    '@logger'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, priority: 900 }
+
 when@dev:
     services:
         _defaults:
