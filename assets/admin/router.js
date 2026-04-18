@@ -77,7 +77,7 @@ export class SpaRouter {
 
     } catch (err) {
       console.error('[SPA] Erreur navigate:', err);
-      //window.location.href = url;
+      window.location.href = url;
     } finally {
       this.setLoading(false);
       this.isNavigating = false;
