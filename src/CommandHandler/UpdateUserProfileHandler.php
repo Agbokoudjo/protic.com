@@ -30,7 +30,7 @@ final readonly class UpdateUserProfileHandler
         private CanonicalFieldsUpdaterInterface $canonicalFields
     ) {}
 
-    public function handle(string|int$id): void
+    public function handle(string|int $id): void
     {
         $user = $this->manager->find($id);
 

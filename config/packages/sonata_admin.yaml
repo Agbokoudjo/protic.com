@@ -50,7 +50,6 @@ sonata_admin:
             app.admin.group.permission.manager:
                 label: Gestion des Permissions
                 icon: bi bi-backpack2
-                roles: ['ROLE_ADMIN']
 
 sonata_block:
     blocks:

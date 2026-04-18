@@ -2,48 +2,57 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the project by AGBOKOUDJO Franck.
- *
- * (c) AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
- * Phone: +229 01 67 25 18 86
- * LinkedIn: https://www.linkedin.com/in/internationales-web-apps-services-120520193/
- * Github: https://github.com/Agbokoudjo/
- * Company: INTERNATIONALES WEB APPS & SERVICES
- *
- * For more information, please feel free to contact the author.
- */
-
 namespace App\CommandHandler;
 
 use App\Persistance\UserManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
- * @package <https://github.com/Agbokoudjo/>
+ * Gère la mise à jour sécurisée du mot de passe avec traçabilité.
+ * * @author AGBOKOUDJO Franck
  */
 final readonly class UpdatePasswordUserHandler
 {
     public function __construct(
         private UserManagerInterface $userManager,
+        private LoggerInterface $logger, // Injection du logger PSR-3
     ) {}
 
     public function handle(
-       string|int $userId,
-       string $plainPassword
+        string|int $userId,
+        string $plainPassword
     ): void {
         try {
             $user = $this->userManager->find($userId);
 
             if (null === $user) {
+                $this->logger->warning('Tentative de changement de mot de passe pour un utilisateur inexistant.', [
+                    'user_id' => $userId
+                ]);
                 return;
             }
 
+            // Mise à jour du mot de passe
             $user->setPlainPassword($plainPassword);
             $this->userManager->updatePassword($user);
+
+            // On force le rafraîchissement des métadonnées (sel, updatedAt, etc.)
             $user->preUpdate();
             $this->userManager->save($user);
+
+            // LOG DE SUCCÈS : On trace l'action (sans jamais loguer le password !)
+            $this->logger->info('Mot de passe mis à jour avec succès.', [
+                'user_id' => $user->getId(),
+                'username' => $user->getUsername(),
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'
+            ]);
         } catch (\Throwable $th) {
+            // LOG D'ERREUR : On trace l'exception pour le débug
+            $this->logger->error('Échec de la mise à jour du mot de passe.', [
+                'user_id' => $userId,
+                'error' => $th->getMessage()
+            ]);
+
             throw $th;
         }
     }

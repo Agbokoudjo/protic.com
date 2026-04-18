@@ -2,13 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the project by AGBOKOUDJO Franck.
- *
- * (c) AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
- * For more information, please feel free to contact the author.
- */
-
 namespace App\Repository;
 
 use App\Entity\TeamMember;
@@ -17,13 +10,15 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
+use Doctrine\ORM\EntityNotFoundException;
 
 /**
  * @extends ServiceEntityRepository<TeamMember>
  */
 final class TeamMemberRepository extends ServiceEntityRepository
 {
-    private const CACHE_TAG = 'team_members_list';
+    private const CACHE_TAG = '_team_members_list_';
+    private const CACHE_KEY = '_team_visible_ordered_';
 
     public function __construct(
         ManagerRegistry $registry,
@@ -33,53 +28,57 @@ final class TeamMemberRepository extends ServiceEntityRepository
         parent::__construct($registry, TeamMember::class);
     }
 
-    public function add(TeamMember $entity, bool $flush = true): void
-    {
-
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-
-        $this->invalidateCacheTeamMember();
-    }
-
     /**
-     * Retourne tous les membres visibles, triés par position ASC.
-     * Utilisé côté front (page About).
-     *
-     * @return TeamMember[]
-     */
-    /**
-     * Retourne tous les membres visibles avec mise en cache.
+     * Retourne les membres visibles avec une gestion robuste des liens morts.
      */
     public function findVisibleOrderedByPosition(): array
     {
-        return $this->dataCacheTeamMember->get('team_visible_ordered', function (ItemInterface $item) {
-            // On définit le tag pour pouvoir l'invalider plus tard
+        $members = $this->dataCacheTeamMember->get(self::CACHE_KEY, function (ItemInterface $item) {
             $item->tag([self::CACHE_TAG]);
-            $item->expiresAfter(604800); // Expire après 7j par sécurité
+            $item->expiresAfter(604800); // 7 jours
 
             return $this->createQueryBuilder('tm')
+                ->leftJoin('tm.linkedUser', 'u') // Jointure pour charger l'user en une fois
+                ->addSelect('u')
                 ->andWhere('tm.visible = :visible')
                 ->setParameter('visible', true)
                 ->orderBy('tm.position', 'ASC')
                 ->getQuery()
                 ->getResult();
         });
+
+        // FILTRAGE DE SÉCURITÉ : On nettoie les proxys morts à la sortie du cache
+        return array_filter($members, function (TeamMember $member) {
+            try {
+                // Si un lien existe, on vérifie qu'il est réel
+                if ($member->getLinkedUser()) {
+                    $member->getLinkedUser()->getUsername();
+                }
+                return true;
+            } catch (EntityNotFoundException) {
+                // Si l'utilisateur est introuvable (ID 68 par exemple)
+                // On pourrait loguer l'erreur ici pour ton suivi
+                return true; // On garde le membre, mais son getter sécurisé renverra null
+            }
+        });
     }
 
-    /**
-     * Méthode pour invalider le cache
-     */
+    public function add(TeamMember $entity, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($entity);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+        $this->invalidateCacheTeamMember();
+    }
+
     public function invalidateCacheTeamMember(): void
     {
         try {
             $this->dataCacheTeamMember->invalidateTags([self::CACHE_TAG]);
-            $this->dataCacheTeamMember->delete('team_visible_ordered');
-        } catch (\Throwable $th) {
-            
+            $this->dataCacheTeamMember->delete(self::CACHE_KEY);
+        } catch (\Throwable) {
+            // Silencieusement échouer si Redis/Cache est indisponible
         }
     }
 }

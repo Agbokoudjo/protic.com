@@ -723,8 +723,6 @@ button[name="btn_update_and_update"]:hover {
     color: rgba(255,255,255,0.82) !important;
      overflow-x: auto ;
     box-shadow: 0 1px 3px #FFD700;
-
-    width: 100%;
     min-width:100% ;
   margin-bottom: 1.2rem;
    border-collapse: collapse;

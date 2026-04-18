@@ -18,6 +18,7 @@ use App\Repository\TeamMemberRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
+ * Service percutant pour la synchronisation User <-> TeamMember.
  * Synchronise automatiquement l'entité TeamMember lorsqu'un SonataUser
  * est créé ou modifié avec isMember = true / false.
  *
@@ -28,79 +29,86 @@ use Doctrine\ORM\EntityManagerInterface;
  *
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
  */
-final class TeamMemberSyncHandler
+final readonly class TeamMemberSyncHandler
 {
     public function __construct(
-        private readonly TeamMemberRepository $teamMemberRepository,
-        private readonly SonataUserRepository $userRepository,
+        private TeamMemberRepository $teamMemberRepository,
+        private SonataUserRepository $userRepository,
         private EntityManagerInterface $entityManager,
     ) {}
 
+    /**
+     * Crée ou met à jour le membre de l'équipe de manière atomique.
+     */
     public function createOrUpdateTeamMember(int|string $userId): void
     {
-        $user = $this->userRepository->find($userId) ;
-        if(!($user instanceof SonataUser)) { return ;}
-
-        // Cherche un TeamMember déjà lié à cet utilisateur
-        $teamMember = $this->teamMemberRepository->findOneBy(['linkedUser' => $user]);
-
-        if (null === $teamMember) {
-            $teamMember = new TeamMember();
-            $teamMember->setLinkedUser($user);
-            $teamMember->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
-        } else {
-            $teamMember->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+        $user = $this->userRepository->find($userId);
+        if (!$user instanceof SonataUser) {
+            return;
         }
 
-        // Synchronisation des champs depuis SonataUser → TeamMember
-        $teamMember->setName($user->getUsername() ?? '');
-        $teamMember->setRole($user->getProfile() ?? '');
-        $teamMember->setBio($user->getTeamBio());
-        $teamMember->setInitial($user->getTeamInitial() ?? $this->extractInitial($user->getUsername()));
-        $teamMember->setAltText($user->getTeamAltText());
-        $teamMember->setPosition($user->getTeamPosition() ?? 99);
-        $teamMember->setVisible(true);
+        // 1. Récupération ou Création (Atomicité)
+        $teamMember = $this->teamMemberRepository->findOneBy(['linkedUser' => $user]) ?? new TeamMember();
 
-        // Synchronisation de la photo si elle existe sur SonataUser
-        if (null !== $user->getAvatarName()) {
+        if (null === $teamMember->getId()) {
+            $teamMember->setLinkedUser($user);
+            $teamMember->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
+        }
+
+        // 2. Mapping Percutant (Direct & Propre)
+        $teamMember->setName($user->getUsername() ?? 'Membre Anonyme')
+            ->setRole($user->getProfile() ?? 'Collaborateur')
+            ->setBio($user->getTeamBio())
+            ->setInitial($user->getTeamInitial() ?? $this->extractInitial($user->getUsername()))
+            ->setAltText($user->getTeamAltText() ?? sprintf("Photo de %s", $user->getUsername()))
+            ->setPosition($user->getTeamPosition() ?? 99)
+            ->setVisible(true)
+            ->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+
+        // 3. Gestion de l'Avatar (VichUploader Mirroring)
+        if ($user->getAvatarName()) {
             $teamMember->setImageName($user->getAvatarName());
             $teamMember->setImageUpdatedAt($user->getAvatarUpdatedAt());
         }
 
-        // Flush dans un nouveau contexte pour éviter les conflits avec
-        // le flush en cours de l'événement postUpdate/postPersist
-        $this->teamMemberRepository->add($teamMember);
-    }
-
-    public function deactivateTeamMember(int|string $userId): void
-    {
-        $user = $this->userRepository->find($userId) ;
-        if(!($user instanceof SonataUser)) { return ;}
-
-        //Recherche du membre de l'équipe
-        $teamMember = $this->teamMemberRepository->findOneBy(['linkedUser' => $user]);
-        if (null === $teamMember) {
-            return;
-        }
-
-        $teamMember->setVisible(false);
-        $teamMember->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
-
+        // 4. Persistance & Invalidation Cache
+        $this->entityManager->persist($teamMember);
         $this->entityManager->flush();
+
+        // Nettoyage immédiat du cache Redis pour le Front (React)
+        $this->teamMemberRepository->invalidateCacheTeamMember();
     }
 
     /**
-     * Génère une initiale à partir du nom complet.
-     * Ex: "HOUNGNIMON Denis" → "H"
+     * Désactive la visibilité au lieu de supprimer (Soft deactivation).
      */
-    private function extractInitial(?string $fullName): string
+    public function deactivateTeamMember(int|string $userId): void
     {
-        if (null === $fullName || '' === trim($fullName)) {
-            return '?';
+        $user = $this->userRepository->find($userId);
+        $teamMember = $user ? $this->teamMemberRepository->findOneBy(['linkedUser' => $user]) : null;
+
+        if ($teamMember) {
+            $teamMember->setVisible(false);
+            $teamMember->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+
+            $this->entityManager->flush();
+            $this->teamMemberRepository->invalidateCacheTeamMember();
         }
+    }
 
-        $firstChar = mb_strtoupper(mb_substr(trim($fullName), 0, 1, 'UTF-8'), 'UTF-8');
+    /**
+     * Extraction intelligente d'initiales (Gestion UTF-8 & Accents).
+     */
+    private function extractInitial(?string $name): string
+    {
+        $cleanName = trim($name ?? '');
+        if ($cleanName === '') return '?';
 
-        return $firstChar ?: '?';
+        // Prend la première lettre du premier mot et du dernier mot si présent
+        $words = preg_split('/\s+/', $cleanName, -1, PREG_SPLIT_NO_EMPTY);
+        $first = mb_substr($words[0], 0, 1, 'UTF-8');
+        $last = (count($words) > 1) ? mb_substr(end($words), 0, 1, 'UTF-8') : '';
+
+        return mb_strtoupper($first . $last, 'UTF-8');
     }
 }

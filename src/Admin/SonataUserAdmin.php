@@ -517,14 +517,14 @@ final class SonataUserAdmin extends WlindablaAdmin
     {
         /** @var SonataUser|null $subject */
         $subject  = $this->getSubject();
-        $isEdit   = true ;// ($subject?->getId() !== null);
+        $isEdit   = ($subject?->getId() !== null);
         $isMember = $subject?->isMember() ?? false;
 
         // Peut-on afficher / traiter le champ mot de passe ?
         // Le Voter SonataUserVoter::EDIT_PASSWORD vérifie :
         //   - qu'on est en édition (id != null)
         //   - que l'utilisateur connecté EST le sujet édité
-        $canEditPassword =$isEdit  && $this->isGranted(PasswordUserVoter::EDIT_PASSWORD, $subject)
+        $canEditPassword = $isEdit  && $this->isGranted(PasswordUserVoter::EDIT_PASSWORD, $subject)
             ;
         $form
             ->tab('Identité & Contact', [
@@ -808,7 +808,6 @@ final class SonataUserAdmin extends WlindablaAdmin
                 ->ifTrue($canEditPassword)
                     ->add('plainPassword', RepeatedType::class, [
                         'type'            => PasswordType::class,
-                        'mapped'          => false,     
                         'required'        => false,
                         'first_options'   => [
                             'label' => 'Nouveau mot de passe',

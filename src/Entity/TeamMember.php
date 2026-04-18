@@ -13,12 +13,13 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\TeamMemberRepository;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Attribute as Vich;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 /**
  * Membre visible sur la page "À propos" de ProTIC Editions & Services.
@@ -146,7 +147,7 @@ class TeamMember
      */
     #[ORM\ManyToOne(targetEntity: SonataUser::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    private ?SonataUser $linkedUser = null;
+    private ?SonataUser $linkedUser = null;  
 
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $createdAt = null;
@@ -278,7 +279,18 @@ class TeamMember
 
     public function getLinkedUser(): ?SonataUser
     {
-        return $this->linkedUser;
+
+        try {
+            // On force l'initialisation du proxy. 
+            // Si l'utilisateur n'existe plus en base, Doctrine jettera une exception ici.
+            if (null !== $this->linkedUser) {
+                $this->linkedUser->getUsername();
+            }
+            return $this->linkedUser;
+        } catch (EntityNotFoundException $e) {
+            // On intercepte l'erreur et on fait comme si le lien était nul
+            return null;
+        }
     }
 
     public function setLinkedUser(?SonataUser $linkedUser): static

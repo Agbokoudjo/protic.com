@@ -90,7 +90,9 @@ final class SecureTokenService
 
             // 6. Persistance en base de données
             $this->userManager->save($user);
-          
+
+            if($user->isEmailVerified()){ return ;}
+            
             // 7. Déclenchement de l'événement pour envoi d'email
             $event = new UserAccountEmailVerificationEvent(
                 $user->getUsername(),

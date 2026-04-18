@@ -203,7 +203,13 @@ ProTIC Éditions & Services accompagne les auteurs béninois et africains depuis
                      data-aos-duration="700"
                      data-aos-delay="{{ loop.index0 * 120 }}">
                 <div class="ab-team-card__img-wrap">
-                    <img src="{{ vich_uploader_asset(member,'imageFile') }}"
+                        {% set object = member %}
+                        {% set filename ='imageFile' %}
+                    {% if member.linkedUser is defined and member.linkedUser is not null %}
+                         {% set object = member.linkedUser %}
+                        {% set filename ='avatarFile' %}
+                    {% endif %}
+                    <img src="{{ vich_uploader_asset(object,filename) }}"
                          alt="{{ member.altText }}"
                          class="ab-team-card__img"
                          loading="lazy" width="300" height="300"

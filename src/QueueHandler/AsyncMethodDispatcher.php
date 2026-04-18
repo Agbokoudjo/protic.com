@@ -48,5 +48,5 @@ final class AsyncMethodDispatcher implements AsyncMethodDispatcherInterface
         }
 
         $this->bus->dispatch(new ServiceMethodMessage($service, $method, $params), $stamps);
-    }
+    }  
 }
