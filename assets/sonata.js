@@ -16,6 +16,7 @@ import './admin/header.js';
 import './admin/main.js';
 import './admin/books_rain.js';
 import './admin/batch-actions.js';
+import './admin/sonata_user_form_extra.js'
 import {basicLightboxImage,basicLightboxDocument} from  './basicLightbox.js';
 import { SpaRouter } from './admin/router.js';
 import { DomManager } from './admin/dom-manager.js';
@@ -103,7 +104,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   crudAccountHandle();
   crudUserAccountListener();
   window.appRouter = new AppRouter();
-  initDynamicInjection();
 });
 
 document.addEventListener('spa:navigated', ({ detail }) => {
