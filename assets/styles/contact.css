@@ -354,7 +354,7 @@
     border: 1px solid rgba(255,215,0,.25);
     border-radius: 8px;
     padding: 12px 14px;
-}
+} 
 .pc-upload-preview__icon { font-size: 1.4rem; color: #FFD700; flex-shrink: 0; }
 .pc-upload-preview__info { display: flex; flex-direction: column; flex: 1; min-width: 0; }
 .pc-upload-preview__name { font-size: .83rem; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -477,7 +477,7 @@
 @media (max-width: 768px) {
     .pc-hero__inner {
         padding: 36px 0 48px !important;
-        text-align: left !important;
+        text-align: center;
     }
 
     .pc-hero__title {
@@ -487,11 +487,11 @@
 
     .pc-hero__sub {
         font-size: 0.9rem !important;
-        margin: 0 0 20px !important;
+        margin: 0 0 20px auto;
     }
 
     .pc-hero__badges {
-        justify-content: flex-start !important;
+        justify-content:space-around;
         flex-wrap: wrap !important;
     }
 }

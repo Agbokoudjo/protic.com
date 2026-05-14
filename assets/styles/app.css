@@ -1,23 +1,35 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "./protic-layout.css" ;
 
-*{
-  margin:0 ;
-  padding:0;
-  box-sizing:border-box ;
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-html ,
+html {
+  scroll-behavior: smooth;
+    height: 100%;
+}
+
 body {
-     font-size:1rem;
+    font-size:1rem;
     font-family: 'Fraunces','Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif , Tahoma, Geneva, Verdana, sans-serif;
     width:100%;
     min-width:100%;
     max-width:100%;
     overflow-x: hidden;
+    font-optical-sizing: auto; 
+ 
+   line-height: 1.5;
+   -webkit-font-smoothing: antialiased;
+   min-height: 100%;
 }
 body.prod{
-  user-select: none;
+  -webkit-user-select: none;  /* Chrome, Safari, Edge */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* Internet Explorer/Edge */
+    user-select: none;          /* Standard */
 }
 
 #main-content{
@@ -100,4 +112,18 @@ body.prod{
     border-radius: 0 0 8px 8px !important;
     color: #f5f6fa !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+}
+
+input, button, textarea, select {
+  font: inherit; /* Pour que les champs utilisent la police du site */
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+ul, ol {
+  list-style: none;
 }

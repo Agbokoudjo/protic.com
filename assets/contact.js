@@ -16,13 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ── Sélecteurs ── */
     const form        = document.getElementById('pc-manuscript-form');
     const progressBar = document.getElementById('pc-progress-bar');
-    const submitBtn   = document.getElementById('pc-submit-btn');
-    const btnLabel    = document.getElementById('pc-btn-label');
-    const spinner     = document.getElementById('pc-spinner');
-    const msgArea     = document.getElementById('pc-message');
-    const charCounter = document.getElementById('pc-char-counter');
     const uploadZone  = document.getElementById('pc-upload-zone');
-    const fileInput   = document.getElementById('pc-file-input');
+    const fileInput   = document.querySelector('input[type="file"]');
     const uploadInner = document.getElementById('pc-upload-inner');
     const preview     = document.getElementById('pc-upload-preview');
     const fileName    = document.getElementById('pc-file-name');
@@ -31,10 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!form) return;
      select2(document);
-    /* ══════════════════════════════════════════
-       1. BARRE DE PROGRESSION
-       Calcule le % de champs valides remplis
-    ══════════════════════════════════════════ */
+   
     const requiredFields = form.querySelectorAll(
         '.pc-input[required], .pc-select[required], .pc-textarea[required], ' +
         'input[required], select[required], textarea[required]'
@@ -61,10 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         f.addEventListener('change', updateProgress);
     });
 
-    /* ══════════════════════════════════════════
-       4. UPLOAD ZONE — Drag & Drop + preview
-    ══════════════════════════════════════════ */
-    const formatSize = bytes => {
+   const formatSize = bytes => {
         if (bytes < 1024)       return bytes + ' o';
         if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' Ko';
         return (bytes / (1024 * 1024)).toFixed(2) + ' Mo';
@@ -92,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         uploadInner.style.display = '';
         fileInput.value = '';
         updateProgress();
+        fileInput.dispatchEvent(new Event('change', { bubbles: true }));
     };
 
     if (fileInput) {
@@ -108,19 +98,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
  
-    /* Drag & Drop */
     if (uploadZone) {
-        ['dragenter', 'dragover'].forEach(ev =>
+       ['dragenter', 'dragover'].forEach(ev =>
             uploadZone.addEventListener(ev, e => {
                 e.preventDefault();
                 uploadZone.classList.add('is-dragover');
             })
         );
-        ['dragleave', 'drop'].forEach(ev =>
-            uploadZone.addEventListener(ev, () => uploadZone.classList.remove('is-dragover'))
+
+        uploadZone.addEventListener('dragleave', () => 
+            uploadZone.classList.remove('is-dragover')
         );
+
         uploadZone.addEventListener('drop', e => {
             e.preventDefault();
+            uploadZone.classList.remove('is-dragover');
             const f = e.dataTransfer?.files?.[0];
             if (f && fileInput) {
                 const dt = new DataTransfer();
@@ -128,26 +120,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 fileInput.files = dt.files;
                 showPreview(f);
                 updateProgress();
+                fileInput.dispatchEvent(new Event('change', { bubbles: true }));
             }
-        });
-    }
-
-    /* ══════════════════════════════════════════
-       5. SUBMIT — spinner + shake sur erreur Symfony
-    ══════════════════════════════════════════ */
-    /*if (form && submitBtn) {
-        form.addEventListener('submit', () => {
-            // Vérification native rapide
-            if (!form.checkValidity()) {
-                shakeForm();
-                return;
-            }
-            // Lance le spinner
-            if (btnLabel) btnLabel.style.display = 'none';
-            if (spinner)  spinner.style.display  = 'flex';
-            submitBtn.disabled = true;
-        });
-    }*/
+        },true);
+}
 
     /* Shake si erreurs Symfony présentes au chargement */
     const hasErrors = form?.querySelectorAll('.pc-field-error li').length > 0;
@@ -178,9 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.head.appendChild(s);
     }
 
-    /* ══════════════════════════════════════════
-       6. ANIMATION LABELS — float effect
-    ══════════════════════════════════════════ */
     form.querySelectorAll('.pc-input, .pc-textarea, .pc-select').forEach(input => {
         const wrap = input.closest('.pc-field');
         if (!wrap) return;
@@ -188,9 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('blur',  () => wrap.classList.remove('is-focused'));
     });
 
-    /* ══════════════════════════════════════════
-       7. FOCUS HIGHLIGHT — icône animée
-    ══════════════════════════════════════════ */
     form.querySelectorAll('.pc-input-wrap').forEach(wrap => {
         const icon = wrap.querySelector('.pc-input-wrap__icon');
         if (!icon) return;

@@ -1,11 +1,14 @@
 import { defineConfig } from "vite";
 import symfonyPlugin from "vite-plugin-symfony";
 import react from "@vitejs/plugin-react";
-///home/pirate/Documents/www/protic.com/vite.app.config.js
+//proticeditions.com/vite.app.config.js
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
     base: '/build/app/',
+    optimizeDeps: {
+    force: true, // Force l'optimisation au démarrage
+  },
     plugins: [
          react(),
         symfonyPlugin({

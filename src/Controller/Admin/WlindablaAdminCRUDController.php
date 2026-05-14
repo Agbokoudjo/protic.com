@@ -23,6 +23,9 @@ use App\Persistance\UserManagerInterface;
 use App\Queue\AsyncMethodDispatcherInterface;
 use App\Security\EmailVerificationInterface;
 use App\Service\AccountStatus;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 use App\Service\ProcessingErrorFormHandle;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormInterface;
@@ -401,5 +404,87 @@ class WlindablaAdminCRUDController extends CRUDController {
         }
 
         return null;
+    }
+    
+    
+        /**
+     * Execute a batch delete with XmlHttpRequest support for the SPA.
+     *
+     * Extends Sonata's default batchActionDelete() to return a JSON response
+     * when the request is an XmlHttpRequest (sent by DeletePageSubscriber).
+     *
+     * Pipeline:
+     *   - Standard POST (non-XHR) → comportement Sonata original (redirectToList)
+     *   - XHR POST                → JSON response so the SPA can handle navigation itself
+     *
+     * JSON success response:
+     *   { "result": "ok", "message": "Items successfully deleted." }
+     *
+     * JSON error response:
+     *   { "result": "error", "message": "<error detail>" }
+     *
+     * The SPA (DeletePageSubscriber) reads "result" to decide whether to dispatch
+     * SpaDeleteSucceededEvent or SpaDeleteFailedEvent.
+     *
+     * @throws AccessDeniedException If access is not granted
+     *
+     * @phpstan-param ProxyQueryInterface<T> $query
+     */
+    public function batchActionDelete(ProxyQueryInterface $query): Response
+    {
+        $this->admin->checkAccess('batchDelete');
+        $request=$this->admin->getRequest() ;
+        $modelManager = $this->admin->getModelManager();
+
+        try {
+            $modelManager->batchDelete($this->admin->getClass(), $query);
+
+            // ── XHR path → JSON for the SPA ──────────────────────────────────
+            if ($this->isXmlHttpRequest($request)) {
+                return $this->renderJson([
+                    'result'  => 'ok',
+                    'message' => $this->trans('flash_batch_delete_success', [], 'SonataAdminBundle'),
+                ]);
+            }
+
+            // ── Standard path → flash + redirect (comportement Sonata original) ─
+            $this->addFlash(
+                'sonata_flash_success',
+                $this->trans('flash_batch_delete_success', [], 'SonataAdminBundle')
+            );
+
+        } catch (ModelManagerException $e) {
+            // NEXT_MAJOR: Remove this catch.
+            $errorMessage = $this->handleModelManagerException($e);
+
+            if ($this->isXmlHttpRequest($request)) {
+                return $this->renderJson([
+                    'result'  => 'error',
+                    'message' => $errorMessage ?? $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle'),
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
+            $this->addFlash(
+                'sonata_flash_error',
+                $errorMessage ?? $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
+            );
+
+        } catch (ModelManagerThrowable $e) {
+            $errorMessage = $this->handleModelManagerThrowable($e);
+
+            if ($this->isXmlHttpRequest($request)) {
+                return $this->renderJson([
+                    'result'  => 'error',
+                    'message' => $errorMessage ?? $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle'),
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
+            $this->addFlash(
+                'sonata_flash_error',
+                $errorMessage ?? $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
+            );
+        }
+
+        return $this->redirectToList();
     }
 }

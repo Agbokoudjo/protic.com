@@ -118,10 +118,8 @@ final readonly class RateLimitListener
             ]
         );
     }
-
-    // -------------------------------------------------------------------------
+    
     // Résolution du limiter approprié
-    // -------------------------------------------------------------------------
 
     /**
      * Sélectionne le RateLimiterFactory adapté au chemin et au contexte.

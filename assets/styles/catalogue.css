@@ -1,7 +1,3 @@
-/* ══════════════════════════════════════════
-   catalogue.css — Page Catalogue ProTIC
-   Dépend de protic-layout.css
-══════════════════════════════════════════ */
 :root {
     --cat-sidebar-w : 280px;
     --cat-gold      : #FFD700;
@@ -84,34 +80,44 @@
     justify-content: space-between; flex-wrap: wrap; gap: 14px;
 }
 .cat-cta-bar__text {
-    font-size: .9rem; font-weight: 600; color: #1a1f3c; margin: 0;
+    font-size: .9rem; font-weight: 600; color: #0a1f5c; margin: 0;
 }
-.cat-cta-bar__text i { margin-right: 6px; }
+.cat-cta-bar__text strong {
+    color: #0a1f5c;
+    font-weight: 700;
+}
+.cat-cta-bar__text i { margin-right: 6px; color: #0a1f5c; }
 .cat-cta-bar__btns { display: flex; gap: 10px; flex-wrap: wrap; }
 
 /* ══ BOUTONS ══ */
 .cat-btn-gold {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 10px 22px; border-radius: 8px;
-    background: var(--cat-gold); color: #1a1f3c !important;
+   background: #0a1f5c;
+    color: #f5c842;
+    border-color: #0a1f5c;
     font-size: .85rem; font-weight: 700; text-decoration: none;
     border: none; cursor: pointer;
     transition: background .22s, transform .18s, box-shadow .22s;
 }
 .cat-btn-gold:hover {
-    background: #f0c800; transform: translateY(-2px);
+    background: #122a7a;
+    color: #ffffff;
+    transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(255,215,0,.35);
 }
 .cat-btn-glass {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 10px 22px; border-radius: 8px;
-    background: rgba(255,255,255,.10); color: #fff !important;
+    background: transparent;
     font-size: .85rem; font-weight: 600; text-decoration: none;
-    border: 1px solid rgba(255,255,255,.28); cursor: pointer;
+    border: 1px solid  #0a1f5c; cursor: pointer;
+     color: #0a1f5c;
     backdrop-filter: blur(6px);
     transition: background .22s, transform .18s;
 }
-.cat-btn-glass:hover { background: rgba(255,255,255,.18); transform: translateY(-2px); }
+.cat-btn-glass:hover { background: #0a1f5c;
+    color: #f5c842; transform: translateY(-2px); }
 
 /* ══ SECTION GÉNÉRALE ══ */
 .cat-section { padding: clamp(56px,7vw,90px) 0; background: var(--protic-blue-deep); }
@@ -593,6 +599,7 @@
 @media (max-width: 768px) {
     .cat-hero__inner {
         padding: 36px 0 48px !important;
+        text-align:center ;
     }
 
     .cat-hero__title {
@@ -602,15 +609,24 @@
 
     .cat-hero__sub {
         font-size: 0.88rem !important;
+        padding-left: 1.2rem ;
+         padding-right: 1.2rem;
+        place-items:center ;
     }
 
     .cat-hero__pills {
         gap: 6px !important;
+        justify-content:space-around;
+         padding-left: 1.2rem ;
+         padding-right: 1.2rem;
     }
 
     .cat-hero__stats {
         gap: 0 !important;
         font-size: 0.75rem !important;
+        text-align:center ;
+        padding-left: 1rem ;
+        padding-right: 1rem;
     }
 
     .cat-hero__stats-sep {

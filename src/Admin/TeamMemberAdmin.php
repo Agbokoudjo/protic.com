@@ -126,7 +126,6 @@ final class TeamMemberAdmin extends WlindablaAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            // ---- Colonne gauche : Identité ----
             ->with('Identité', ['class' => 'col-md-6'])
                 ->add('name', TextType::class, [
                     'label' => 'Nom / Intitulé',
@@ -135,7 +134,8 @@ final class TeamMemberAdmin extends WlindablaAdmin
                         'autocomplete'                       => 'on',
                         'minlength'                          => 3,
                         'maxlength'                          => 255,
-                        'data-pattern'                       => '^[\p{L}\p{N}\p{M}\s\.\-&\']+$',
+                        'pattern'                       => '^[\p{L}\p{N}\p{M}\s\.\-&\']+$',
+                        
                         'data-eg-await'                      => 'Équipe Éditoriale',
                         'data-escapestrip-html-and-php-tags' => true,
                         'data-event-validate-blur'           => 'blur',
@@ -151,7 +151,7 @@ final class TeamMemberAdmin extends WlindablaAdmin
                         'autocomplete'                       => 'on',
                         'minlength'                          => 3,
                         'maxlength'                          => 255,
-                        'data-pattern'                       => '^[\p{L}\p{N}\p{M}\s\.\-&\']+$',
+                        'pattern'                       => '^[\p{L}\p{N}\p{M}\s\.\-&\']+$',
                         'data-eg-await'                      => 'Logistique & Distribution',
                         'data-escapestrip-html-and-php-tags' => true,
                         'data-event-validate-blur'           => 'blur',
@@ -167,6 +167,7 @@ final class TeamMemberAdmin extends WlindablaAdmin
                         'placeholder'                        => 'ex: S',
                         'maxlength'                          => 5,
                         'data-eg-await'                      => 'É',
+                        'pattern'                       => '^[\p{L}]+$',
                         'data-escapestrip-html-and-php-tags' => true,
                         'data-event-validate-blur'           => 'blur',
                         'data-event-validate-input'          => 'input',
@@ -182,6 +183,9 @@ final class TeamMemberAdmin extends WlindablaAdmin
                         'rows'                               => 5,
                         'maxlength'                          => 1000,
                         'data-escapestrip-html-and-php-tags' => true,
+                         'data-pattern'                       => '/<|>|<\?/',
+                         'data-match'=>'false',
+                         'data-type'=>"textarea",
                         'data-event-validate-blur'           => 'blur',
                         'data-event-validate-input'          => 'input',
                         'data-error-message-input'           => 'Maximum 1000 caractères.',
@@ -203,7 +207,8 @@ final class TeamMemberAdmin extends WlindablaAdmin
                         'data-escapestrip-html-and-php-tags' => true,
                         'data-event-validate-blur'           => 'blur',
                         'data-event-validate-input'          => 'input',
-                        'data-error-message-input'           => 'Maximum 255 caractères.',
+                         'pattern'                       => '^[\p{L}\p{N}\p{M}\s]+$',
+                        'data-error-message-input'           => 'Description invalide',
                     ],
                     'help'     => 'Description de l\'image pour l\'accessibilité et le SEO.',
                 ])
@@ -240,6 +245,7 @@ final class TeamMemberAdmin extends WlindablaAdmin
                         'data-event-validate-blur'           => 'blur',
                         'data-event-validate-input'          => 'input',
                         'data-error-message-input'           => 'Entier positif ou nul.',
+                        'data-type' => "number",
                     ],
                     'help'  => '0 = affiché en premier. Plus le chiffre est grand, plus le membre apparaît tard.',
                 ])
@@ -247,6 +253,9 @@ final class TeamMemberAdmin extends WlindablaAdmin
                     'label'    => 'Visible sur le site',
                     'required' => false,
                     'help'     => 'Décochez pour masquer ce membre sans le supprimer.',
+                    'attr'=>[
+                    'data-type' => "checkbox",
+                    ]
                 ])
                 ->add('linkedUser', null, [
                     'label'       => 'Compte admin lié (optionnel)',

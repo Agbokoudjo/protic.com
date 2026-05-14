@@ -9,7 +9,7 @@
     --ab-card-r   : 14px;
     --ab-section-pad: clamp(60px,8vw,100px);
 }
-
+  
 /* ── Boutons ── */
 .ab-btn-gold {
     display:inline-flex;align-items:center;gap:8px;
@@ -139,18 +139,23 @@
 
     .ab-hero__inner {
         padding: 36px 0 48px !important;
+        text-align:center ;
     }
 
     .ab-hero__title {
         font-size: clamp(1.6rem, 7.5vw, 2.2rem) !important;
         line-height: 1.22 !important;
+         padding-left: 1.2rem ;
+         padding-right: 1.2rem;
     }
 
     .ab-hero__sub {
         font-size: 0.9rem !important;
+         padding-left: 1.2rem ;
+         padding-right: 1.2rem;
     }
 
-    /* ✅ FIX boutons À propos mobile */
+    /* FIX boutons À propos mobile */
     .ab-hero__btns {
         display: flex !important;
         flex-direction: column !important;
@@ -160,12 +165,14 @@
 
     .ab-btn-gold,
     .ab-btn-glass {
-        width: 100% !important;
+        width: 70% !important;
         justify-content: center !important;
         text-align: center !important;
         padding: 13px 20px !important;
         font-size: 0.88rem !important;
         box-sizing: border-box !important;
+         margin-left:auto ;
+         margin-right:auto ;
     }
 
     /* KPIs hero about */

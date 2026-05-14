@@ -29,9 +29,6 @@ const Skeleton = ({ count = 6 }) => (
     </div>
 );
 
-/* ══════════════════════════════════════════════════════════════
-   Pagination
-══════════════════════════════════════════════════════════════ */
 const Pagination = ({ currentPage, totalPages, onChange }) => {
     if (totalPages <= 1) return null;
 
@@ -151,9 +148,6 @@ const BookCard = ({ book }) => {
     );
 };
 
-/* ══════════════════════════════════════════════════════════════
-   BooksGrid — composant principal
-══════════════════════════════════════════════════════════════ */
 export default function BooksGrid({ limit = 12, mode = "catalogue" }) {
     const isHome       = mode === "home";
     const itemsPerPage = isHome ? limit : 12;
@@ -228,9 +222,6 @@ export default function BooksGrid({ limit = 12, mode = "catalogue" }) {
     );
 }
 
-/* ══════════════════════════════════════════════════════════════
-   Fetch helper
-══════════════════════════════════════════════════════════════ */
 async function fetchRequestBooks(page, itemsPerPage) {
     return await safeFetch({
         url: addParamToUrl(API_BASE, {

@@ -82,7 +82,7 @@ maison édition Bénin, publier livre Bénin, édition Abomey-Calavi, ProTIC éd
     <div class="container protic-hero__inner">
         <div class="protic-hero__badge"
              data-aos="fade-down"
-             data-aos-duration="600">
+             data-aos-duration="600">  
             <i class="bi bi-patch-check-fill"></i>
             Maison d'édition béninoise — Membre APPEL-Bénin depuis 2010
         </div>
@@ -121,9 +121,18 @@ maison édition Bénin, publier livre Bénin, édition Abomey-Calavi, ProTIC éd
 
         {# Floating books décoratifs #}
         <div class="protic-hero__floats" aria-hidden="true">
-            <span class="protic-float protic-float--1">📖</span>
-            <span class="protic-float protic-float--2">📚</span>
-            <span class="protic-float protic-float--3">📕</span>
+            {# Float 1 — Livre ouvert #}
+            <span class="protic-float protic-float--1">
+                <img src="{{ asset('assets/images/open_book.png','app') }}" alt="📖" width="130" height="130">
+            </span>
+            {# Float 2 — Pile de livres #}
+            <span class="protic-float protic-float--2">
+                <img src="{{ asset('assets/images/pilebook.png','app') }}" alt="📚" width="130" height="130">
+            </span>
+            {# Float 3 — Livre fermé debout #}
+            <span class="protic-float protic-float--3">
+                <img src="{{ asset('assets/images/book_head.png','app') }}" alt="📕" width="130" height="130">
+            </span>
         </div>
 
     </div>
@@ -612,10 +621,6 @@ maison édition Bénin, publier livre Bénin, édition Abomey-Calavi, ProTIC éd
 </section>
 {% endblock %}
 
-
-{# ══════════════════════════════════════════
-   Three.js — uniquement sur cette page
-══════════════════════════════════════════ #}
 {% block threejs %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -676,8 +681,6 @@ document.addEventListener('DOMContentLoaded',initHeroThreeJS);
 {% endblock %}
 
 {% block scripts_extra %}
-
-{# React — injection composant BooksGrid #}
 {{ vite_entry_script_tags('home') }}
 {{ vite_entry_script_tags('form',[],'app') }} 
 {% endblock %}

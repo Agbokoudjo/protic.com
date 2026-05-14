@@ -362,7 +362,7 @@ file that was distributed with this source code.
                                                             {% endif %}
                                                         {% endblock %} {# endblock sonata_admin_content_actions_wrappers #}
                                                         {% if _list_filters_actions is not empty %}
-                                                            <li class="nav-item"> {{ _list_filters_actions|raw }}</li>
+                                                            <li class="nav-item nav-item-list-filters-actions"> {{ _list_filters_actions|raw }}</li>
                                                         {% endif %}
                                                     </ul>
                                                 </div>
@@ -467,17 +467,15 @@ file that was distributed with this source code.
                         s.onload=function(){
                             bootlint.showLintReportForCurrentDocument([], {hasProblems: false, problemFree: false});};
                             s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";
-                            document.body.appendChild(s)})();
-
-
-
-
-                            
+                            document.body.appendChild(s)})();               
                 </script>
             {% endblock %}
         {% endif %}
     {% endblock %} {# endblock javascript_inline  #}
+    <script id="sonata_user_admin_security_logout" data-logout-url="{{ path('sonata_user_admin_security_logout') }}">
+        window.MOBILE_GUARD_LOGOUT_URL = "{{ path('sonata_user_admin_security_logout') }}";
+    </script>
+    {{ vite_entry_script_tags('mobile_guard', [], 'admin') }}
     <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/js/fontawesome.min.js" integrity="sha256-YbayIEYGVLmyi3xj7wG91wgAa+Iz3qf7HuK6e1N40/w=" crossorigin="anonymous"></script>
-    {{ vite_entry_script_tags('form',[],'admin') }}
 </body>
 </html>

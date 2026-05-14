@@ -34,7 +34,7 @@ file that was distributed with this source code.
 {% set datagrid_has_results = admin.datagrid.results|length > 0 %}
 
 {% block list_table %}
-    <div class="col-xs-12 col-md-12 list-container">
+    <div class="col-xs-12 col-md-12 list-container list-table-container">
         {% set batchactions = admin.batchactions %}
         {% if admin.hasRoute('batch') and batchactions|length %}
             <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
@@ -42,7 +42,7 @@ file that was distributed with this source code.
         {% endif %}
 
         {# Add a margin if no pager to prevent dropdown cropping on window #}
-        <div class="box box-primary card"{% if admin.datagrid.pager.lastPage == 1 %} style="margin-bottom: 100px;"{% endif %}>
+        <div class="box box-primary card  "{% if admin.datagrid.pager.lastPage == 1 %} style="margin-bottom: 100px;"{% endif %}>
             <div class="card-header"><h3 class="card-title"> {% block list_header %}{% if admin.labelList  is defined %} {{admin.labelList}} {% endif %}{% endblock %}</h3></div>
             <div class="box-body card-body {% if datagrid_has_results %} table-responsive no-padding{% endif %}">
                 {{ sonata_block_render_event('sonata.admin.list.table.top', { 'admin': admin }) }}
@@ -229,7 +229,7 @@ file that was distributed with this source code.
     {%- if displayableFilters|length %}
         <ul class="nav navbar-nav navbar-right" id="filter-list-{{ admin.uniqid() }}" {{ stimulus_controller('sonata-filter-list', {}, { 'active': 'active' }, { 'sonata-filter': '#filter-container-' ~ admin.uniqid() }) }}>
 
-            <li class="dropdown sonata-actions sonata-filter-container">
+            <li class="dropdown sonata-actions sonata-filter-container sonata-actions-filter-container">
                 <a href="#" role="button" class="btn dropdown-toggle sonata-ba-action sonata-ba-action-filter dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-filter" aria-hidden="true"></i>
                     {{ 'link_filters'|trans({}, 'SonataAdminBundle') }}

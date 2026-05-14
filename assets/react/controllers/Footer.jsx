@@ -101,9 +101,6 @@ const SocialBtn = ({ name, href, label }) => (
     </a>
 );
 
-/* ══════════════════════════════════════════
-   Composant principal Footer
-══════════════════════════════════════════ */
 export default function Footer({ config }) {
     if (!config) return null;
 
@@ -111,7 +108,7 @@ export default function Footer({ config }) {
         contact = { addresses: [], telephones: [], emails: [] },
         legal   = { rccm: '', ifu: '', cnss: '', compte: '' },
         membre  = '',
-        LOGO_SRC = '/assets/images/logo.png',
+        LOGO_SRC = '/assets/images/logo_footer.png',
     } = config;
 
     const yr = new Date().getFullYear();
@@ -379,7 +376,7 @@ export default function Footer({ config }) {
                     <a href="https://github.com/Agbokoudjo/" 
                     target="_blank" 
                     rel="noopener"
-                    class="text-decoration-none"
+                    className="text-decoration-none"
                     title="INTERNATIONALES WEB APPS & SERVICES — Agence web Bénin">
                         <strong style={S.bottomStrong}>INTERNATIONALES WEB APPS &amp; SERVICES</strong>
                             {' '}

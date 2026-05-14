@@ -1,7 +1,16 @@
+import {formatterEvent} from '@wlindabla/form_validator/formatting';
+
+export function formformatterEventHandle() {
+    formatterEvent.lastnameToUpperCase(document);
+    formatterEvent.capitalizeUsername(document);
+    formatterEvent.usernameFormatDom(document);
+ }
+
+import Swal from 'sweetalert2';
+
 import {
     FormValidateController,
     addHashToIds,
-    FieldValidationFailed,
     fetchErrorTranslator,
     HttpRequestSubscriber,
     FormSubmitRequestEvents,
@@ -13,22 +22,21 @@ import {
     showErrorDialog,
     FormSubmission,
     eventDispatcherBrowser,
-    handleErrorsManyForm,
-     formatterEvent 
+    handleErrorsManyForm
 } from '@wlindabla/form_validator';
 
-import { CollectionValidator } from './collection-validator.js';
+window.addEventListener('DOMContentLoaded', () => {
+    if (!document.querySelector('.app-frontend')) {
+    return;
+    }
 
-import Swal from 'sweetalert2';
-
-window.addEventListener('DOMContentLoaded',()=>{
-    const form_exist = document.querySelector('form.form-validate');
+   const form_exist = document.querySelector('form.form-validate');
     if (form_exist ===null) {
         return;
     }
     
     const form_validate = new FormValidateController('.form-validate');
-    const __form = form_validate.form;
+    const __form = jQuery(form_validate.form);
 
     const idsBlur = addHashToIds(form_validate.idChildrenUsingEventBlur).join(",");
     const idsInput = addHashToIds(form_validate.idChildrenUsingEventInput).join(",");
@@ -45,15 +53,21 @@ window.addEventListener('DOMContentLoaded',()=>{
         }
     });
 
-    __form.on(FieldValidationFailed, (event) => {
+    __form.on('field:validation:failed', (event) => {
         const data = (event.originalEvent).detail;
 
         form_validate.addErrorMessageChildrenForm(
-            jQuery(data.targetChildrenForm),
+            data.targetChildrenForm,
             data.message,
             'container-div-error-message');
+         console.log('field:validation:failed',data.message)
     });
 
+    __form.on('field:validation:success', (event) => {
+        const data = (event.originalEvent).detail;
+        form_validate.clearErrorDataChildren(data.targetChildrenForm);
+     });
+    
     __form.on('input', `${idsInput}`, (event) => {
         const target = event.target;
         if ((target instanceof HTMLInputElement ||
@@ -65,9 +79,9 @@ window.addEventListener('DOMContentLoaded',()=>{
         }
     });
     __form.on('change', `${idsChange}`, async (event) => {
-         const target = event.target;
+        const target = event.target;
+        form_validate.clearErrorDataChildren(target);
         if (target instanceof HTMLInputElement && target.type === "file") {
-
             await form_validate.validateChildrenForm(target);
         }
     })
@@ -78,16 +92,6 @@ window.addEventListener('DOMContentLoaded',()=>{
            form_validate.clearErrorDataChildren(target);
         }
     });
-
-     // ── NOUVEAU : gestion des collections dynamiques ──────────────────────
-  const collectionValidator = new CollectionValidator(
-    form_validate,
-    addHashToIds,
-    FieldValidationFailed
-  );
-
-  // Stocker pour pouvoir détruire si navigation SPA
-  window.__collectionValidator = collectionValidator;
 })
 
 export class FormSubmissionSubscriber extends HttpRequestSubscriber
@@ -197,9 +201,13 @@ document.addEventListener('submit', async (event) => {
         return;
     }
 
+    if (!document.querySelector('.app-frontend')) {
+    return;
+    }
+
     event.preventDefault();
 
-    const formSubmission = new FormSubmission(form, {
+   const formSubmission = new FormSubmission(form, {
         url: form.action || window.location.href,
         headers: {
                 'Accept': 'application/json',
@@ -219,7 +227,7 @@ document.addEventListener('submit', async (event) => {
             const result = await Swal.fire({
                 title: 'Confirmer l\'envoi',
                 text: message || "Voulez-vous vraiment envoyer votre demande ?",
-                icon: 'warning',
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#2D3099', 
                 cancelButtonColor: '#d33',
@@ -240,29 +248,9 @@ document.addEventListener('submit', async (event) => {
 })
 
 document.addEventListener('DOMContentLoaded', () => {
+    if (!document.querySelector('.app-frontend')) {
+    return;
+    }
     formformatterEventHandle();
-    eventDispatcherBrowser.addSubscriber(new FormSubmissionSubscriber());
+   eventDispatcherBrowser.addSubscriber(new FormSubmissionSubscriber());
 });
-
-// Réinitialiser si la page SPA chargée contient un formulaire
-document.addEventListener('spa:dom:ready', ({ detail }) => {
-  const { container } = detail;
-  const form_exist = container.querySelector('form.form-validate');
-  if (!form_exist) return;
-
-  // Relancer toute la logique pour la nouvelle page
-  // (déclencher DOMContentLoaded manuellement n'est pas possible
-  //  donc on réinstancie directement)
-  const form_validate = new FormValidateController('.form-validate');
-  window.__collectionValidator = new CollectionValidator(
-    form_validate,
-    addHashToIds,
-    FieldValidationFailed
-  );
-});
-
-function formformatterEventHandle() {
-    formatterEvent.lastnameToUpperCase(document);
-    formatterEvent.capitalizeUsername(document);
-    formatterEvent.usernameFormatDom(document);
- }

@@ -18,8 +18,7 @@ import './admin/books_rain.js';
 import './admin/batch-actions.js';
 import './admin/sonata_user_form_extra.js'
 import {basicLightboxImage,basicLightboxDocument} from  './basicLightbox.js';
-import { SpaRouter } from './admin/router.js';
-import { DomManager } from './admin/dom-manager.js';
+import { SpaKernel } from '@wlindabla/sonata_spa';
 
 window.$ = jQuery;
 window.jQuery = jQuery;
@@ -31,8 +30,10 @@ sonataApplication.debug = true;
 import {
   addParamToUrl,
     appTranslation,
-    fetchErrorTranslator
+  fetchErrorTranslator,
+  eventDispatcherBrowser,
 } from '@wlindabla/form_validator';
+import { formformatterEventHandle } from "./form.js"
 import {
   config, select2,
   crudAccountHandle,
@@ -46,8 +47,6 @@ import.meta.glob('./images/**/*', { eager: true });
     import.meta.glob(
         "./controllers/*_controller.js",
         {
-        // pensez à ajouter le suffixe "?stimulus"
-        //query: "?stimulus",
         eager: true,
         },
     ),
@@ -69,18 +68,6 @@ import.meta.glob('./images/**/*', { eager: true });
     }
 });
 
-class AppRouter extends SpaRouter {
-  async navigate(url) {
-    await super.navigate(url);
-
-    const content = document.getElementById('app-content');
-    const header  = document.getElementById('app-content-header');
-
-    // Réinitialiser les deux zones mises à jour
-    if (content) DomManager.reinitialize(content);
-    if (header)  DomManager.reinitialize(header);
-  }
-}
 
 document.addEventListener('DOMContentLoaded', async () => {
   window.SonataTranslator = appTranslation;
@@ -96,24 +83,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     await appTranslation.preload('sonata-translations');
-  window.fetchErrorTranslator = fetchErrorTranslator 
-  basicLightboxImage();
-  basicLightboxDocument();
-  localDatetime()
-  dashboard();
-  crudAccountHandle();
-  crudUserAccountListener();
-  window.appRouter = new AppRouter();
-});
+    window.fetchErrorTranslator = fetchErrorTranslator 
+    basicLightboxImage();
+    basicLightboxDocument();
+    localDatetime()
+    dashboard();
+    crudAccountHandle();
+    crudUserAccountListener();
+    formformatterEventHandle() ;
 
-document.addEventListener('spa:navigated', ({ detail }) => {
-    const { main } = detail;
-
-    // Ré-exécuter les scripts injectés dans #app-main
-  DomManager.reExecuteScripts(main);
-   Admin.shared_setup(document)
-window.__collectionValidator?.destroy();
-  window.__collectionValidator = null;
+   window.appRouter= SpaKernel.create(
+    {
+        router: {
+            sidebarSelector: '.app-sidebar',
+            mainContentAreaSelector: '#app-content',
+            mainContentHeaderSelector: '#app-content-header',
+        },
+    },
+    config.param('APP_ENV', "sonata-config") ,
+    eventDispatcherBrowser
+   ).boot();
+  
 });
   
 const SonataCoreModern = {
@@ -649,45 +639,3 @@ function dashboard() {
     }
 
 }
-
- /**
-     * Fonction principale d'initialisation
-     */
-const initDynamicInjection = () => {
-  const scriptId = 'sonata-user-form-extra-script';
-  const targetClass = '.sonata-ba-form';
-  const scriptPath = addParamToUrl('build/assets/admin/sonata_user_form_extra.js'); // Vérifie bien le chemin public
-
-  // 1. Vérifier si l'élément cible existe dans le DOM
-  const formExists = document.querySelector(targetClass);
-  
-  // 2. Vérifier si le script n'est pas déjà injecté
-  const alreadyInjected = document.getElementById(scriptId);
-
-  if (formExists && !alreadyInjected) {
-      console.log('Formulaire Sonata détecté. Injection du script extra...');
-
-      // Récupération du contenu du fichier JS
-      fetch(scriptPath)
-          .then(response => {
-              if (!response.ok) throw new Error("Erreur lors de la récupération du fichier JS");
-              return response.text();
-          })
-          .then(code => {
-              // Création de la balise script
-              const scriptTag = document.createElement('script');
-              scriptTag.id = scriptId;
-              scriptTag.type = 'text/javascript';
-              scriptTag.textContent = code; // Injection du code en ligne
-
-              // Injection à la fin du body
-              document.body.appendChild(scriptTag);
-              
-              console.log('Script injecté avec succès (ID: ' + scriptId + ')');
-          })
-          .catch(error => {
-              console.error('Erreur d\'injection :', error);
-          });
-  }
-};
-

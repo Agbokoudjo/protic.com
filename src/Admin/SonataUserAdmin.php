@@ -23,6 +23,7 @@ use App\Entity\RoleUser;
 use App\Entity\SonataUser;
 use App\Security\Handler\AdminUserRoleSecurityHandler;
 use App\Security\Voter\PasswordUserVoter;
+use libphonenumber\PhoneNumberFormat;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -75,6 +76,7 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 final class SonataUserAdmin extends WlindablaAdmin
 {
     public function __construct(
+      
     ) {
         parent::__construct(
             'Liste des utilisateurs',
@@ -541,7 +543,8 @@ final class SonataUserAdmin extends WlindablaAdmin
                     'autocomplete' => 'on',
                     'minlength' => 6,
                     'maxlength' => 255,
-                    'data-pattern' => '^[\p{L}\p{N}\p{M}\s\.]+$',
+                    'pattern' => '^[\p{L}\p{N}\p{M}\s\.]+$',
+                    'data-flag-pattern'=>"iu",
                     'data-eg-await' => 'WLINDABABLA Empedocle Brondelle',
                     'data-escapestrip-html-and-php-tags' => true,
                     'data-event-validate-blur' => 'blur',
@@ -577,7 +580,8 @@ final class SonataUserAdmin extends WlindablaAdmin
                         'autocomplete'                       => 'on',
                         'minlength'                          => 6,
                         'maxlength'                          => 200,
-                        'data-pattern'                       => '^[\p{L}\p{N}\p{M}\s\-\.&]+$',
+                        'pattern'                       => '^[\p{L}\p{N}\p{M}\s\-\.&]+$',
+                         'data-flag-pattern'=>"iu",
                         'data-eg-await'                      => 'Directeur ProTIC',
                         'data-escapestrip-html-and-php-tags' => true,
                         'data-event-validate-blur'           => 'blur',
@@ -596,7 +600,7 @@ final class SonataUserAdmin extends WlindablaAdmin
                 'label'          => 'Téléphone *',
                 'required'       => true,
                 'default_region' => 'BJ',
-                'format'         => \libphonenumber\PhoneNumberFormat::INTERNATIONAL,
+                'format'         => PhoneNumberFormat::INTERNATIONAL,
                 'attr'           => [
                     'placeholder'                        => 'Ex: +229 01 67 25 18 86',
                     'data-escapestrip-html-and-php-tags' => 'true',

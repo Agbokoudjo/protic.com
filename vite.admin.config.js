@@ -7,6 +7,9 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 export default defineConfig({
     base: '/build/admin/',
     debug:true,
+    optimizeDeps: {
+    force: true, // Force l'optimisation au démarrage
+  },
     plugins: [
         inject({
             $: 'jquery',
@@ -31,8 +34,8 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 sonata: "./assets/sonata.js",
-                form: 'assets/form.js',
-                login : "./assets/login.js",
+                login: "./assets/login.js",
+                mobile_guard: "./assets/mobile_guard.js"
             },
         }
     },

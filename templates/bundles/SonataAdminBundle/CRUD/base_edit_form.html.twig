@@ -14,7 +14,7 @@
               action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {(admin.idParameter): objectId, 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
               {% if form.vars.multipart %} enctype="multipart/form-data"{% endif %}
               method="POST"
-              class="form-validate form-submit crud-entity form-submission-handle-auto {{'form' ~ url}}"
+              class="form-validate form-submit crud-entity {{'form' ~ url}}"
               name="{{admin.uniqId}}"
               id="{{admin.uniqId}}"
               {{

@@ -83,11 +83,10 @@ final class ManuscriptSubmissionType extends AbstractType
                     'data-escapestrip-html-and-php-tags' => true,
                     'data-event-validate-change' => 'change',
                     'data-event-validate-blur' => 'blur',
-                    'class' => 'form-control select2 form-select-lg form-control-lg',
+                    'class' => 'form-control pc-input pc-select select2 form-select-lg form-control-lg',
                     'data-minimumInputLength' => 1,
                     'data-error-message-input' => 'Veuillez sélectionner un pays.',
                     'data-sonata-select2-maximumSelectionLength' => 1,
-                    'class'=> 'pc-input pc-select'
                 ]
             ])
             ->add('subject', TextType::class, [
@@ -126,20 +125,22 @@ final class ManuscriptSubmissionType extends AbstractType
                 'attr'     => [
                     'accept' => '.pdf,.doc,.docx,.odt,.txt',
                     'class'  => 'pc-upload-input',
-                    'id'     => 'pc-file-input',
                     'data-event-validate-blur' => 'blur',
                     'data-event-validate-change' => 'change',
-                    'data-media-type' => 'document',
+                    'data-event-validate-dragenter' => 'dragenter',
+                    'data-event-validate-drop' => 'drop',
+                    'data-media-type' => 'document', 
                     'data-type' => 'file',
                     'data-extentions' => 'pdf,doc,docx,odt,txt',
                     'data-unity-max-size-file' => 'MiB',
                     'data-maxsize-file' => 10,
                     'data-allowed-mime-type-accept' => '
                             application/pdf,
-                            application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                           application/vnd.openxmlformats-officedocument.wordprocessingml.document,
                             application/msword,
                             application/vnd.oasis.opendocument.text,
-                            text/plain
+                            text/plain,
+                            application/x-pdf
                             ',
                 'data-error-message-input'=> 'Le type de fichier n\'est pas valide. Les formats de manuscrits acceptés sont PDF, Word, ODT et TXT.'
                 ],

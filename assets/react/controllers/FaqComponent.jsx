@@ -10,9 +10,6 @@ import { addParamToUrl } from '@wlindabla/form_validator';
 
 const API_BASE = '/api/faqs';
 
-/* ══════════════════════════════════════════
-   Fetch helper
-══════════════════════════════════════════ */
 async function fetchFaqs(page = 1, perPage = 8, category = '') {
     const params = { page, itemsPerPage: perPage };
     if (category) params.category = category;
@@ -31,9 +28,6 @@ async function fetchFaqs(page = 1, perPage = 8, category = '') {
     });
 }
 
-/* ══════════════════════════════════════════
-   Squelette loader
-══════════════════════════════════════════ */
 const FaqSkeleton = ({ count = 5 }) => (
     <div className="faq-list">
         {Array.from({ length: count }).map((_, i) => (
@@ -109,9 +103,6 @@ const FaqItem = ({ faq, index }) => {
     );
 };
 
-/* ══════════════════════════════════════════
-   Pagination
-══════════════════════════════════════════ */
 const FaqPagination = ({ current, total, onChange }) => {
     if (total <= 1) return null;
 
@@ -155,9 +146,6 @@ const FaqPagination = ({ current, total, onChange }) => {
     );
 };
 
-/* ══════════════════════════════════════════
-   Composant principal
-══════════════════════════════════════════ */
 const FaqComponent = ({ perPage = 8 }) => {
     const [faqs,       setFaqs]       = useState([]);
     const [loading,    setLoading]    = useState(true);
@@ -259,9 +247,6 @@ const FaqComponent = ({ perPage = 8 }) => {
     );
 };
 
-/* ══════════════════════════════════════════
-   Montage via IntersectionObserver
-══════════════════════════════════════════ */
 export const mountFaq = () => {
     const rootEl = document.getElementById('faq-root');
     if (!rootEl || rootEl.dataset.mounted) return;
