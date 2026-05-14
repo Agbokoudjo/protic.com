@@ -43,5 +43,5 @@ final readonly class GenerateTemporaryPasswordHandler
         } catch (\Throwable $th) {
             throw $th;
         }
-    }
+    }  
 }

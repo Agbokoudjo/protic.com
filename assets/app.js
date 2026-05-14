@@ -22,7 +22,7 @@ const DEBUG = config.param('DEBUG', "iws-config");
 Logger.config(APP_ENV,DEBUG)
 const app = startStimulusApp();
 registerReactControllerComponents(import.meta.glob('./react/controllers/**/*.js(x)\?',{ eager: true })); 
-import.meta.glob('./images/**/*', { eager: true });
+import.meta.glob('./images/**/*', { eager: true,query: '?url', import: 'default'  });
 
 window.addEventListener('DOMContentLoaded', () => {
     disableUserInteractions(APP_ENV,DEBUG);
