@@ -24,8 +24,10 @@ final class HomeController extends AbstractController
 
         if ($this->getParameter('app.env') === 'prod') {
             $response->setPublic();
-            $response->setMaxAge(604801);        
-            $response->setSharedMaxAge(604801);
+            $response->setMaxAge(60400);        
+            $response->setSharedMaxAge(60400);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
             $response->setEtag(md5($response->getContent())); 
         }
 
