@@ -1,0 +1,17 @@
+message_without_user_403:   Vous n’êtes pas autorisé à effectuer cette action.
+
+message_with_user_403: >
+
+ Chère <strong> %username% </strong>,<br>
+   vous n’avez pas l’autorisation pour effectuer cette action.
+    <p class="mt-4">
+        Si vous pensez qu’il s’agit d’une erreur ou souhaitez une autorisation supplémentaire,
+        veuillez contacter un administrateur ou soumettre une demande.
+    </p>
+
+title_403: Accès refusé 
+
+label_cta: Retour au tableau de bord
+
+
+

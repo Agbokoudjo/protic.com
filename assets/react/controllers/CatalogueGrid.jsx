@@ -8,6 +8,8 @@ import { addParamToUrl } from "@wlindabla/form_validator";
 import BookSummaryModal from "./BookSummaryModal";
 import AuthorBioModal from "./AuthorBioModal";
 import ContactFormModal from "./ContactFormModal";
+import BookTitleWithCopy from './BookTitleWithCopy';
+
 import placeholderImage from "../../images/placeholder_before_load.png";
 
 const API_BASE    = "/api/books";
@@ -55,9 +57,6 @@ function buildUrl({ page, itemsPerPage, search, genre, sort }) {
     return addParamToUrl(API_BASE, params, true);
 }
 
-/* ══════════════════════════════════════════════════════════════
-   Skeleton
-══════════════════════════════════════════════════════════════ */
 const Skeleton = ({ count = 12, view = "grid" }) => {
     if (view === "list") {  
         return (
@@ -91,9 +90,6 @@ const Skeleton = ({ count = 12, view = "grid" }) => {
     );
 };
 
-/* ══════════════════════════════════════════════════════════════
-   BookCard — vue grille
-══════════════════════════════════════════════════════════════ */
 const BookCardGrid = ({ book }) => {
     const [imgError, setImgError] = React.useState(false);
     const cover = imgError || !book.coverImage
@@ -142,7 +138,7 @@ const BookCardGrid = ({ book }) => {
             </div>
 
             <div className="cat-book-card__body">
-                <h3 className="cat-book-card__title">{book.title}</h3>
+                <BookTitleWithCopy book={book} /> 
                 <p className="cat-book-card__author">{book.author?.fullName}</p>
                 <div className="cat-book-card__footer">
                     <AuthorBioModal
@@ -158,9 +154,6 @@ const BookCardGrid = ({ book }) => {
     );
 };
 
-/* ══════════════════════════════════════════════════════════════
-   BookCard — vue liste
-══════════════════════════════════════════════════════════════ */
 const BookCardList = ({ book }) => {
     const [imgError, setImgError] = React.useState(false);
     const cover = imgError || !book.coverImage
@@ -436,12 +429,8 @@ export default function CatalogueGrid({ itemsPerPage = 12 }) {
             />
         </React.Fragment>
     );
-}
+} 
 
-
-/* ══════════════════════════════════════════════════════════════
-   Montage React — CatalogueGrid
-══════════════════════════════════════════════════════════════ */
 export const mountCatalogue = () => {
     const root = document.getElementById('catalogue-books-root');
     if (!root || root.dataset.mounted) return;

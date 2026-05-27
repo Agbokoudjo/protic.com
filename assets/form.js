@@ -60,7 +60,6 @@ window.addEventListener('DOMContentLoaded', () => {
             data.targetChildrenForm,
             data.message,
             'container-div-error-message');
-         console.log('field:validation:failed',data.message)
     });
 
     __form.on('field:validation:success', (event) => {

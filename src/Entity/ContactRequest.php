@@ -111,17 +111,17 @@ class ContactRequest
      * Exemples valides   : texte libre avec accents, ponctuation, chiffres.
      * Exemples invalides : "<b>texte</b>", "<?php echo 1;", texte < 20 chars.
      */
-    #[Assert\NotBlank(message: 'La biographie est obligatoire.')]
-    #[Assert\NotNull(message: 'La biographie ne peut pas être nulle.')]
+    #[Assert\NotBlank(message: 'Le contenue est obligatoire.')]
+    #[Assert\NotNull(message: 'Le contenue ne peut pas être nulle.')]
     #[Assert\Length(
         min: 20,
         max: 5000,
-        minMessage: 'La biographie doit contenir au moins {{ limit }} caractères.',
-        maxMessage: 'La biographie ne peut pas dépasser {{ limit }} caractères.',
+        minMessage: 'Le contenue doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le contenue ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\Regex(
-        pattern: '/<|>|<\?/',
-        message: 'La biographie ne peut pas contenir de balises HTML ou de code.',
+        pattern: '/<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{/ius',
+        message: 'Le contenu ne peut pas contenir de balises HTML, PHP ou JavaScript.',
         match: false,
     )]
     #[ORM\Column(type: Types::TEXT, length: 5000)]

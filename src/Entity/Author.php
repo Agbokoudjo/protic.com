@@ -6,6 +6,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\ApiResource\State\AuthorCachedProvider;
 use App\Repository\AuthorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,9 +24,11 @@ use Vich\UploaderBundle\Mapping\Attribute as Vich;
     operations: [
         new GetCollection(
              uriTemplate: 'authors',
-            normalizationContext: ['groups' => ['author:list']
-            ]),
-        new Get(normalizationContext: ['groups' => ['author:read']]),
+            normalizationContext: ['groups' => ['author:list']],
+            provider: AuthorCachedProvider::class),
+        new Get(
+            normalizationContext: ['groups' => ['author:read']],
+            provider: AuthorCachedProvider::class)
     ]
 )]
 #[Vich\Uploadable]
@@ -39,7 +42,6 @@ class Author
     #[ORM\GeneratedValue('IDENTITY')]
     #[ORM\Column(type: "integer")]
     #[Groups(['author:list', 'author:read', 'book:list', 'book:read'])]
-    
     private ?int $id = null;
 
     /**
@@ -91,8 +93,8 @@ class Author
         maxMessage: 'La biographie ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\Regex(
-        pattern: '/<|>|<\?/',
-        message: 'La biographie ne peut pas contenir de balises HTML ou de code.',
+        pattern: '/<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{/ius',
+        message: 'La biographie ne peut pas contenir de balises HTML, PHP ou JavaScript.',
         match: false,
     )]
     #[ORM\Column(type: Types::TEXT,length: 4000)]
@@ -116,10 +118,6 @@ class Author
         message: '{{ value }} n\'est pas une adresse email valide.',
         mode: 'html5',
     )]
-    #[Assert\Regex(
-        pattern: '/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/',
-        message: 'L\'adresse email contient des caractères non autorisés.',
-    )]
     #[Groups(['author:read', 'book:read', 'book:list'])]
     #[ORM\Column(type: "string", length: 200, unique: true)]
     protected ?string $email = null;
@@ -135,7 +133,7 @@ class Author
         maxWidth: 800,
         minHeight: 50,
         maxHeight: 800,
-        allowSquare:false,
+        allowSquare:true,
         extensions: ['jpg','png','jpeg','webp'],
         maxSize: '2M', // '2M' pour 2 Mégaoctets (SI) ou '2Mi' pour 2 Mébioctets (Binaire)
         mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
@@ -153,7 +151,7 @@ class Author
 
     #[Groups(['author:read', 'book:read', 'book:list'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    protected ?string $avatarName = null;
+    protected ?string $avatarName = null; 
 
     #[Assert\NotBlank(message: 'Le numéro de téléphone est obligatoire.')]
     #[Assert\NotNull(message: 'Le téléphone ne peut pas être nul.')]

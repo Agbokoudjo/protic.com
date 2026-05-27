@@ -104,8 +104,9 @@ class FaqFixtures extends Fixture
                 ->setAnswer($data['answer'])
                 ->setCategory($data['category'])
                 ->setPosition($data['position'])
-                ->setPublished(true);
-
+                ->setPublished(true)
+                ->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('UTC')))
+                    ;
             $faq->prePersist();
             $faq->preUpdate();
 

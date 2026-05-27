@@ -42,8 +42,8 @@ readonly class SerializerFacade
      * @param array<string, mixed> $context Contexte additionnel
      * @return T
      */
-    public function denormalize(mixed $data, string $type, array $context = []): mixed
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        return $this->denormalizer->denormalize($data, $type, null, $context);
+        return $this->denormalizer->denormalize($data, $type, $format, $context);
     }
 }

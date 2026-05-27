@@ -4,6 +4,7 @@ parameters:
      NAME_SITE: "ProTIC Editions & Services"
      app.site_name: "ProTIC Editions & Services"
      dkim_key: '%env(resolve:default::MAILER_DKIM)%'
+     app.env: "%env(APP_ENV)%"
      app.mail.from:
         system:
             address: '%env(APP_MAIL_FROM_SYSTEM)%'
@@ -22,6 +23,33 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Kernel.php'
+        lazy: true
+    App\Service\:
+        resource: '../src/Service/'
+        shared: true
+
+    App\ApiResource\:
+        resource: '../src/ApiResource/'
+        shared: true
+
+    App\Persistance\:
+        resource: '../src/Persistance/'
+        shared: true
+
+    App\Route\:
+        resource: '../src/Route/'
+        shared: true
+
+    App\Security\:
+        resource: '../src/Security/'
+        shared: true
+
+    App\Serializer\:
+        resource: '../src/Serializer/'
+        shared: true
+
+    App\QueueHandler\AsyncMethodDispatcher:
+        shared: true
 
     pentatrion_vite.asset_strategy_app:
         parent: Pentatrion\ViteBundle\Asset\ViteAssetVersionStrategy
@@ -128,6 +156,13 @@ services:
             $logger:                    '@logger'
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 900 }
+
+    App\Service\UserSessionManager:
+        arguments:
+            $redis: '@Redis'
+
+    App\Persistance\UserSessionManagerInterface:
+        alias: App\Service\UserSessionManager
 
 when@dev:
     services:

@@ -1,12 +1,13 @@
 // assets/react/controllers/ContactFormModal.jsx
-import React from 'react';
+import React, { useRef, useState }  from 'react';
 import Modal from "./Modal";
 import {useFormSubmission} from "./hooks";
 
 import { countries } from "countries-list";
 import { addParamToUrl } from '@wlindabla/form_validator';
+import { showErrorDialog } from '@wlindabla/form_validator/utils';
+import { formInputValidator } from '@wlindabla/form_validator/validation/core/router';
 
-// Construction de la liste complète
 const ALL_COUNTRIES = Object.entries(countries)
     .map(([code, data]) => {
         return { 
@@ -29,10 +30,57 @@ export default function ContactFormModal({
         throw new Error("Attention : bookId est manquant dans ContactFormModal !");
     }
 
-    const [isOpen, setIsOpen] = React.useState(false);
-    const formRef = React.useRef(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [errors, setErrors] = useState({});
+    const formRef = useRef(null);
+    const fullNameRef = useRef(null);
+    const emailRef = useRef(null);
+    const phoneRef = useRef(null);
+    const messageRef = useRef(null);
+
     const { submit, isLoading } = useFormSubmission(formRef, addParamToUrl("/api/contact-author"),isOpen);
 
+    const validateField = async (fieldName, value, type, options) => {
+        await formInputValidator.allTypesValidator(value, fieldName, type, options);
+        const v = formInputValidator.getValidator(fieldName);
+        const fieldErrors = v?.formErrorStore.getFieldErrors(fieldName) ?? [];
+        setErrors(prev => ({ ...prev, [fieldName]: fieldErrors[0] }));
+    };
+    // Gestion de la soumission du formulaire
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+
+        // Récupération des valeurs courantes
+        const fullName = fullNameRef.current?.value ?? '';
+        const email = emailRef.current?.value ?? '';
+        const phone = phoneRef.current?.value ?? '';
+        const message = messageRef.current?.value ?? '';
+
+        await Promise.all([
+            validateField('fullName', fullName,  'text',     validateFieldOptions("text")),
+            validateField('email',    email,     'email',    validateFieldOptions("email")),
+            validateField('phone',    phone,     'tel',      validateFieldOptions("tel")),
+            validateField('message',  message,   'textarea', validateFieldOptions("textarea"))
+        ]);
+
+        // Vérification si tous les champs sont valides
+        const fieldsToValidate = ['fullName', 'email', 'phone', 'message'];
+        const allValid = fieldsToValidate.every(f => {
+            const v = formInputValidator.getValidator(f);
+            return v?.formErrorStore.isFieldValid(f) ?? true;
+        });
+
+        // Si tout est valide, on laisse ton hook `useFormSubmission` envoyer les données
+        if (!allValid) {
+            await showErrorDialog({
+            title: "Erreur de validation",
+            message: "Certains champs sont invalides. Veuillez vérifier vos saisies."
+        });
+            return;
+        }
+
+        await submit(e);
+    };
     return (
         <React.Fragment>
             {/* Bouton déclencheur */}
@@ -73,7 +121,7 @@ export default function ContactFormModal({
                         action="api/contact-author"
                         name="contact"
                         ref={formRef} 
-                        onSubmit={submit}
+                        onSubmit={handleFormSubmit}
                         data-turbo="false"
                         style={{ background: "#F8F7F4", borderRadius: "10px", padding: "20px" }}
                         className="form-validate"
@@ -94,63 +142,75 @@ export default function ContactFormModal({
                             <label>Nom complet *</label>
                             <input
                                 type="text"
+                                onBlur={async (e) =>
+                                    await validateField('fullName', e.target.value, 'text', validateFieldOptions("text"))
+                                }
+                                onChange={() => setErrors(prev => ({ ...prev, fullName: undefined }))}
                                 id="contact_fullName" 
                                 name="fullName"
+                                 ref={fullNameRef}
                                 placeholder="Ex : AGBOKOUDJO Hounha Franck"
                                 data-position-lastname="right"
                                 data-event-validate-blur="blur"
                                 data-event-validate-input="input"
-                                pattern="^[\p{L}\p{N}\p{M}\s\-\.]{6,255}$"
+                                pattern="^[\p{L}\p{N}\p{M}\s]{6,255}$"
                                 data-escapestrip-html-and-php-tags="true"
-                                maxLength="255"
-                                minLength="6"
+                                maxlength="255"
+                                minlength="6"
                                 required
                                 data-error-message-input="Ce champ doit contenir uniquement des lettres alphabétiques"
                                 className="form-control"
                             />
-                            <span className="form-error" id="errName"></span>
+                            {errors.fullName && <span className="form-error text-danger" id="errName">{errors.fullName}</span>}
                         </div>
 
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label>Email *</label>
-                                <input
-                                    type="email"
-                                    data-type="email"
-                                    id="contact_email"
-                                    name="email"
-                                    placeholder="Ex : franck@gmail.com"
-                                    data-event-validate-blur="blur"
-                                    data-event-validate-input="input"
-                                    required
-                                    data-escapestrip-html-and-php-tags="false"
-                                    maxLength="200"
-                                    minLength="6"
-                                    data-error-message-input="Email invalide"
-                                    className="form-control"
-                                />
-                                <span className="form-error" id="errEmail"></span>
-                            </div>
-
-                            <div className="form-group">
-                                <label>Téléphone *</label>
-                                <input
-                                    type="tel"
-                                    data-type="tel"
-                                    id="contact_phone"
-                                    name="phone"
-                                    placeholder="+229 XX XX XX XX"
-                                    data-event-validate-blur="blur"
-                                    data-event-validate-input="input"
-                                    required
-                                    data-escapestrip-html-and-php-tags="true"
-                                    maxLength="80"
-                                    minLength="8"
-                                    data-error-message-input="Numéro de téléphone invalide"
-                                    className="form-control"
-                                />
-                                <span className="form-error" id="errPhone"></span>
-                            </div>
+                       <div className="form-group">
+                            <label>Email *</label>
+                            <input
+                                type="email"
+                                data-type="email"
+                                id="contact_email"
+                                 ref={emailRef}
+                                name="email"
+                                placeholder="Ex : franck@gmail.com"
+                                data-event-validate-blur="blur"
+                                data-event-validate-input="input"
+                                required
+                                data-escapestrip-html-and-php-tags="false"
+                                maxlength="200"
+                                minlength="6"
+                                data-error-message-input="Email invalide"
+                                className="form-control"
+                                onBlur={async (e) =>
+                                    await validateField('email', e.target.value, 'email', validateFieldOptions("email"))
+                                }
+                                onChange={() => setErrors(prev => ({ ...prev, email: undefined }))}
+                            />
+                            {errors.email && <span className="form-error text-danger" id="errEmail">{errors.email}</span>}
+                        </div>
+                        <div className="form-group">
+                            <label>Téléphone *</label>
+                            <input
+                                type="tel"
+                                data-type="tel"
+                                id="contact_phone"
+                                ref={phoneRef}
+                                name="phone"
+                                placeholder="+229 XX XX XX XX"
+                                data-event-validate-blur="blur"
+                                data-event-validate-input="input"
+                                required
+                                data-escapestrip-html-and-php-tags="true"
+                                maxlength="80"
+                                minlength="8"
+                                data-error-message-input="Numéro de téléphone invalide"
+                                className="form-control"
+                                 onBlur={async (e) =>
+                                    await validateField('phone', e.target.value, 'tel', validateFieldOptions("tel"))
+                                }
+                                onChange={() => setErrors(prev => ({ ...prev, phone: undefined }))}
+                            />
+                           {errors.phone && <span className="form-error text-danger" id="errPhone">{errors.phone}</span>}
                         </div>
                         <div className="form-group">
                             <label htmlFor="cf-country">Pays</label>
@@ -182,8 +242,8 @@ export default function ContactFormModal({
                                 data-event-validate-input="input"
                                 data-pattern="^[\p{L}\p{N}\p{M}\s\-\.\p{P}\,\(\)]+$"
                                 data-escapestrip-html-and-php-tags="true"
-                                maxLength="255"
-                                minLength="6"
+                                maxlength="255"
+                                minlength="6"
                                 style={{ background: "#EDECEA", cursor: "not-allowed" }}
                             />
                         </div>
@@ -196,15 +256,23 @@ export default function ContactFormModal({
                                 rows="5"
                                 data-event-validate-blur="blur"
                                 data-event-validate-input="input"
-                                data-pattern="^[\p{L}\p{M}\p{N}\s.,`\p{P}\n\r]+$"
+                                 data-type ='textarea'
+                                data-pattern= '^[^\u003C\u003E\u0060\u0000-\u001F\u007F]+$'
+                                data-match='false'
+                                data-flag-pattern ='us'
                                 data-escapestrip-html-and-php-tags="true"
-                                maxLength="4000"
-                                minLength="20"
+                                maxlength="4000"
+                                minlength="20"
+                                ref={messageRef}
                                 required
                                 placeholder="Précisez le nombre d'exemplaires souhaités et toute autre information utile..."
                                 className="form-control"
+                                 onBlur={async (e) =>
+                                    await validateField('message', e.target.value, 'textarea', validateFieldOptions("textarea"))
+                                }
+                                onChange={() => setErrors(prev => ({ ...prev,message: undefined }))}
                             />
-                            <span className="form-error" id="errMessage"></span>
+                            {errors.message && <span className="form-error text-danger" id="errMessage">{errors.message}</span>}
                         </div>
                     </form>
                 }
@@ -236,4 +304,99 @@ export default function ContactFormModal({
 }
 
 
+
+const validateFieldOptions=(type)=>{
+    switch(type){
+        case "text":
+            return { 
+                requiredInput: true,
+                minLength: 6, maxLength: 255,
+                regexValidator: /[\p{L}\p{M}\p{N}\s]/ui,
+                match: true,
+                escapestripHtmlAndPhpTags: true,
+                errorMessageInput: "Votre nom et prénoms sont invalides",
+                egAwait: "AGBOKOUDJO Franck",
+                typeInput: "text"
+             }
+        case "textarea":
+             return { 
+                requiredInput: true,
+                minLength: 20, maxLength: 4000,
+                regexValidator: new RegExp(
+            '(<[^>]*>|<\\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\\s*:|data\\s*:|vbscript\\s*:|on\\w+\\s*=|<\\?php|\\?>|\\{\\{|\\}\\}|\\$\\{)',
+            'ius'
+        ),
+                match: false,
+                escapestripHtmlAndPhpTags: true,
+                errorMessageInput: "Le message de votre commande est invalide",
+                typeInput: 'textarea',
+             }
+        case "email":
+             return { 
+                requiredInput: true, 
+                minLength: 6, maxLength: 200,
+                match:true,
+                escapestripHtmlAndPhpTags:false,
+                errorMessageInput: "votre addresse email est invalide",
+                typeInput: 'email',
+                hostBlacklist:_hostBlacklist,
+             }
+        case "tel":
+             return { 
+                requiredInput: true, 
+                minLength: 8, maxLength: 80,
+                match:true,
+                escapestripHtmlAndPhpTags:true,
+                errorMessageInput: "Numéro de téléphone invalide",
+                 typeInput: 'tel',
+                 defaultCountry: 'BJ',
+                egAwait: "+229 XX XX XX XX",
+             }
+        break ;
+        default:
+            return {}
+    }
+}
+
+const _hostBlacklist= [
+    // Classiques jetables
+    'tempmail.com', 'tempmail.org', 'tempmail.net',
+    'guerrillamail.com', 'guerrillamail.net', 'guerrillamail.org',
+    'guerrillamail.biz', 'guerrillamail.de', 'guerrillamail.info',
+    'mailinator.com', 'mailinator.net', 'mailinator.org',
+    'yopmail.com', 'yopmail.fr', 'yopmail.net',
+    'trashmail.com', 'trashmail.at', 'trashmail.me',
+    'trashmail.net', 'trashmail.org', 'trashmail.io',
+    'sharklasers.com', 'guerrillamailblock.com',
+    'grr.la', 'spam4.me', 'dispostable.com',
+
+    // 10minutemail & variantes
+    '10minutemail.com', '10minutemail.net', '10minutemail.org',
+    '10minutemail.co.uk', '10minutemail.de', '10minemail.com',
+
+    // Throwaway
+    'throwam.com', 'throwaway.email', 'throwam.com',
+    'fakeinbox.com', 'fake-box.com', 'maildrop.cc',
+    'spamgourmet.com', 'spamgourmet.net', 'spamgourmet.org',
+
+    // Autres populaires
+    'mailnull.com', 'spamcowboy.com', 'spamcowboy.net',
+    'spamcowboy.org', 'spamevader.com', 'getairmail.com',
+    'discard.email', 'spamfree24.org', 'spamfree24.de',
+    'spamfree24.eu', 'spamfree24.info', 'spamfree24.net',
+    'mailnew.com', 'spamex.com', 'binkmail.com',
+    'bobmail.info', 'chammy.info', 'devnullmail.com',
+    'fudgerub.com', 'jobbikmail.com', 'yuurok.com',
+    'discardmail.com', 'discardmail.de', 'spamspot.com',
+    'spamthisplease.com', 'tempinbox.com', 'tempr.email',
+    'discard.email', 'sharklasers.com', 'spam.la',
+    'inoutmail.de', 'inoutmail.eu', 'inoutmail.info',
+    'inoutmail.net', 'filzmail.com', 'weg-werf-email.de',
+    'wegwerfmail.de', 'wegwerfmail.net', 'wegwerfmail.org',
+    'meltmail.com', 'anonymbox.com', 'courriel.fr.nf',
+    'cool.fr.nf', 'jetable.fr.nf', 'nospam.ze.tc',
+    'nomail.xl.cx', 'mega.zik.dj', 'speed.1s.fr',
+    'courriel.fr.nf', 'iwi.net', 'jetable.net',
+    'jetable.org', 'nospam.ze.tc',
+]
 

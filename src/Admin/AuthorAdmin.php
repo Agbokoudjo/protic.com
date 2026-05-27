@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Entity\Author;
+use App\Repository\AuthorRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -55,7 +56,9 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 )]
 final class AuthorAdmin extends WlindablaAdmin
 {
-    public function __construct()
+    public function __construct(
+        private readonly AuthorRepository $authorRepository
+    )
     {
         parent::__construct(
             "list__app_admin_author",
@@ -90,6 +93,21 @@ final class AuthorAdmin extends WlindablaAdmin
             return;
         }
         $object->preUpdate();
+    }
+
+    protected function postPersist(object $object): void
+    {
+        $this->authorRepository->invalidateForEntity($object);
+    }
+    
+    protected function postUpdate(object $object): void
+    {
+        $this->authorRepository->invalidateForEntity($object);
+    }
+
+    protected function postRemove(object $object): void
+    {
+        $this->authorRepository->invalidateForEntity($object);
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
@@ -326,18 +344,10 @@ final class AuthorAdmin extends WlindablaAdmin
                     'rows'                               => 6,
                     'minlength'                          => 20,
                     'maxlength'                          => 4000,
-                    'data-type'=>'textarea',
-                    // Regex JS — whitelist inversée :
-                    // ^ = début, [\s\S] = tout caractère y compris \n (multilignes)
-                    // [^<>] = tout sauf < et >
-                    // {20,4000} = longueur incluse pour JS (pas de Assert\Length côté client)
-                    // Pas de flag /s nécessaire car [\s\S] gère déjà le multilignes
-                    'data-pattern'                       => '^[^<>]{20,4000}$',
-
-                    // Flags JS séparés — 'u' pour Unicode, pas besoin de 's' avec [\s\S]
-                    // Si ta lib supporte data-flag-pattern :
-                    'data-flag-pattern'                  => 'us',
-
+                    'data-type'                          => 'textarea',
+                     'data-pattern'      => '<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{',
+                    'data-match'        => 'false',
+                    'data-flag-pattern' => 'ius',
                     'data-escapestrip-html-and-php-tags' => 'true',
                     'data-event-validate-blur'           => 'blur',
                     'data-event-validate-input'          => 'input',
@@ -407,6 +417,14 @@ final class AuthorAdmin extends WlindablaAdmin
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->remove('export');
+        
+    }
+
+    protected function configureExportFields(): array
+    {
+        return array_merge(
+            parent::configureExportFields(),
+            ["books.title"]
+        );
     }
 }

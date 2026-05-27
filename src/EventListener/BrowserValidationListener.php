@@ -89,10 +89,6 @@ final readonly class BrowserValidationListener
         $this->logBlockedRequest($request, $clientMessage, $reasonCode);
     }
 
-    // -------------------------------------------------------------------------
-    // Filtrage des chemins
-    // -------------------------------------------------------------------------
-
     /**
      * Détermine si le chemin doit être soumis à la validation navigateur.
      *
@@ -154,10 +150,6 @@ final readonly class BrowserValidationListener
         // Par défaut : ne pas valider les pages publiques (accueil, blog…)
         return false;
     }
-
-    // -------------------------------------------------------------------------
-    // Logging
-    // -------------------------------------------------------------------------
 
     /**
      * Enregistre la requête bloquée avec tous les détails utiles pour l'investigation.

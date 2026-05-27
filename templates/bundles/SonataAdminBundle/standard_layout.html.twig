@@ -128,6 +128,7 @@ file that was distributed with this source code.
     {% endblock %}
     {% block javascripts %}
          {{ vite_entry_script_tags('sonata',[],'admin') }}
+          {{ vite_entry_script_tags('base_sonata_admin',[],'admin') }}
         {% block sonata_javascript_config %}{% endblock %}
         {% block sonata_javascript_pool %}
             {# {% for javascript in sonata_config.getOption('javascripts', []) %}

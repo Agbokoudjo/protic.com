@@ -17,17 +17,13 @@ framework:
                     max_retries: 4
                     multiplier: 2
               
+            # messenger.yaml
             async:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
-                    # ssl:
-                    #     allow_self_signed: true
-                    #     capture_peer_cert: true
-                    #     capture_peer_cert_chain: true
-                    #     disable_compression: true
-                    #     SNI_enabled: true
-                    #     verify_peer: true
-                    #     verify_peer_name: true
+                    group: 'symfony_async'
+                    delete_after_ack: true
+                    lazy: true
                 retry_strategy:
                     max_retries: 4
                     multiplier: 2

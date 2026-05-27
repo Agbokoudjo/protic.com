@@ -42,7 +42,7 @@ class UserProvider implements UserProviderInterface
         #[Target('session.cache_pool')]
         private  TagAwareCacheInterface $userCacheProvider,
         private SerializerFacade $serializer,
-        private AsyncMethodDispatcherInterface $asyncDispatcher
+        private AsyncMethodDispatcherInterface $asyncMethodDispatcher
     ) {}
 
     /**
@@ -59,7 +59,7 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByIdentifier(string $identifier): SecurityUserInterface
     {
-        $this->asyncDispatcher->dispatch(
+        $this->asyncMethodDispatcher->dispatch(
             LoggerInterface::class,
             'debug',
             [
@@ -87,7 +87,9 @@ class UserProvider implements UserProviderInterface
         });
 
         // Désérialiser en objet User
-        $userDenormalize = $this->serializer->denormalize($userData, $this->userManager->getClass(), ['groups' => ['user:cache', 'user:security']]);
+        $userDenormalize = $this->serializer->denormalize($userData, 
+            $this->userManager->getClass(),"json", 
+            ['groups' => ['user:cache', 'user:security']]);
 
         if (null === $userDenormalize || !$userDenormalize->isEnabled()) {
             throw new UserNotFoundException(\sprintf('Username "%s" does not exist.', $identifier));
@@ -132,9 +134,11 @@ class UserProvider implements UserProviderInterface
                 ]);
             });
 
-            return $this->serializer->denormalize($userData, $this->userManager->getClass(), ['groups' => ['user:cache', 'user:security']]);
+            return $this->serializer->denormalize($userData, 
+            $this->userManager->getClass(), "json", 
+            ['groups' => ['user:cache', 'user:security']]);
         } catch (\Throwable $th) {
-            $this->asyncDispatcher->dispatch(
+            $this->asyncMethodDispatcher->dispatch(
                 LoggerInterface::class,
                 'error',
                 [

@@ -19,6 +19,14 @@ final class HomeController extends AbstractController
 {
     public function __invoke(): Response
     {
-        return $this->render('index.html.twig');
+        $response = $this->render('index.html.twig');
+
+        if ($this->getParameter('app.env') === 'prod') {
+            $response->setPublic();
+            $response->setMaxAge(604800);        
+            $response->setSharedMaxAge(604800);  
+        }
+
+        return $response;
     }
 }

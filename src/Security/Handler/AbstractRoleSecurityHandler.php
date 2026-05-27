@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
  * @package <https://github.com/Agbokoudjo/>
  */
-class AbstractRoleSecurityHandler implements SecurityHandlerInterface
+abstract class AbstractRoleSecurityHandler implements SecurityHandlerInterface
 {
 
     public function __construct(private AuthorizationCheckerInterface $authorizationChecker) {}
@@ -76,7 +76,8 @@ class AbstractRoleSecurityHandler implements SecurityHandlerInterface
         $attributes = $this->mapAttributes($attributes, $admin);
         $allRole = \sprintf($this->getBaseRole($admin), 'ALL');
         try {
-            return $this->isAnyGranted($attributes, $object)
+            return $this->isAnyGranted(["ROLE_SUPER_ADMIN"], $object)
+                  || $this->isAnyGranted($attributes, $object)
                 || ($useAll && $this->isAnyGranted([$allRole], $object));
         } catch (AuthenticationCredentialsNotFoundException) {
             return false;

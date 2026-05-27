@@ -6,7 +6,7 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import { disableUserInteractions,config } from './utils';
 import { mountFooter } from "./react/lazy-mount.jsx"
 import jQuery from 'jquery';
-import { Logger,appTranslation, toBoolean } from "@wlindabla/form_validator";
+import { Logger,appTranslation} from "@wlindabla/form_validator";
 
 window.jQuery = jQuery;
 window.$ = jQuery;
@@ -166,8 +166,6 @@ function bootstrapHandler() {
 }
     
 async function translation() {
-    window.SonataTranslator = appTranslation;
-
      // Récupère le hash actuel des traductions
     const currentHash = document.querySelector('meta[name="sonata-translations-hash"]').getAttribute('content');
     const cachedHash = localStorage.getItem('sonata_translations_hash');
@@ -179,4 +177,5 @@ async function translation() {
     }
 
     await appTranslation.preload('sonata-translations');
+    window.SonataTranslator = appTranslation;
 }

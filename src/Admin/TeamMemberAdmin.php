@@ -182,16 +182,17 @@ final class TeamMemberAdmin extends WlindablaAdmin
                         'placeholder'                        => 'Courte biographie affichée sur la page À propos...',
                         'rows'                               => 5,
                         'maxlength'                          => 1000,
-                        'data-escapestrip-html-and-php-tags' => true,
-                         'data-pattern'                       => '/<|>|<\?/',
-                         'data-match'=>'false',
-                         'data-type'=>"textarea",
+                        'data-escapestrip-html-and-php-tags' => "true",
+                        'data-type'                          => 'textarea',
+                        'data-pattern'      => '<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{',
+                        'data-match'        => 'false',
+                        'data-flag-pattern' => 'ius',
                         'data-event-validate-blur'           => 'blur',
                         'data-event-validate-input'          => 'input',
                         'data-error-message-input'           => 'Maximum 1000 caractères.',
                     ],
                     'help'     => 'Maximum 1 000 caractères.',
-                ])
+                ]) 
             ->end()
             ->with('Média & Paramètres', [
                 'class'       => 'col-md-6',
@@ -334,6 +335,7 @@ final class TeamMemberAdmin extends WlindablaAdmin
                     'delete' => [],
                     'toggle_visible_team_member' => [
                         'template' => 'bundles/SonataAdminBundle/CRUD/list_action_toggle_visible_team_member.html.twig',
+                        'roles'=>["ROLE_SUPER_ADMIN","ROLE_FOUNDER","ROLE_DIRECTOR"]
                     ],
                 ],
             ]);
@@ -400,12 +402,12 @@ final class TeamMemberAdmin extends WlindablaAdmin
      */
     final public function createToggleVisibleAction(TeamMember $object): ?array
     {
-        if (!$this->isGranted('ROLE_SUPER_ADMIN') || 
+        /*if (!$this->isGranted('ROLE_SUPER_ADMIN') || 
             !$this->isGranted('ROLE_FOUNDER') ||
             !$this->isGranted('ROLE_DIRECTOR') 
         ) {
             return null ;
-        }
+        }*/
 
         $isVisible = $object->isVisible();
 

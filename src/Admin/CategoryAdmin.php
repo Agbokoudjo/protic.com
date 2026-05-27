@@ -16,17 +16,18 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Entity\Category;
+use App\Repository\CategoryRepository;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\DoctrineORMAdminBundle\Filter\StringFilter ;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Sonata\DoctrineORMAdminBundle\Filter\StringFilter ;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 #[AutoconfigureTag(
     name: 'sonata.admin',
@@ -47,7 +48,9 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
  */
 final class CategoryAdmin extends WlindablaAdmin
 {
-    public function __construct(private readonly SluggerInterface $slugger){
+    public function __construct(
+        private readonly CategoryRepository $categoryRepository,
+        private readonly SluggerInterface $slugger){
         parent::__construct(
             "app_admin_category", 
             "app_admin_category", 
@@ -107,6 +110,21 @@ final class CategoryAdmin extends WlindablaAdmin
         $object->preUpdate();
     }
 
+    protected function postPersist(object $object): void
+    {
+        $this->categoryRepository->invalidateForEntity($object);
+    }
+
+    protected function postUpdate(object $object): void
+    {
+        $this->categoryRepository->invalidateForEntity($object);
+    }
+
+    protected function postRemove(object $object): void
+    {
+        $this->categoryRepository->invalidateForEntity($object);
+    }
+
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -157,35 +175,40 @@ final class CategoryAdmin extends WlindablaAdmin
             ])
             ->add('name', TextType::class, [
                 'label'    => 'Nom de la catégorie',
-                'required' => true, 
+                'required' => true,
                 'attr'     => [
-                    'placeholder' => 'Ex: Roman, Poésie, Théâtre...',
-                    'autocomplete' => 'on',
-                    'minlength' => 3,
-                    'maxlength' => 100,
-                    'data-pattern' => '^[\p{L}\p{N}\s\-\p{P}]+$',
-                    'data-eg-await' => 'Roman, Poésie, Théâtre',
+                    'placeholder'                        => 'Ex: Roman, Poésie, Théâtre...',
+                    'autocomplete'                       => 'on',
+                    'minlength'                          => 3,
+                    'maxlength'                          => 100,
+                    'data-type'                          => 'text',
+                    'data-match'                         => 'false',
+                    'data-pattern'                       => '^[^\u003C\u003E\u0060\u0000-\u001F\u007F\u200B-\u200D\uFEFF\u0023\u0024\u005E\u007B\u007C\u007D]$',
+                    'data-flag-pattern'                  => 'us',
+                    'data-eg-await'                      => 'Roman, Poésie, Théâtre',
                     'data-escapestrip-html-and-php-tags' => 'true',
-                    'data-event-validate-blur' => 'blur',
-                    'data-event-validate-input' => 'input',
-                'data-error-message-input'=> 'Le nom ne peut contenir que des lettres, chiffres, espaces, tirets'
+                    'data-event-validate-blur'           => 'blur',
+                    'data-event-validate-input'          => 'input',
+                    'data-error-message-input'           => 'Le nom ne peut pas contenir de balises HTML ou symboles dangereux. Entre 3 et 100 caractères.',
                 ],
             ])
             ->add('slug', TextType::class, [
                 'label'    => 'Slug (URL)',
                 'required' => false,
                 'attr'     => [
-                    'placeholder' => 'Généré automatiquement si vide',
-                    'maxlength' => 120,
-                    'data-pattern' => '^[a-z0-9]+(?:-[a-z0-9]+)*$',
-                    'data-eg-await' => 'bande-dessinee roman',
+                    'placeholder'                        => 'Généré automatiquement si vide',
+                    'maxlength'                          => 120,
+                    'data-type'                          => 'text',
+                    'data-match'                         => 'true',
+                    'data-pattern'                       => '^[a-z0-9]+(?:-[a-z0-9]+)*$',
+                    'data-flag-pattern'                  => 'u',
+                    'data-eg-await'                      => 'bande-dessinee roman',
                     'data-escapestrip-html-and-php-tags' => 'true',
-                    'data-event-validate-blur' => 'blur',
-                    'data-event-validate-input' => 'input',
-                    'data-flag-pattern'=>'u',
-                'data-error-message-input'=> 'Le slug ne peut contenir que des lettres minuscules, des chiffres et des tirets (sans tiret en début, fin ou consécutifs).'
+                    'data-event-validate-blur'           => 'blur',
+                    'data-event-validate-input'          => 'input',
+                    'data-error-message-input'           => 'Le slug ne peut contenir que des lettres minuscules, des chiffres et des tirets (sans tiret en début, fin ou consécutifs).',
                 ],
-                'help'     => 'Laissez vide pour générer automatiquement depuis le nom.',
+                'help' => 'Laissez vide pour générer automatiquement depuis le nom.',
             ])
             ->end()
             ->with('Icône', [
@@ -197,16 +220,19 @@ final class CategoryAdmin extends WlindablaAdmin
                 'label'    => 'Emoji / Icône',
                 'required' => false,
                 'attr'     => [
-                    'placeholder' => 'Ex: 📖 ✍️ 🎭',
-                    'maxlength'   => 10,
-                    'data-pattern' => '^[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}\x{FE00}-\x{FEFF}\x{1F1E0}-\x{1F1FF}\x{200D}\x{20E3}]{1,10}*$',
-                    'data-eg-await' => 'bande-dessinee roman',
+                    'placeholder'                        => 'Ex: 📖 ✍️ 🎭',
+                    'maxlength'                          => 10,
+                    'data-type'                          => 'text',
+                    'data-match'                         => 'true',
+                    'data-pattern'                       => '^[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FEFF}\u{1F1E0}-\u{1F1FF}\u{200D}\u{20E3}\u{FE0F}]$',
+                    'data-flag-pattern'                  => 'u',
+                    'data-eg-await'                      => '📖',
                     'data-escapestrip-html-and-php-tags' => 'true',
-                    'data-event-validate-blur' => 'blur',
-                    'data-event-validate-input' => 'input',
-                'data-error-message-input'=> 'L\'icône doit être un ou plusieurs emojis valides (max 3).'
+                    'data-event-validate-blur'           => 'blur',
+                    'data-event-validate-input'          => 'input',
+                    'data-error-message-input'           => 'L\'icône doit être un ou plusieurs emojis valides (max 3).',
                 ],
-                'help'     => 'Copiez-collez un emoji représentant la catégorie.',
+                'help' => 'Copiez-collez un emoji représentant la catégorie.',
             ])
             ->end();
     }

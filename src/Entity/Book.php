@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\ApiResource\State\BookCachedProvider;
 use App\Repository\BookRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,17 +30,19 @@ use Vich\UploaderBundle\Mapping\Attribute as Vich;
             paginationItemsPerPage: 12,      // défaut catalogue
             paginationClientItemsPerPage: true, // ?itemsPerPage=6 autorisé
             paginationMaximumItemsPerPage: 24,
+            provider: BookCachedProvider::class,
         ),
         // Détail — utilisé si besoin d'une page livre seule
         new Get(
             normalizationContext: ['groups' => ['book:read']],
-        ),
+            provider: BookCachedProvider::class,
+        ), 
     ]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['publishedAt' => 'DESC', 'title' => 'ASC'])]
-#[ApiFilter(SearchFilter::class, properties: ['category.slug' => 'exact', 'author.fullName' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: ['category.slug' => 'partial', 'author.fullName' => 'partial'])]
 #[Vich\Uploadable]
-#[Gedmo\SoftDeleteable]
+#[Gedmo\SoftDeleteable] 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[UniqueEntity(fields: ['isbn'], message: 'Ce numéro ISBN est déjà enregistré pour un autre ouvrage.')]
 final class Book
@@ -52,30 +55,50 @@ final class Book
     private ?int $id = null;
 
     #[Groups(['book:list', 'book:read'])]
-    #[Assert\NotBlank(message: "Le titre est obligatoire.")]
-    #[Assert\Length(min: 4, max: 255, minMessage: "Le titre doit faire au moins {{ limit }} caractères.")]
     #[Assert\NotNull]
+    #[Assert\NotBlank(message: 'Le titre est obligatoire.')]
+    #[Assert\Length(
+        min: 4,
+        max: 255,
+        minMessage: 'Le titre doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le titre ne peut pas dépasser {{ limit }} caractères.',
+    )]
     #[Assert\Regex(
-        pattern: '/^[\p{L}\p{N}\s\-\'\.\(\)]+$/u',
-        match:true,
-        message: "Le titre contient des caractères non autorisés."
+        pattern: '/[<>`\x00-\x1F\x7F\x{200B}-\x{200D}\x{FEFF}#$^{|}]/u',
+        message: 'Le titre contient des caractères interdits.',
+        match: false,
     )]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
     #[Groups(['book:list', 'book:read'])]
-    #[Assert\Length(max: 255)]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le sous-titre ne peut pas dépasser {{ limit }} caractères.',
+    )]
+    #[Assert\Regex(
+        pattern: '/[<>`\x00-\x1F\x7F\x{200B}-\x{200D}\x{FEFF}#$^{|}]/u',
+        message: 'Le sous-titre contient des caractères interdits.',
+        match: false,
+    )]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $subtitle = null;
 
     #[Groups(['book:read'])] // résumé complet seulement sur book:read (modale)
     #[Assert\NotNull]
     #[Assert\NotBlank(message: "Le résumé ne peut pas être vide.")]
-    #[Assert\Length(min: 100, minMessage: "Le résumé est trop court (min 100 caractères).")]
+    #[Assert\Length(
+        min: 100,
+        max: 10000,
+        minMessage: 'Le résumé doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le résumé ne peut pas dépasser {{ limit }} caractères.',
+    )]
     #[Assert\Regex(
-        pattern: '/^[^<>]+$/u', 
-        message: "Le résumé ne doit pas contenir de balises HTML.")]
-    #[ORM\Column(type: Types::TEXT)]
+        pattern: '/<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{/ius',
+        message: 'Le contenu ne peut pas contenir de balises HTML, PHP ou JavaScript.',
+        match: false,
+    )]
+    #[ORM\Column(type: Types::TEXT,length:10000)]
     private ?string $summary = null;
 
     #[Groups(['book:list', 'book:read'])]
@@ -103,19 +126,35 @@ final class Book
     private ?File $coverFile = null;
 
     #[Groups(['book:read'])]
-    #[Assert\Length(max: 50)]
-    #[Assert\Isbn(
-        type: null,
-        message: "Le numéro ISBN saisi n'est pas un code ISBN valide.",
+    #[Assert\Length(max: 17)]
+    #[Assert\When(
+        expression: 'this.getIsbn() !== null && this.getIsbn() !== ""',
+        constraints: [
+            new Assert\Length(
+                max: 17,
+                maxMessage: 'Le code ISBN ne peut pas dépasser {{ limit }} caractères.',
+            ),
+            new Assert\Isbn(
+                type: null,         // ← détecte automatiquement ISBN-10 ou ISBN-13
+                message: "Le numéro ISBN « {{ value }} » n'est pas valide.",
+            ),
+        ]
     )]
-    #[ORM\Column(length: 50, nullable: true)]
+    #[ORM\Column(length: 17, nullable: true)]
     private ?string $isbn = null;
 
     #[Groups(['book:list', 'book:read'])]
-    #[Assert\LessThanOrEqual('today', message: "La date de parution ne peut pas être dans le futur.")]
-    #[Assert\Type("\DateTimeInterface")]
-    #[ORM\Column(nullable: true)]
-    private ?\DateTime $publishedAt = null;
+    #[Assert\LessThanOrEqual(
+        value: 'today',
+        message: 'La date de parution ne peut pas être dans le futur.',
+    )]
+    #[Assert\GreaterThanOrEqual(
+        value: '1450-01-01',                      // cohérent avec data-min-date
+        message: 'La date de parution semble invalide.',
+    )]
+    #[Assert\Type(\DateTimeInterface::class)] 
+    #[ORM\Column(nullable: true, type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $publishedAt = null;
 
     #[ORM\Column(type: "datetime_immutable")]
     private ?\DateTimeInterface $createdAt = null;
@@ -140,6 +179,21 @@ final class Book
     )]
     #[ORM\JoinColumn(nullable: false, onDelete: 'RESTRICT')]
     private ?Category $category = null;
+
+    #[Groups(['book:list', 'book:read'])]
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    private ?string $slug = null;
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+        return $this;
+    }
 
     public function getId(): ?int
     {

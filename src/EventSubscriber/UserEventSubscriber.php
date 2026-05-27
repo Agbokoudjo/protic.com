@@ -79,7 +79,7 @@ final  class UserEventSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly TeamMemberRepository $teamMemberRepository,
-        private readonly AsyncMethodDispatcherInterface $enqueueMethod,
+        private readonly AsyncMethodDispatcherInterface $asyncMethodDispatcher,
         private readonly UserProvider $userProvider,
         private readonly ParameterBagInterface $parameterBag
         ) {}
@@ -106,7 +106,7 @@ final  class UserEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->enqueueMethod->dispatch(TeamMemberSyncHandler::class, 'createOrUpdateTeamMember', [$entity->getId()]);
+        $this->asyncMethodDispatcher->dispatch(TeamMemberSyncHandler::class, 'createOrUpdateTeamMember', [$entity->getId()]);
     }
 
     final public function preUpdate(PersistenceEvent $event):void {
@@ -116,7 +116,7 @@ final  class UserEventSubscriber implements EventSubscriberInterface
 
         $plainPassword = $adminUser->getPlainPassword();
         if ($plainPassword) {
-            $this->enqueueMethod->dispatch(
+            $this->asyncMethodDispatcher->dispatch(
                 UpdatePasswordUserHandler::class,
                 'handle',
                 [
@@ -154,7 +154,7 @@ final  class UserEventSubscriber implements EventSubscriberInterface
 
         // ── Dispatch async avec délai ─────────────────────────────────────────
         if (!$adminUser->isMember()) {
-            $this->enqueueMethod->dispatch(
+            $this->asyncMethodDispatcher->dispatch(
                 TeamMemberSyncHandler::class,
                 'deactivateTeamMember',
                 [$userId],
@@ -163,7 +163,7 @@ final  class UserEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->enqueueMethod->dispatch(
+        $this->asyncMethodDispatcher->dispatch(
             TeamMemberSyncHandler::class,
             'createOrUpdateTeamMember',
             [$userId],
@@ -182,7 +182,7 @@ final  class UserEventSubscriber implements EventSubscriberInterface
     
     private function dispatchUpdateCommand(BaseUserInterface $entity): void
     {
-        $this->enqueueMethod->dispatch(UpdateUserProfileHandler::class, 'handle', [$entity->getId()]);
+        $this->asyncMethodDispatcher->dispatch(UpdateUserProfileHandler::class, 'handle', [$entity->getId()]);
     }
 
     /**

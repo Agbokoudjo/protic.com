@@ -33,7 +33,7 @@ final class SonataUserRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $managerRegistry,
         #[Target('data.respository.cache')]
-        private readonly  TagAwareCacheInterface $dataCacheUser,
+        private readonly  TagAwareCacheInterface $tagAwareCache,
        ){
         parent::__construct($managerRegistry, SonataUser::class);
     }
@@ -72,7 +72,7 @@ final class SonataUserRepository extends ServiceEntityRepository
     public function findByUserWithExcludRole(array $exclude_roles = ['ROLE_FOUNDER', 'ROLE_SUPER_ADMIN']): array
     {
         $cache_key_admin_user = join("_", $exclude_roles) . '_';
-        return $this->dataCacheUser->get($cache_key_admin_user, function (ItemInterface $item) use ($exclude_roles): array {
+        return $this->tagAwareCache->get($cache_key_admin_user, function (ItemInterface $item) use ($exclude_roles): array {
             $item->tag(['admin_user_cache']);
 
             $queryBuilder = $this->createQueryBuilderForEnabledUsersExcludingRoles($exclude_roles);
@@ -92,7 +92,7 @@ final class SonataUserRepository extends ServiceEntityRepository
     public function invalidateCache(): void
     {
         try {
-            $this->dataCacheUser->invalidateTags(['admin_user_cache']);
+            $this->tagAwareCache->invalidateTags(['admin_user_cache']);
         } catch (\InvalidArgumentException $e) {
             return; //on laisse silencieusement l'exception pour ne pas bloquer l'application
         }

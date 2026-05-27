@@ -37,13 +37,17 @@ final class ContactController extends AbstractController
         Request $request,
         #[Target('manuscript_upload')]
         RateLimiterFactoryInterface $manuscriptUploadLimiter,
-        ProcessingErrorFormHandle $formErrorHandle): Response
+        ProcessingErrorFormHandle $formErrorHandle
+        ): Response
     {
-        $limiter = $manuscriptUploadLimiter->create($request->getClientIp());
-        if (false === $limiter->consume(1)->isAccepted()) {
-            throw new TooManyRequestsHttpException(
-                retryAfter: 60,
-                message:'Trop de tentatives. Réessayez après.');
+        if($this->getParameter('app.env') ==="prod"){
+            $limiter = $manuscriptUploadLimiter->create($request->getClientIp());
+            if (false === $limiter->consume(1)->isAccepted()) {
+                throw new TooManyRequestsHttpException(
+                    retryAfter: 60,
+                    message: 'Trop de tentatives. Réessayez après.'
+                );
+            }
         }
         
         $submission = new ManuscriptSubmission();

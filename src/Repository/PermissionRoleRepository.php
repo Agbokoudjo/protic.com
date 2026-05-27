@@ -34,7 +34,7 @@ final class PermissionRoleRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $managerRegistry,
         #[Target('data.respository.cache')]
-        private readonly  TagAwareCacheInterface $dataCachePermissionRole
+        private readonly  TagAwareCacheInterface $tagAwareCache
         )
     {
         parent::__construct($managerRegistry, PermissionRole::class);
@@ -65,8 +65,8 @@ final class PermissionRoleRepository extends ServiceEntityRepository
     public function getPermissionRoleCreatedByUser(BaseUserInterface $adminUser): array
     {
         $permission_cache_key = $this->permissionCacheKey($adminUser, 'user_permission_role_created_by_role_user');
-
-        return $this->dataCachePermissionRole->get(
+        
+        return $this->tagAwareCache->get(
             $permission_cache_key,
             function (ItemInterface $item) use ($adminUser): array {
                 $item->tag(['permission_role_' . $adminUser->getId()]);
@@ -91,7 +91,7 @@ final class PermissionRoleRepository extends ServiceEntityRepository
     {
         $permission_cache_key = $this->permissionCacheKey($adminUser, 'user_permission_role_inner_with_join');
 
-        return $this->dataCachePermissionRole->get(
+        return $this->tagAwareCache->get(
             $permission_cache_key,
             function (ItemInterface $item) use ($adminUser): array {
                 $item->tag(['permission_role_' . $adminUser->getId()]);
@@ -118,7 +118,7 @@ final class PermissionRoleRepository extends ServiceEntityRepository
     {
         $permission_cache_key = $this->permissionCacheKey($adminUser, 'user_permission_role_indexed');
 
-        return $this->dataCachePermissionRole->get(
+        return $this->tagAwareCache->get(
             $permission_cache_key,
             function (ItemInterface $item) use ($adminUser): array {
                 $item->tag(['permission_role_' . $adminUser->getId()]);
@@ -159,7 +159,7 @@ final class PermissionRoleRepository extends ServiceEntityRepository
     public function clearCacheForUser(BaseUserInterface $adminUser): void
     {
         try {
-            $this->dataCachePermissionRole->invalidateTags(['permission_role_' . $adminUser->getId()]);
+            $this->tagAwareCache->invalidateTags(['permission_role_' . $adminUser->getId()]);
         } catch (\InvalidArgumentException $InvalidTagsException) {
             return; //on ne fait rien 
         }

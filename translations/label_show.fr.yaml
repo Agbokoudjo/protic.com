@@ -9,3 +9,4 @@ permission_role: DÉTAIL SUR LE RÔLE
 user_permission_role: "DÉTAIL SUR LA RESPONSABILTÉ ATTRIBUÉE  "
 user_permission_role_admin: À L'ADMINISTRATEUR
 user_permission_role_member: AU MEMBRE
+user_session: "Détails de la session utilisateur de %name% "

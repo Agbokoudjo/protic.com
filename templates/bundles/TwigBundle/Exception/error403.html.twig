@@ -1,30 +1,330 @@
-{# templates/bundles/TwigBundle/Exception/error403.html.twig #}
-{% set base = layout|default('@SonataAdmin/standard_layout.html.twig') %}
+{#
+  templates/bundles/TwigBundle/Exception/error403.html.twig
+  ProTIC Editions & Services
+
+  Logique duale :
+    - Si `layout` est définie (injectée par SonataAdmin lors d'une requête admin)
+      → étend le layout Sonata → rendu admin inchangé.
+    - Sinon (partie publique du site)
+      → étend base.html.twig → rendu ProTIC avec la charte graphique du site.
+
+  Le bloc `sonata_admin_content` est vide côté public (SonataAdmin ne le cherche pas).
+  Le bloc `body` est vide côté admin (base.html.twig ne le cherche pas via Sonata).
+#}
+{% set is_admin = layout is defined and layout is not empty %}
+{% set base     = is_admin
+    ? (layout|default('@SonataAdmin/standard_layout.html.twig'))
+    : 'base.html.twig' %}
+
 {% extends base %}
-{% block title %}{{ 'title_403' |trans([],'Access_Denied', app.locale) }} (403) {% endblock %}
+
+{# ── Titre ────────────────────────────────────────────────────────── #}
+{% block title %}
+    {% if is_admin %}
+        {{ 'title_403'|trans([], 'Access_Denied', app.locale) }} (403)
+    {% else %}
+        Accès refusé (403) — ProTIC Editions & Services
+    {% endif %}
+{% endblock %}
+
+{# ── CSS public (ignoré côté admin) ──────────────────────────────── #}
+{% block stylesheets %}
+    {{ parent() }}
+    {% if not is_admin %}
+    <style>
+        .pe-403 {
+            min-height: calc(100vh - 124px);
+            background: linear-gradient(155deg, #07101f 0%, #0d1f4e 40%, #1a0a2e 70%, #120d40 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 1.5rem;
+        }
+        .pe-403__glow {
+            position: absolute;
+            width: 500px; height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(220,50,50,0.12) 0%, transparent 70%);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none; z-index: 0;
+        }
+        .pe-403__dots {
+            position: absolute;
+            width: 110px; height: 110px;
+            opacity: 0.11;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px);
+            background-size: 14px 14px;
+            pointer-events: none;
+        }
+        .pe-403__dots--tr { top: 8%; right: 5%; }
+        .pe-403__dots--bl { bottom: 10%; left: 5%; }
+        .pe-403__inner {
+            position: relative; z-index: 1;
+            max-width: 620px; width: 100%;
+            text-align: center;
+        }
+        .pe-403__icon {
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            width: 78px; height: 78px;
+            border-radius: 50%;
+            background: rgba(220,50,50,0.10);
+            border: 1px solid rgba(220,50,50,0.30);
+            margin: 0 auto 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+        .pe-403__icon svg {
+            width: 36px; height: 36px;
+            stroke: #f06060; stroke-width: 1.5;
+            stroke-linecap: round; stroke-linejoin: round; fill: none;
+        }
+        .pe-403__badge {
+            display: inline-flex;
+            align-items: center; gap: 6px;
+            padding: 4px 14px; border-radius: 999px;
+            background: rgba(220,50,50,0.10);
+            border: 1px solid rgba(220,50,50,0.28);
+            color: rgba(255,180,180,0.80);
+            font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        .pe-403__badge::before {
+            content: ''; width: 6px; height: 6px;
+            border-radius: 50%; background: #f06060; display: inline-block;
+        }
+        .pe-403__code {
+            font-size: clamp(7rem, 22vw, 13rem);
+            font-weight: 800; line-height: 1;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #ffa8a8 0%, #f06060 50%, #c02020 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            user-select: none;
+            filter: drop-shadow(0 0 40px rgba(220,50,50,0.35));
+        }
+        .pe-403__divider {
+            width: 56px; height: 3px;
+            background: linear-gradient(90deg, #f06060, rgba(240,96,96,0.28));
+            border-radius: 3px;
+            margin: 1rem auto 1.75rem;
+        }
+        .pe-403__title {
+            font-size: clamp(1.35rem, 4vw, 1.9rem);
+            font-weight: 700; color: #ffffff;
+            margin-bottom: 1rem; line-height: 1.25;
+        }
+        .pe-403__desc {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.68);
+            line-height: 1.7; margin-bottom: 2.5rem;
+            max-width: 460px;
+            margin-left: auto; margin-right: auto;
+        }
+        .pe-403__desc strong { color: rgba(255,255,255,0.90); font-weight: 600; }
+        .pe-403__user-pill {
+            display: inline-flex;
+            align-items: center; gap: 8px;
+            padding: 6px 16px; border-radius: 999px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.14);
+            color: rgba(255,255,255,0.55);
+            font-size: 0.82rem;
+            margin-bottom: 2rem;
+        }
+        .pe-403__user-pill svg {
+            width: 14px; height: 14px;
+            stroke: rgba(255,255,255,0.45); stroke-width: 2;
+            fill: none; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .pe-403__btn {
+            display: inline-flex;
+            align-items: center; gap: 10px;
+            padding: 13px 30px; border-radius: 10px;
+            background: linear-gradient(135deg, #2d5be3 0%, #1a3a8f 100%);
+            color: #ffffff;
+            font-size: 0.92rem; font-weight: 600;
+            text-decoration: none; letter-spacing: 0.02em;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            box-shadow: 0 4px 22px rgba(45,91,227,0.35);
+        }
+        .pe-403__btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(45,91,227,0.52);
+            color: #ffffff;
+        }
+        .pe-403__btn:active { transform: translateY(0); }
+        .pe-403__btn svg {
+            width: 17px; height: 17px;
+            stroke: currentColor; stroke-width: 2;
+            fill: none; stroke-linecap: round; stroke-linejoin: round;
+            transition: transform 0.20s ease; flex-shrink: 0;
+        }
+        .pe-403__btn:hover svg { transform: translateX(-3px); }
+        .pe-403__alts {
+            display: flex;
+            align-items: center; justify-content: center;
+            gap: 1.5rem; flex-wrap: wrap;
+            margin-top: 1.3rem;
+        }
+        .pe-403__alt {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.38);
+            text-decoration: none; transition: color 0.2s;
+            display: inline-flex; align-items: center; gap: 5px;
+        }
+        .pe-403__alt:hover { color: rgba(255,255,255,0.68); }
+        .pe-403__alt svg {
+            width: 14px; height: 14px;
+            stroke: currentColor; stroke-width: 2;
+            fill: none; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .pe-403__sep { color: rgba(255,255,255,0.16); font-size: 0.7rem; }
+        @keyframes pe403Up {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .pe-403__inner > * { animation: pe403Up 0.55s ease both; }
+        .pe-403__inner > *:nth-child(1) { animation-delay: 0.05s; }
+        .pe-403__inner > *:nth-child(2) { animation-delay: 0.12s; }
+        .pe-403__inner > *:nth-child(3) { animation-delay: 0.19s; }
+        .pe-403__inner > *:nth-child(4) { animation-delay: 0.25s; }
+        .pe-403__inner > *:nth-child(5) { animation-delay: 0.31s; }
+        .pe-403__inner > *:nth-child(6) { animation-delay: 0.37s; }
+        .pe-403__inner > *:nth-child(7) { animation-delay: 0.43s; }
+        .pe-403__inner > *:nth-child(8) { animation-delay: 0.49s; }
+        @media (max-width: 480px) {
+            .pe-403 { padding: 3rem 1rem; }
+            .pe-403__btn { width: 100%; justify-content: center; }
+            .pe-403__alts { flex-direction: column; gap: 0.75rem; }
+            .pe-403__sep { display: none; }
+        }
+    </style>
+    {% endif %}
+{% endblock %}
+
+{# ══════════════════════════════════════════════════════════════════════
+   BLOC ADMIN SONATA — inchangé par rapport à votre template actuel.
+   Ignoré côté public car base.html.twig ne déclare pas ce bloc.
+══════════════════════════════════════════════════════════════════════ #}
 {% block sonata_admin_content %}
+    {% if is_admin %}
     <div class="container mt-5">
         <div class="alert alert-danger text-center shadow-lg p-4 rounded">
             <h1 class="display-5 mb-3">
                 <i class="fa fa-ban text-danger"></i>
-                 {{ 'title_403' |trans([],'Access_Denied', app.locale) }} (403)
+                {{ 'title_403'|trans([], 'Access_Denied', app.locale) }} (403)
             </h1>
-
             {% if app.user %}
-                {% set username = app.user.username  %}
-
+                {% set username = app.user.username %}
                 <p class="lead">
-                    {{ 'message_with_user_403' |trans({'%username%': username},'Access_Denied', app.locale)|raw }} 
+                    {{ 'message_with_user_403'|trans({'%username%': username}, 'Access_Denied', app.locale)|raw }}
                 </p>
             {% else %}
                 <p class="lead">
-                    {{ 'message_without_user_403' |trans([],'Access_Denied', app.locale) }}
+                    {{ 'message_without_user_403'|trans([], 'Access_Denied', app.locale) }}
                 </p>
             {% endif %}
-
             <a href="{{ path('sonata_admin_dashboard') }}" class="btn redirection mt-3">
-                <i class="fa fa-home"></i>  {{ 'label_cta' |trans([],'Access_Denied', app.locale) }}
+                <i class="fa fa-home"></i>
+                {{ 'label_cta'|trans([], 'Access_Denied', app.locale) }}
             </a>
         </div>
     </div>
+    {% endif %}
+{% endblock %}
+
+{# ══════════════════════════════════════════════════════════════════════
+   BLOC PUBLIC — ignoré côté admin car Sonata n'étend pas base.html.twig
+   de la même façon et ne rend pas ce bloc dans ce contexte.
+══════════════════════════════════════════════════════════════════════ #}
+{% block header %}{% endblock %}
+ {% block nav %}{% endblock %}
+ {% block script_aos %} {% endblock %}
+{% block body %}
+    {% if not is_admin %}
+    <main class="pe-403" role="main" aria-labelledby="pe-403-title">
+
+        <div class="pe-403__glow" aria-hidden="true"></div>
+        <div class="pe-403__dots pe-403__dots--tr" aria-hidden="true"></div>
+        <div class="pe-403__dots pe-403__dots--bl" aria-hidden="true"></div>
+
+        <div class="pe-403__inner">
+
+            {# Icône verrou #}
+            <div class="pe-403__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+            </div>
+
+            {# Badge statut #}
+            <p class="pe-403__badge">Erreur 403</p>
+
+            {# Grand numéro #}
+            <div class="pe-403__code" aria-hidden="true">403</div>
+
+            <div class="pe-403__divider"></div>
+
+            {# Titre #}
+            <h1 class="pe-403__title" id="pe-403-title">Accès refusé</h1>
+
+            {# Pilule utilisateur connecté #}
+            {% if app.user %}
+                <div class="pe-403__user-pill">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Connecté en tant que
+                    <strong style="color:rgba(255,255,255,0.78);">{{ app.user.username }}</strong>
+                </div>
+            {% endif %}
+
+            {# Description contextuelle selon l'état de connexion #}
+            <p class="pe-403__desc">
+                {% if app.user %}
+                    Votre compte ne dispose pas des permissions nécessaires pour accéder
+                    à cette ressource de <strong>{{ NAME_SITE }}</strong>.
+                    Si vous pensez qu'il s'agit d'une erreur, contactez notre support.
+                {% else %}
+                    Vous devez être connecté et disposer des droits suffisants pour
+                    accéder à cette ressource de <strong>{{ NAME_SITE }}</strong>.
+                {% endif %}
+            </p>
+
+            {# Bouton principal → accueil public #}
+            <a href="{{ path('app_home') }}" class="pe-403__btn">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M19 12H5M12 5l-7 7 7 7"/>
+                </svg>
+                Retour à l'accueil
+            </a>
+
+            {# Liens secondaires #}
+            <div class="pe-403__alts">
+                <a href="#" onclick="history.go(-1); return false;" class="pe-403__alt">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    Page précédente
+                </a>
+                <span class="pe-403__sep" aria-hidden="true">•</span>
+                <a href="mailto:direction@proticeditions.com" class="pe-403__alt">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    Contacter le support
+                </a>
+            </div>
+
+        </div>
+    </main>
+    {% endif %}
 {% endblock %}

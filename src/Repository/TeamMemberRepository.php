@@ -23,7 +23,7 @@ final class TeamMemberRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $registry,
         #[Target('data.respository.cache')]
-        private readonly TagAwareCacheInterface $dataCacheTeamMember
+        private readonly TagAwareCacheInterface $tagAwareCache
     ) {
         parent::__construct($registry, TeamMember::class);
     }
@@ -33,7 +33,7 @@ final class TeamMemberRepository extends ServiceEntityRepository
      */
     public function findVisibleOrderedByPosition(): array
     {
-        $members = $this->dataCacheTeamMember->get(self::CACHE_KEY, function (ItemInterface $item) {
+        $members = $this->tagAwareCache->get(self::CACHE_KEY, function (ItemInterface $item) {
             $item->tag([self::CACHE_TAG]);
             $item->expiresAfter(604800); // 7 jours
 
@@ -75,8 +75,8 @@ final class TeamMemberRepository extends ServiceEntityRepository
     public function invalidateCacheTeamMember(): void
     {
         try {
-            $this->dataCacheTeamMember->invalidateTags([self::CACHE_TAG]);
-            $this->dataCacheTeamMember->delete(self::CACHE_KEY);
+            $this->tagAwareCache->invalidateTags([self::CACHE_TAG]);
+            $this->tagAwareCache->delete(self::CACHE_KEY);
         } catch (\Throwable) {
             // Silencieusement échouer si Redis/Cache est indisponible
         }

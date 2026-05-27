@@ -19,8 +19,6 @@ use App\Admin\WlindablaAdmin;
 use App\Entity\PermissionRole;
 use App\Entity\UserPermissionRole;
 use App\Repository\PermissionRoleRepository;
-use App\Repository\SonataUserRepository;
-use App\Security\Handler\UserPermissionRoleSecurityHandler;
 use App\Security\SecurityContextInterface;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -56,7 +54,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 final class UserPermissionRoleAdmin extends WlindablaAdmin
 {
     public function __construct(
-        private readonly SonataUserRepository $adminUserRepository,
         private readonly SecurityContextInterface $securityContextUser)
     {
         parent::__construct('permission.user', 'user_permission_role', 'permission.user');

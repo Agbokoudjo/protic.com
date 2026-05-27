@@ -1,6 +1,12 @@
 {#
  * Dashboard ProTIC Éditions & Services — Sonata Admin
- * Statistiques dynamiques chargées via API Platform
+ * Statistiques chargées via un seul appel GET /api/admin/dashboard/stats
+ *
+ * Changement par rapport à l'ancienne version :
+ *   - Suppression de data-endpoint et data-key (plus utilisés)
+ *   - Ajout de data-stat-key sur chaque carte → correspond à la clé JSON
+ *     retournée par DashboardStatsController::stats()
+ *
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
 #}
 {% extends base_template %}
@@ -26,10 +32,17 @@
         </div>
     </div>
 
-    {# ── Grille de cartes statistiques ── #}
+    {# ── Grille de cartes statistiques ──
+       data-stat-key  : clé dans la réponse JSON de /api/admin/dashboard/stats
+       data-link      : route Sonata vers la liste correspondante
+    #}
     <div class="stats-grid" id="stats-grid">
 
-        <div class="stat-card stat-card--blue" data-endpoint="/api/authors?pagination=false" data-key="hydra:totalItems" data-label="Auteurs" data-icon="✍️" data-link="{{ path('sonata_author_list') }}">
+        <div class="stat-card stat-card--blue"
+             data-stat-key="authors"
+             data-label="Auteurs"
+             data-icon="✍️"
+             data-link="{{ path('sonata_author_list') }}">
             <div class="stat-card__glow"></div>
             <div class="stat-card__inner">
                 <div class="stat-card__icon-wrap">
@@ -44,7 +57,11 @@
             <div class="stat-card__bar"></div>
         </div>
 
-        <div class="stat-card stat-card--gold" data-endpoint="/api/books?pagination=false" data-key="hydra:totalItems" data-label="Livres" data-icon="📚" data-link="{{ path('sonata_book_list') }}">
+        <div class="stat-card stat-card--gold"
+             data-stat-key="books"
+             data-label="Livres"
+             data-icon="📚"
+             data-link="{{ path('sonata_book_list') }}">
             <div class="stat-card__glow"></div>
             <div class="stat-card__inner">
                 <div class="stat-card__icon-wrap">
@@ -59,7 +76,11 @@
             <div class="stat-card__bar"></div>
         </div>
 
-        <div class="stat-card stat-card--teal" data-endpoint="/api/category?pagination=false" data-key="hydra:totalItems" data-label="Catégories" data-icon="🏷️" data-link="{{ path('sonata_category_list') }}">
+        <div class="stat-card stat-card--teal"
+             data-stat-key="categories"
+             data-label="Catégories"
+             data-icon="🏷️"
+             data-link="{{ path('sonata_category_list') }}">
             <div class="stat-card__glow"></div>
             <div class="stat-card__inner">
                 <div class="stat-card__icon-wrap">
@@ -74,7 +95,11 @@
             <div class="stat-card__bar"></div>
         </div>
 
-        <div class="stat-card stat-card--red" data-endpoint="/api/contact_requests?pagination=false" data-key="hydra:totalItems" data-label="Demandes" data-icon="📩" data-link="{{ path('sonata_contactrequest_list') }}">
+        <div class="stat-card stat-card--red"
+             data-stat-key="contact_requests"
+             data-label="Demandes"
+             data-icon="📩"
+             data-link="{{ path('sonata_contactrequest_list') }}">
             <div class="stat-card__glow"></div>
             <div class="stat-card__inner">
                 <div class="stat-card__icon-wrap">
@@ -89,7 +114,11 @@
             <div class="stat-card__bar"></div>
         </div>
 
-        <div class="stat-card stat-card--purple" data-endpoint="/api/manuscript_submissions?pagination=false" data-key="hydra:totalItems" data-label="Manuscrits" data-icon="📝" data-link="{{ path('sonata_manuscriptsubmission_list') }}">
+        <div class="stat-card stat-card--purple"
+             data-stat-key="manuscript_submissions"
+             data-label="Manuscrits"
+             data-icon="📝"
+             data-link="{{ path('sonata_manuscriptsubmission_list') }}">
             <div class="stat-card__glow"></div>
             <div class="stat-card__inner">
                 <div class="stat-card__icon-wrap">
@@ -104,7 +133,11 @@
             <div class="stat-card__bar"></div>
         </div>
 
-        <div class="stat-card stat-card--green" data-endpoint="/api/faqs?pagination=false" data-key="hydra:totalItems" data-label="FAQ" data-icon="❓" data-link="{{ path('sonata_faq_list') }}">
+        <div class="stat-card stat-card--green"
+             data-stat-key="faqs"
+             data-label="FAQ"
+             data-icon="❓"
+             data-link="{{ path('sonata_faq_list') }}">
             <div class="stat-card__glow"></div>
             <div class="stat-card__inner">
                 <div class="stat-card__icon-wrap">

@@ -18,6 +18,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use App\ApiResource\State\CategoryCachedProvider;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -38,6 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/category',
             normalizationContext: ['groups' => ['category:list', 'category:read']],
             paginationEnabled: false,
+            provider: CategoryCachedProvider::class,
         ),
     ],
 )]
@@ -69,9 +71,9 @@ class Category
         maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\Regex(
-        pattern: '/^[\p{L}\p{N}\s\-\p{P}]{3,100}$/u',
-        message: 'Le nom ne peut contenir que des lettres, chiffres, espaces, tirets',
-        match: true
+        pattern: '/[<>`\x00-\x1F\x7F\x{200B}-\x{200D}\x{FEFF}#$^{|}]/u',
+        message: 'Le nom contient des caractères interdits.',
+        match: false,
     )]
     #[ORM\Column(length: 100, unique: true)]
     private ?string $name = null;
@@ -82,10 +84,18 @@ class Category
      * Exemples valides   : "roman", "bande-dessinee", "sci-fi-2024"
      * Exemples invalides : "-roman", "roman-", "roman--policier", "Roman", "roman slug"
      */
-    #[Assert\Regex(
-        pattern: '/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
-        match: true,
-        message: 'Le slug ne peut contenir que des lettres minuscules, des chiffres et des tirets (sans tiret en début, fin ou consécutifs).'
+    #[Assert\When(
+        expression: 'this.getSlug() !== null && this.getSlug() !== ""',
+        constraints: [
+            new Assert\Length(
+                max: 120,
+                maxMessage: 'Le slug ne peut pas dépasser {{ limit }} caractères.',
+            ),
+            new Assert\Regex(
+                pattern: '/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                message: 'Le slug ne peut contenir que des lettres minuscules, des chiffres et des tirets (sans tiret en début, fin ou consécutifs).',
+            ),
+        ]
     )]
     #[Assert\Length(
         max: 120,
@@ -114,9 +124,18 @@ class Category
         max: 100,
         maxMessage: 'L\'icône ne peut pas dépasser {{ limit }} caractères.',
     )]
-    #[Assert\Regex(
-        pattern: '/^[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}\x{FE00}-\x{FEFF}\x{1F1E0}-\x{1F1FF}\x{200D}\x{20E3}]{1,10}$/u',
-        message: 'L\'icône doit être un ou plusieurs emojis valides (max 3).',
+    #[Assert\When(
+        expression: 'this.getIcon() !== null && this.getIcon() !== ""',
+        constraints: [
+            new Assert\Length(
+                max: 10,
+                maxMessage: 'L\'icône ne peut pas dépasser {{ limit }} caractères.',
+            ),
+            new Assert\Regex(
+                pattern: '/^[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}\x{FE00}-\x{FEFF}\x{1F1E0}-\x{1F1FF}\x{200D}\x{20E3}\x{FE0F}]{1,10}$/u',
+                message: 'L\'icône doit être un ou plusieurs emojis valides.',
+            ),
+        ]
     )]
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $icon = null;

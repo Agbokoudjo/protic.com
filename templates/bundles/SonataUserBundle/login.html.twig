@@ -33,7 +33,7 @@
 
 {% block javascripts %}  
     {{ vite_entry_script_tags('login',[],'admin') }} 
-    {{ vite_entry_script_tags('form',[],'admin') }} 
+    {{ vite_entry_script_tags('form',[],'app') }} 
 {% endblock %}
 
 {% block sonata_wrapper %}
@@ -94,7 +94,8 @@
                             data-allow-quoted-local="false"
                             maxlength="200"
                             minlength="6"
-                            data-host-whitelist="gmail.com,protic.com"
+                            data-host-blacklist="tempmail.com,tempmail.org,tempmail.net,guerrillamail.com,guerrillamail.net,guerrillamail.org,guerrillamail.biz,guerrillamail.de,guerrillamail.info,mailinator.com,mailinator.net,mailinator.org,yopmail.com,yopmail.fr,yopmail.net,trashmail.com,trashmail.at,trashmail.me,trashmail.net,trashmail.org,trashmail.io,sharklasers.com,guerrillamailblock.com,grr.la,spam4.me,dispostable.com,10minutemail.com,10minutemail.net,10minutemail.org,10minutemail.co.uk,10minutemail.de,10minemail.com,throwam.com,throwaway.email,fakeinbox.com,fake-box.com,maildrop.cc,spamgourmet.com,spamgourmet.net,spamgourmet.org,mailnull.com,spamcowboy.com,spamcowboy.net,spamcowboy.org,spamevader.com,getairmail.com,discard.email,spamfree24.org,spamfree24.de,spamfree24.eu,spamfree24.info,spamfree24.net,mailnew.com,spamex.com,binkmail.com,bobmail.info,chammy.info,devnullmail.com,fudgerub.com,jobbikmail.com,yuurok.com,discardmail.com,discardmail.de,spamspot.com,spamthisplease.com,tempinbox.com,tempr.email,spam.la,inoutmail.de,inoutmail.eu,inoutmail.info,inoutmail.net,filzmail.com,weg-werf-email.de,wegwerfmail.de,wegwerfmail.net,wegwerfmail.org,meltmail.com,anonymbox.com,courriel.fr.nf,cool.fr.nf,jetable.fr.nf,nospam.ze.tc,nomail.xl.cx,mega.zik.dj,speed.1s.fr,iwi.net,jetable.net,jetable.org"
+                            data-host-whitelist="gmail.com,protic.com,proticeditions.com"
                             data-event-validate-blur="blur"
                             data-event-validate-input="input"
                            autofocus>

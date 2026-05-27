@@ -1,0 +1,13 @@
+admin:
+  user_session:
+    user_identifier: "Identifiant"
+    user_type: "Type d'utilisateur"
+    ip_address: "Adresse IP"
+    last_activity: "Dernière activité"
+    created_at: "Date de création"
+    session_id: "ID de Session Symfony"
+    user_agent: "Navigateur / User-Agent"
+    actions: "Actions"
+    id: "ID"
+    group_general: "Informations Utilisateur"
+    group_details: "Détails Techniques"

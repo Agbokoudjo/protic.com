@@ -34,6 +34,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 sonata: "./assets/sonata.js",
+                base_sonata_admin: "./assets/base_sonata_admin.js",
                 login: "./assets/login.js",
                 mobile_guard: "./assets/mobile_guard.js"
             },

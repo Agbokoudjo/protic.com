@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Repository\TeamMemberRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -16,38 +17,10 @@ use Symfony\Component\Routing\Attribute\Route;
         'sitemap' => ['priority' => 0.7, 'changefreq' => 'daily']
     ]
 )]
-class AboutController extends AbstractController
+final class AboutController extends AbstractController
 {
-    public function __invoke(TeamMemberRepository $repo): Response
+    public function __invoke(TeamMemberRepository $repo,Request $request): Response
     {
-        /* ── Membres de l'équipe ── */
-        /*$team = [
-            [
-                'name'    => 'M. SETONWAN DENIS HOUNGNIMON',
-                'role'    => 'Directeur & Fondateur',
-                'bio'     => 'Fondateur de ProTIC Editions & Services, M. HOUNGNIMON a consacré plus de 15 ans à la promotion de la littérature béninoise et africaine. Sa vision : rendre le livre accessible à tous et valoriser les auteurs de la sous-région.',
-                'image'   => 'assets/images/team/directeur.png',
-                'alt'     => 'M. SETONWAN DENIS HOUNGNIMON — Directeur et Fondateur de ProTIC Editions',
-                'initial' => 'S',
-            ],
-            [
-                'name'    => 'Équipe Éditoriale',
-                'role'    => 'Conception & Mise en page',
-                'bio'     => 'Notre équipe de graphistes et éditeurs expérimentés assure la conception, la mise en page et la correction de chaque ouvrage publié par ProTIC Editions & Services.',
-                'image'   => 'assets/images/team/editorial.png',
-                'alt'     => 'Équipe éditoriale ProTIC Editions — Conception et mise en page',
-                'initial' => 'É',
-            ], 
-            [
-                'name'    => 'Équipe Distribution',
-                'role'    => 'Logistique & Distribution',
-                'bio'     => 'Chargée d\'assurer la présence de vos livres dans les librairies, institutions et bibliothèques du Bénin et de la sous-région Afrique de l\'Ouest.',
-                'image'   => 'assets/images/team/distribution.png',
-                'alt'     => 'Équipe distribution ProTIC Editions — Logistique nationale',
-                'initial' => 'D',
-            ],
-        ];*/
-
         /* ── Valeurs de l'entreprise ── */
         $values = [
             ['icon' => 'bi-star-fill',         'title' => 'Excellence',       'text' => 'Chaque livre que nous publions reflète notre exigence de qualité, de la conception graphique à l\'impression finale.'],
@@ -70,10 +43,21 @@ class AboutController extends AbstractController
 
         $team = $repo->findVisibleOrderedByPosition();
 
-        return $this->render('about/index.html.twig', [
+        $response =$this->render('about/index.html.twig', [
             'team'       => $team,
             'values'     => $values,
             'milestones' => $milestones,
         ]);
+
+        if ($this->getParameter('app.env') === 'prod') {
+            $hashContent= md5($response->getContent()) ;
+            $tag=sprintf("%s_%d",$hashContent,count($team)) ;
+            $response->setEtag($tag);
+            $response->setPublic();
+            $response->setMaxAge(604800);        
+            $response->setSharedMaxAge(604800);  
+            $response->isNotModified($request);
+        }
+        return $response;
     }
 }

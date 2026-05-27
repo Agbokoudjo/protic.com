@@ -24,9 +24,6 @@ class ContactInfo
         private readonly GlobalSettingProvider $globalSettingProivder
     ) {}
 
-    /* ──────────────────────────────────────────
-       Chargement automatique si aucun setting passé
-    ────────────────────────────────────────── */
     private function getSetting(): ?GlobalSetting
     {
         if ($this->setting !== null) {
@@ -36,17 +33,11 @@ class ContactInfo
         return $this->globalSettingProivder->getSettings();
     }
 
-    /* ──────────────────────────────────────────
-       Adresses
-    ────────────────────────────────────────── */
     public function getAddresses(): array
     {
         return $this->getSetting()?->getAddresses() ?? [];
     }
 
-    /* ──────────────────────────────────────────
-       Téléphones — formatés INTERNATIONAL (+229 XX XX XX XX)
-    ────────────────────────────────────────── */
     public function getPhones(): array
     {
         $phoneObjects = $this->getSetting()?->getPhonePrimary() ?? [];
@@ -76,9 +67,6 @@ class ContactInfo
         return $this->getSetting()?->getEmailContact() ?? [];
     }
 
-    /* ──────────────────────────────────────────
-       Infos légales (RCCM, IFU, CNSS…)
-    ────────────────────────────────────────── */
     public function getLegalInfos(): array
     {
         return $this->getSetting()?->getLegalInfos() ?? [];

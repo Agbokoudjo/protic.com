@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Entity\Faq;
+use App\Repository\FaqRepository;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
@@ -49,7 +50,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 )]
 final class FaqAdmin extends WlindablaAdmin
 {
-    public function __construct()
+    public function __construct(private readonly FaqRepository $faqRepository)
     {
         parent::__construct(
             'list__app_admin_faq',
@@ -78,9 +79,34 @@ final class FaqAdmin extends WlindablaAdmin
         $collection->remove('delete');
     }
 
-    // ─────────────────────────────────────────────
-    //  FILTRES
-    // ─────────────────────────────────────────────
+    protected function prePersist(object $object): void
+    {
+        if ($object instanceof Faq) {
+            $object->prePersist();
+        }
+    }
+
+    protected function preUpdate(object $object): void
+    {
+        if ($object instanceof Faq) {
+            $object->preUpdate();
+        }
+    }
+
+    protected function postPersist(object $object): void
+    {
+        $this->faqRepository->invalidateForEntity($object);
+    }
+
+    protected function postUpdate(object $object): void
+    {
+        $this->faqRepository->invalidateForEntity($object);
+    }
+
+    protected function postRemove(object $object): void
+    {
+        $this->faqRepository->invalidateForEntity($object);
+    }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
@@ -109,10 +135,6 @@ final class FaqAdmin extends WlindablaAdmin
 
             ;
     }
-
-    // ─────────────────────────────────────────────
-    //  LISTE
-    // ─────────────────────────────────────────────
 
     protected function configureListFields(ListMapper $list): void
     {
@@ -146,10 +168,6 @@ final class FaqAdmin extends WlindablaAdmin
                 ],
             ]);
     }
-
-    // ─────────────────────────────────────────────
-    //  DÉTAIL (SHOW)
-    // ─────────────────────────────────────────────
 
     protected function configureShowFields(ShowMapper $show): void
     {

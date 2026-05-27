@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\ApiResource\State\FaqCachedProvider;
 use App\Repository\FaqRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,11 +29,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             paginationEnabled: true,
             paginationItemsPerPage: 8,
             paginationMaximumItemsPerPage: 20,
+            provider: FaqCachedProvider::class
         ),
         /* ── Détail public ── */
         new Get(
             uriTemplate: '/faqs/{id}',
             normalizationContext: ['groups' => ['faq:read']],
+            provider: FaqCachedProvider::class,
         ),
         /* ── Soumission d'une question par un visiteur ── */
         new Post(
@@ -207,5 +210,41 @@ class Faq
     public function preUpdate(): void
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * Get the value of createdAt
+     */
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set the value of createdAt
+     */
+    public function setCreatedAt(?\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of updatedAt
+     */
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set the value of updatedAt
+     */
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }

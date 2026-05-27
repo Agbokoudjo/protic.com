@@ -44,7 +44,7 @@ final class RandomTokenGenerator implements TokenGeneratorInterface
     private const MAX_LENGTH = 256;
 
     public function __construct(
-        private readonly AsyncMethodDispatcherInterface $asyncDispatcher
+        private readonly AsyncMethodDispatcherInterface $asyncMethodDispatcher
     ) {}
 
     /**
@@ -69,7 +69,7 @@ final class RandomTokenGenerator implements TokenGeneratorInterface
             return substr($token, 0, $length);
         } catch (\Exception $e) {
             // Log critique : le système d'aléatoire est compromis
-            $this->asyncDispatcher->dispatch(
+            $this->asyncMethodDispatcher->dispatch(
                 LoggerInterface::class,
                 'critical',
                 [

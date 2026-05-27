@@ -212,8 +212,13 @@ class SonataUser extends AbstractUser implements
         max: 1000,
         maxMessage: 'La biographie publique ne peut pas dépasser {{ limit }} caractères.',
     )]
-    #[ORM\Column(type: 'text', nullable: true)]
     #[Groups(['user:cache', 'user:read'])]
+    #[Assert\Regex(
+        pattern: '/<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{/ius',
+        message: 'Le contenu ne peut pas contenir de balises HTML, PHP ou JavaScript.',
+        match: false,
+    )]
+    #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $teamBio = null;
 
     /**
@@ -346,6 +351,12 @@ class SonataUser extends AbstractUser implements
 
     public function getRolePrincipal(): string
     {
+        if($this->isDirector()) return 'ROLE_DIRECTOR' ;
+
+        if($this->isSuperAdmin()) return "ROLE_SUPER_ADMIN" ;
+
+        if($this->isFounder()) return "ROLE_FOUNDER" ;
+        
         return self::ROLE_DEFAULT;
     }
 

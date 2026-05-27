@@ -134,44 +134,47 @@
         {% include 'partials/_nav.html.twig' %}
     {% endblock %}
 
-    <main id="main-content">
-        {% block main %}{% endblock %}
-    </main>
+    {% block body %}
+        <main id="main-content">
+            {% block main %}{% endblock %}
+        </main>
+    {% endblock %}
 
     {% block footer %}
         <twig:SiteSettings />
     {% endblock %}
 
     {# AOS — animations au scroll #}
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        function initAOS() {
-        AOS.init({
-            duration        : 700,
-            easing          : 'ease-out-cubic',
-            once            : false, 
-            offset          : 80,
-            anchorPlacement : 'top-bottom',
-        });
-    }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        initAOS();
-        window.AOS = AOS;
-    });
-
-    document.addEventListener('turbo:load', () => {
-        const aosElements = document.querySelectorAll('.aos-animate');
-        aosElements.forEach(el => el.classList.remove('aos-animate', 'aos-init'));
-        
-        initAOS(); 
-        
-        if (typeof jQuery !== 'undefined') {
-            window.jQuery = window.$ = jQuery;
+    {% block script_aos %}
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+            function initAOS() {
+            AOS.init({
+                duration        : 700,
+                easing          : 'ease-out-cubic',
+                once            : false, 
+                offset          : 80,
+                anchorPlacement : 'top-bottom',
+            });
         }
-    });
-    </script>
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initAOS();
+            window.AOS = AOS;
+        });
 
+        document.addEventListener('turbo:load', () => {
+            const aosElements = document.querySelectorAll('.aos-animate');
+            aosElements.forEach(el => el.classList.remove('aos-animate', 'aos-init'));
+            
+            initAOS(); 
+            
+            if (typeof jQuery !== 'undefined') {
+                window.jQuery = window.$ = jQuery;
+            }
+        });
+    </script>
+    {% endblock %}
     {# Three.js — injecté uniquement sur les pages qui en ont besoin #}
     {% block threejs %}{% endblock %}
 

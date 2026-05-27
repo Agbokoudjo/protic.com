@@ -22,7 +22,7 @@ Fondée en 2010 par M. SETONWAN DENIS HOUNGNIMON, ProTIC Éditions & Services ac
 maison édition Bénin, publier livre Bénin, édition Abomey-Calavi, ProTIC éditions, impression livre Afrique, auteur béninois, dépôt légal Bénin, littérature africaine">
 <link rel="canonical" href="{{ app.request.uri }}">
 
-{{ vite_entry_link_tags('home') }}
+{{ vite_entry_link_tags('home',[],'app') }}
 {% endblock %}
 {% block json_ld %}
 <script type="application/ld+json">
@@ -681,6 +681,6 @@ document.addEventListener('DOMContentLoaded',initHeroThreeJS);
 {% endblock %}
 
 {% block scripts_extra %}
-{{ vite_entry_script_tags('home') }}
+{{ vite_entry_script_tags('home',[],'app') }}
 {{ vite_entry_script_tags('form',[],'app') }} 
 {% endblock %}

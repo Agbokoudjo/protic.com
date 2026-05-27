@@ -19,7 +19,6 @@ use App\Entity\PermissionRole;
 use App\Entity\SonataUser;
 use App\Form\SonataUserAutocompleteField;
 use App\Repository\PermissionRoleRepository;
-use App\Security\Handler\PermissionRoleSecurityHandler;
 use App\Security\SecurityContextInterface;
 use App\Validator\NotReservedRole;
 use App\Validator\ReservedRoles;
@@ -302,7 +301,9 @@ final class PermissionRoleAdmin extends WlindablaAdmin
                     'data-escapestrip-html-and-php-tags' => 'true',  
                     'data-event-validate-blur' => 'blur',
                     'data-event-validate-input' => 'input',
-                    'data-pattern' => "^[\p{L}\p{M}\p{N}\s\p{P}\n\r]+$",  
+                    'data-pattern'      => '<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{',
+                    'data-match'        => 'false',
+                    'data-flag-pattern' => 'ius',
                     'data-error-message-input' =>'Le contenue de la description est invalide',
                     'rows' => 6
                 ],

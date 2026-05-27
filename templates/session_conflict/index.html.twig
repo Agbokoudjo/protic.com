@@ -1,0 +1,61 @@
+{#
+
+* This file is part of the project by AGBOKOUDJO Franck.
+ *
+ * (c) AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
+ * Phone: +229 01 67 25 18 86
+ * LinkedIn: https://www.linkedin.com/in/internationales-web-apps-services-120520193/
+ * Github: https://github.com/Agbokoudjo/
+ * Company: INTERNATIONALES WEB APPS & SERVICES
+ *
+ * For more information, please feel free to contact the author.
+
+#}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"> 
+    <title>Session déjà active</title>
+    {% block stylesheets %}
+        {{ vite_entry_link_tags('session_conflit',[],'app') }}
+    {% endblock %}
+</head>
+<body class="{{app.environment}}">
+    {% block body %}
+     <div class="conflict-container">
+        <div class="conflict-icon">🔒</div>
+        <h1 class="login-brand" style="color:#d33 ; font-weight:bolder ;">{{ NAME_SITE }}</h1> 
+        <h2>Session déjà active</h2> 
+        
+        <p class="description">
+            Votre compte est actuellement connecté sur un autre navigateur ou appareil. 
+            Pour des raisons de sécurité, une seule connexion active est autorisée à la fois.
+        </p>
+        
+        <div class="info-box">
+            <strong>📱 Que faire ?</strong>
+            <p>
+                Déconnectez-vous de l'autre session cliquant 
+                sur "Déconnexion" dans l'autre appareil, puis reconnectez-vous ici.
+            </p>
+        </div>
+        
+        <a href="{{ path('sonata_user_admin_security_logout') }}" class="btn">
+            Se déconnecter et revenir à la connexion
+        </a>
+
+        <div class="footer">
+            <p>
+                Problème persistant ? Contactez le support technique.
+            </p>
+        </div>
+    </div>
+{% endblock %}
+    {% block javascripts %}
+        {{ vite_entry_script_tags('session_conflit',[],'app') }}
+    {% endblock %}
+</body>
+</html>

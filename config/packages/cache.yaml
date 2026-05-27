@@ -6,8 +6,10 @@ framework:
         pools:
             # On crée un pool spécifique qui supporte les tags
             app.rate_limiter:
-                adapter: cache.adapter.apcu
-
+                adapter: cache.adapter.redis
+                provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'
+                default_lifetime: 3600
+                tags: false 
             cache.rate_limiter:
                 adapter: cache.adapter.redis
                 provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'
@@ -19,8 +21,9 @@ framework:
                 provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'
                 tags: true
             doctrine.metadata_cache:
-                adapter: cache.adapter.apcu
+                adapter: cache.adapter.redis ##adapter: cache.adapter.apcu
                 default_lifetime: 86400
+                provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'
             doctrine.query_cache:
                 adapter: cache.adapter.redis
                 default_lifetime: 86400
@@ -28,10 +31,14 @@ framework:
                 adapter: cache.adapter.redis
                 provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%' 
                 default_lifetime: 86400
-                
+            doctrine.second_level_cache_pool:
+                 adapter: cache.adapter.redis
+                 provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%' 
+                 default_lifetime: 86400
             session.cache_pool:
                 adapter: cache.adapter.redis
                 tags: true
+                default_lifetime: 7200
                 provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%' 
             data.user.provider.cache.pool:
                 adapter: cache.adapter.redis_tag_aware #cache.adapter.apcu
@@ -42,3 +49,36 @@ framework:
                 provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%' 
                 default_lifetime: '%env(CACHE_EXPIRE_AT_REPOSITORY_USER)%'
                 tags: true
+            # ─── Pools API Platform ───────────────────────────────
+            cache.api_books:
+                adapter: cache.adapter.redis_tag_aware
+                provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'
+                default_lifetime: 604800
+                tags: true
+
+            cache.api_authors:
+                adapter: cache.adapter.redis_tag_aware
+                provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'
+                default_lifetime: 1209600
+                tags: true
+
+            cache.api_categories:
+                adapter: cache.adapter.redis_tag_aware
+                provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'
+                default_lifetime: 2419200
+                tags: true
+            cache.api_faq:
+                adapter: cache.adapter.redis_tag_aware
+                provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'
+                default_lifetime: 2419200
+                tags: true
+            doctrine.result_cache.faq:
+                adapter: cache.adapter.redis
+                provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'
+                default_lifetime: 604800
+                tags: false   # pas besoin de tags — on utilise clear() sur pool isolé
+            doctrine.result_cache.books:
+                adapter: cache.adapter.redis
+                provider: '%env(CACHE_REPOSITORY_REDIS_DSN)%'
+                default_lifetime: 604800
+                tags: false

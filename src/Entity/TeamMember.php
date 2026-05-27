@@ -84,8 +84,8 @@ class TeamMember
         maxMessage: 'La biographie ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\Regex(
-        pattern: '/<|>|<\?/',
-        message: 'La biographie ne peut pas contenir de balises HTML ou de code.',
+        pattern: '/<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{/ius',
+        message: 'Le contenu ne peut pas contenir de balises HTML, PHP ou JavaScript.',
         match: false,
     )]
     #[ORM\Column(type: 'text', nullable: true, length: 1000)]

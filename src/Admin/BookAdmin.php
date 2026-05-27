@@ -14,6 +14,8 @@ use App\Entity\Author;
 use App\Entity\Book;
 use App\Form\AuthorAutocompleteField;
 use App\Form\CategoryAutocompleteField;
+use App\Repository\BookRepository;
+use App\Service\SlugGeneratorService;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -24,7 +26,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\StringFilter;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -48,7 +49,10 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 )]
 final class BookAdmin extends WlindablaAdmin
 {
-    public function __construct()
+    public function __construct(
+        private readonly BookRepository $bookRepository,
+        private readonly SlugGeneratorService $slugGenerator,
+    )
     {
         parent::__construct(
             "list__app_admin_book",
@@ -76,6 +80,7 @@ final class BookAdmin extends WlindablaAdmin
     {
         if ($object instanceof Book) {
             $object->prePersist();
+            $this->slugGenerator->updateSlug($object);
         }
     }
 
@@ -83,7 +88,24 @@ final class BookAdmin extends WlindablaAdmin
     {
         if ($object instanceof Book) {
             $object->preUpdate();
+            $this->slugGenerator->updateSlug($object,true);
         }
+    }
+
+
+    protected function postPersist(object $object): void
+    {
+        $this->bookRepository->invalidateForEntity($object);
+    }
+
+    protected function postUpdate(object $object): void
+    {
+        $this->bookRepository->invalidateForEntity($object);
+    }
+
+    protected function postRemove(object $object): void
+    {
+        $this->bookRepository->invalidateForEntity($object);
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
@@ -201,52 +223,71 @@ final class BookAdmin extends WlindablaAdmin
                 'description' => 'Détails principaux de l\'ouvrage.',
             ])
             ->add('title', TextType::class, [
-                'label' => 'Titre du livre',
-            'help' => 'Lettres, chiffres et ponctuation simple uniquement.',
+                'label'    => 'Titre du livre',
+                'help'     => 'Tous caractères sauf balises HTML et symboles dangereux. Entre 4 et 255 caractères.',
                 'required' => true,
-                'attr' => [
-                    'placeholder' => 'Ex: L\'enfant noir',
-                    'minlength' => 4,
-                    'maxlength' => 255,
-                    'data-event-validate-input' => 'input',
-                'data-event-validate-blur'          => 'blur',
-                'data-pattern' => '^[\p{L}\p{N}\s\-\'\.\(\)]+$',
-                'data-escapestrip-html-and-php-tags' => 'true',
+                'attr'     => [
+                    'placeholder'                        => 'Ex: L\'enfant noir',
+                    'minlength'                          => 4,
+                    'maxlength'                          => 255,
+                    'data-event-validate-input'          => 'input',
+                    'data-event-validate-blur'           => 'blur',
+                    'data-pattern'                       => '^[^\u003C\u003E\u0060\u0000-\u001F\u007F\u200B-\u200D\uFEFF\u0023\u0024\u005E\u007B\u007C\u007D]{4,255}$',
+                    'data-flag-pattern'                  => 'us',
+                    'data-match'                         => "false",
+                    'data-escapestrip-html-and-php-tags' => 'true',
+                    'data-error-message-input'           => 'Le titre ne peut pas contenir de balises HTML ou symboles dangereux. Entre 4 et 255 caractères.',
                 ],
             ])
             ->add('subtitle', TextType::class, [
-                'label' => 'Sous-titre',
+                'label'    => 'Sous-titre',
                 'required' => false,
-                'attr' => [
-                    'placeholder' => 'Optionnel...',
+                'attr'     => [
+                    'placeholder'                        => 'Optionnel...',
+                    'maxlength'                          => 255,
+                    'data-event-validate-input'          => 'input',
+                    'data-event-validate-blur'           => 'blur',
+                    'data-pattern'                       => '^[^\u003C\u003E\u0060\u0000-\u001F\u007F\u200B-\u200D\uFEFF\u0023\u0024\u005E\u007B\u007C\u007D]{0,255}$',
+                    'data-flag-pattern'                  => 'us',
+                    'data-match'                         => "false",
                     'data-escapestrip-html-and-php-tags' => 'true',
-                'data-event-validate-input' => 'input',
-                'data-event-validate-blur'          => 'blur',
-                    ],
+                    'data-error-message-input'           => 'Le sous-titre contient des caractères interdits.',
+                ],
             ])
             ->add('isbn', TextType::class, [
-                'label' => 'Code ISBN',
+                'label'    => 'Code ISBN',
                 'required' => false,
-                'help' => 'Saisissez le code ISBN-13 présent au dos du livre.',
-                'attr' => [
-                    'placeholder' => 'Ex: 978-2-266-11156-0',
-                    'data-pattern' => '^(978|979)?[- ]?\d{1,5}[- ]?\d{1,7}[- ]?\d{1,7}[- ]?[\dX]$',
-                    'data-error-message-input' => 'Format ISBN invalide.'
+                'help'     => 'ISBN-10 (ex: 2-266-11156-3) ou ISBN-13 (ex: 978-2-266-11156-0)',
+                'attr'     => [
+                    'placeholder'               => 'Ex: 978-2-266-11156-0 ou 2-266-11156-3',
+                    'maxlength'                 => 17,
+                    'data-type'                 => 'text',
+                    'data-flag-pattern'         => 'i',
+                    'data-match'                => "true",
+                    'data-pattern'              => '^(?:(?:978|979)-?[0-9]{1,7}-?[0-9]{1,7}-?[0-9]{1,6}-?[0-9]|[0-9]{1,7}-?[0-9]{1,7}-?[0-9]{1,6}-?[0-9X])+$',
+                    'data-event-validate-blur'  => 'blur',
+                    'data-event-validate-input' => 'input',
+                    'data-error-message-input'  => 'Format ISBN invalide. Exemples : 978-2-266-11156-0 ou 2-266-11156-3.',
                 ],
             ])
             ->add('summary', TextareaType::class, [
-                'label' => 'Résumé (Synopsis)',
+                'label'    => 'Résumé (Synopsis)',
                 'required' => true,
-                'attr' => [
-                    'rows' => 8,
-                    'minlength' => 100,
-                    'placeholder' => 'Rédigez un résumé captivant (min 100 caractères)...',
-                    'data-type' => 'textarea',
-                    'data-pattern' => '^[^<>]{100,}$',
-                    'data-event-validate-blur'          => 'blur',
-                    'data-event-validate-input'         => 'input',
+                'attr'     => [
+                    'rows'                               => 8,
+                    'minlength'                          => 100,
+                    'maxlength'                          => 10000,
+                    'placeholder'                        => 'Rédigez un résumé captivant (min 100 caractères)...',
+                    'data-type'                          => 'textarea',
+                    'data-pattern'      => '<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{',
+                    'data-match'        => 'false',
+                    'data-flag-pattern' => 'ius',
+                    'data-event-validate-blur'           => 'blur',
+                    'data-event-validate-input'          => 'input',
                     'data-escapestrip-html-and-php-tags' => 'true',
+                    'data-error-message-input'           => 'Le résumé ne peut pas contenir de balises HTML ou caractères spéciaux dangereux. Entre 100 et 5000 caractères.',
                 ],
+                'help' => 'Entre 100 et 10000 caractères. Les balises HTML sont interdites.',
             ])
             ->end()
 
@@ -297,7 +338,6 @@ final class BookAdmin extends WlindablaAdmin
                 'data-type' => 'file',
                 'data-extentions' => 'jpg,png,jpeg,webp',
                 'data-unity-max-size-file' => 'MiB',
-                    'placeholder' => "Glissez la couverture ici (JPG, PNG, WEBP)",
                     'data-min-width' => 400,
                     'data-max-width' => 1200,
                     'data-min-height' => 600,
@@ -313,11 +353,25 @@ final class BookAdmin extends WlindablaAdmin
                         - Largeur minimale : 400px"
                 ],
             ])
-            ->add('publishedAt', DateTimeType::class, [
-                'label' => 'Date de parution',
+            ->add('publishedAt', DateType::class, [
+                'label'    => 'Date de parution',
                 'required' => false,
-                'widget' => 'single_text',
-                'input' => 'datetime',
+                'input'    => 'datetime',
+                'attr'     => [
+                    'data-type'                          => 'date',
+                    'data-format-date'                   => 'YYYY-MM-DD',  // format natif input[type=date]
+                    'data-allow-future'                  => 'false',       // pas de date dans le futur
+                    'data-allow-past'                    => 'true',
+                    'data-min-date'                      => '1450-01-01',  // premier livre imprimé ~1450
+                    'data-eg-await'                      => '1995-06-15',
+                    'data-event-validate-blur'           => 'blur',
+                    'data-event-validate-input'          => 'input',
+                    'data-escapestrip-html-and-php-tags' => 'true',
+                    'data-match'                         => 'true',
+                    'data-pattern'                       => '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$',
+                    'data-error-message-input'           => 'Date invalide. La date de parution ne peut pas être dans le futur.',
+                ],
+                'help' => 'Format : JJ/MM/AAAA. La date ne peut pas être dans le futur.',
             ])
             ->end();
     }
@@ -353,5 +407,13 @@ final class BookAdmin extends WlindablaAdmin
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         return 'book';
+    }
+
+    protected function configureExportFields(): array
+    {
+        return array_merge(
+            parent::configureExportFields(),
+            ["author.fullName", "category.name"]
+        );
     }
 }

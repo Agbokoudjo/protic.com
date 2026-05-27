@@ -17,10 +17,11 @@ declare(strict_types=1);
 namespace App\EventSubscriber;
 
 use App\Entity\BaseUserInterface;
+use App\Persistance\UserSessionManagerInterface;
 use App\Queue\AsyncMethodDispatcherInterface;
 use App\Security\Provider\UserProvider;
+use App\Service\UserContextTrait;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
@@ -36,6 +37,10 @@ use Symfony\Component\Security\Http\Event\LogoutEvent;
  * 
  * Le traitement est effectué de manière asynchrone pour ne pas
  * impacter les performances de la déconnexion.
+ * Ordre d'exécution :
+ *  1. onRemoveUserCache (102) → cache utilisateur invalidé en premier
+ *  2. onLogout          (100) → placeholder log activité
+ *  3. onSession         (-101) → suppression session en base (en dernier)
  *
  * @internal Ce subscriber est appelé automatiquement par Symfony Security
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
@@ -43,6 +48,8 @@ use Symfony\Component\Security\Http\Event\LogoutEvent;
  */
 final class LogoutSubscriber implements EventSubscriberInterface
 {
+    use UserContextTrait;
+    
     /**
      * Durée minimale de session considérée comme normale (en secondes).
      * Une session plus courte peut indiquer un problème technique ou de sécurité.
@@ -51,8 +58,8 @@ final class LogoutSubscriber implements EventSubscriberInterface
 
     public function __construct(
         private readonly AsyncMethodDispatcherInterface $asyncDispatcher,
-        private readonly ParameterBagInterface $parameterBag,
         private UserProvider $userProvider,
+        private readonly UserSessionManagerInterface $sessionManager,
         private readonly ?LoggerInterface $logger = null
     ) {}
 
@@ -64,7 +71,7 @@ final class LogoutSubscriber implements EventSubscriberInterface
         return [
             LogoutEvent::class => [
                 ['onLogout', 100],
-                ['onSession', -101],
+                ['onSession', 101],
                 ['onRemoveUserCache', 102]
             ]
         ];
@@ -102,50 +109,75 @@ final class LogoutSubscriber implements EventSubscriberInterface
      */
     public function onSession(LogoutEvent $event): void
     {
-        
-    }
+        $sessionId = null;
 
-    public function onRemoveUserCache(LogoutEvent $event): void
-    {
         try {
-            /** @var BaseUserInterface|null ; */
-            $user = $event->getToken()?->getUser();
-            if ($user instanceof BaseUserInterface) {
-                $this->userProvider->invalidateUserCache($user->getId());
+            $sessionId = $event->getRequest()->getSession()->getId();
+            $this->logger?->info('Révocation de session au logout', [
+                'session_id' => $sessionId,
+                'user'       => $event->getToken()?->getUserIdentifier(),
+            ]);
 
-                // Log du succès (optionnel)
-                $this->asyncDispatcher->dispatch(
-                    LoggerInterface::class,
-                    'info',
-                    [
-                        'User cache invalidated on logout',
-                        [
-                            'user_id' => $user->getId()
-                        ]
-                    ]
-                );
+            $this->sessionManager->removeSession($sessionId);
+               $user=$event->getToken()->getUser() ;
+            // Sécurité supplémentaire : révoquer TOUTES les sessions actives
+            // de cet utilisateur au cas où removeSession n'aurait pas trouvé
+            // le bon sessionId (migration, régénération…)
+            if ($user instanceof BaseUserInterface) {
+                $this->sessionManager->revokeAllActiveSessions($user->getUserIdentifier());
             }
-        } catch (\Throwable $th) {
-            $this->asyncDispatcher->dispatch(
-                LoggerInterface::class,
-                'error',
-                [
-                    'Failed to invalidate user cache on logout',
-                    [
-                        'exception_class' => get_class($th),
-                        'message' => $th->getMessage(),
-                        'file' => $th->getFile(),
-                        'line' => $th->getLine(),
-                        'user_id' => $user?->getId() ?? 'unknown',
-                        'trace' => $th->getTraceAsString()
-                    ]
-                ]
-            );
+
+            $this->logger?->debug('Session révoquée avec succès', [
+                'session_id' => $sessionId,
+            ]);
+        } catch (\Throwable $throwable) {
+            $this->logger?->error('Erreur révocation session au logout', [
+                'exception_class'   => $throwable::class,
+                'exception_message' => $throwable->getMessage(),
+                'file'              => $throwable->getFile(),
+                'line'              => $throwable->getLine(),
+                'session_id'        => $sessionId ?? 'unknown',
+                'user'              => $event->getToken()?->getUserIdentifier() ?? 'unknown',
+            ]);
+            // Ne pas bloquer la déconnexion
         }
     }
+
+    /**
+     * Invalide le cache utilisateur lors de la déconnexion.
+     *
+     * Appelé avant onSession (priorité 102 > -101) pour garantir que le cache
+     * est purgé même si la suppression de session échoue.
+     */
+    public function onRemoveUserCache(LogoutEvent $event): void
+    {
+        /** @var BaseUserInterface|null $user */
+        $user = $event->getToken()?->getUser();
+
+        if (!($user instanceof BaseUserInterface)) {
+            return;
+        }
+
+        try {
+            $this->userProvider->invalidateUserCache($user->getId());
+
+            $this->logger?->info('Cache utilisateur invalidé à la déconnexion', [
+                'user_id' => $user->getId(),
+            ]);
+        } catch (\Throwable $throwable) {
+            $this->logger?->error('Échec invalidation cache utilisateur à la déconnexion', [
+                'exception_class'   => $throwable::class,
+                'exception_message' => $throwable->getMessage(),
+                'file'              => $throwable->getFile(),
+                'line'              => $throwable->getLine(),
+                'user_id'           => $user->getId(),
+            ]);
+        }
+    }
+
     /**
      * Extrait les métadonnées de session (durée, ID, heure de début).
-     *
+     * Utilisé pour les logs d'activité (onLogout).
      * @param Request $request La requête de déconnexion
      * 
      * @return array{session_id: string|null, duration: int|null, started_at: string|null}
@@ -234,22 +266,6 @@ final class LogoutSubscriber implements EventSubscriberInterface
             'ip' => $request->getClientIp(),
             'route' => $request->attributes->get('_route') ?? 'N/A',
         ]);
-    }
-
-    /**
-     * Vérifie si le listener est activé via la configuration.
-     *
-     * @return bool True si activé, false sinon
-     */
-    private function isListenerEnabled(): bool
-    {
-        $enabled = $this->parameterBag->get('app.execute_listener');
-
-        if (!$enabled) {
-            $this->logger?->debug('LogoutSubscriber désactivé via configuration app.execute_listener');
-        }
-
-        return (bool) $enabled;
     }
 
     /**

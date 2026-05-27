@@ -15,7 +15,7 @@ final readonly class UpdatePasswordUserHandler
 {
     public function __construct(
         private UserManagerInterface $userManager,
-        private LoggerInterface $logger, // Injection du logger PSR-3
+        private LoggerInterface $logger,
     ) {}
 
     public function handle(

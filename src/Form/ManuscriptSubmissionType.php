@@ -115,8 +115,11 @@ final class ManuscriptSubmissionType extends AbstractType
                 'data-escapestrip-html-and-php-tags' => 'true', // custom attribute (JS)
                 'data-event-validate-blur' => 'blur',
                 'data-event-validate-input' => 'input',
-                'data-pattern' => "^[\p{L}\p{M}\p{N}\s\p{P}]+$",
-                'data-error-message-input'           => 'Le message ne peut pas contenir de balises HTML. Entre 20 et 4000 caractères.'
+                'data-type'                          => 'textarea',
+                'data-pattern'      => '<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{',
+                'data-match'        => 'false',
+                'data-flag-pattern' => 'ius',
+                'data-error-message-input' => 'Le message ne doit pas contenir de balises HTML, PHP ou JavaScript.',
             ],
             ])
             ->add('manuscriptFile', FileType::class, [

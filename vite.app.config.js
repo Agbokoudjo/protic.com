@@ -34,7 +34,9 @@ export default defineConfig({
                 contact: "./assets/contact.js",
                 form: 'assets/form.js',
                 catalogue: "./assets/catalogue.js",
-                about : "./assets/about.js"
+                about: "./assets/about.js",
+                session_conflit: "./assets/session_conflit.js",
+                book_show: "./assets/book_show.js"
             },
         }
     },

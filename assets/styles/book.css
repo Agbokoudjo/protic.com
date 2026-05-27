@@ -696,10 +696,8 @@ button[type="submit"].btn-primary:hover {
     letter-spacing: 0.02em;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════════════════════ */
-@media (max-width: 600px) {
+
+/*@media (max-width: 600px) {
     .modal {
         max-width: 100% !important;
         margin: 0 !important;
@@ -721,5 +719,58 @@ button[type="submit"].btn-primary:hover {
     .protic-books-grid {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 16px;
+    }
+}*/
+
+
+.cat-book-card__title-wrap {
+    position: relative;
+}
+
+.cat-book-card__copy-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    color: rgba(255,255,255,0.55);
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 4px;
+    width: max-content;
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+}
+
+.cat-book-card__title-wrap:hover .cat-book-card__copy-btn,
+.cat-book-card__title-wrap:focus-within .cat-book-card__copy-btn {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.cat-book-card__copy-btn:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.30);
+    color: #fff;
+}
+
+.cat-book-card__copy-btn.is-copied {
+    background: rgba(22, 90, 50, 0.8);
+    border-color: #6affa3;
+    color: #6affa3;
+    opacity: 1;
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .cat-book-card__copy-btn {
+        opacity: 0.7;
+        transform: none;
+        pointer-events: all;
     }
 }

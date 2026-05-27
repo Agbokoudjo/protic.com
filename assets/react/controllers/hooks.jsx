@@ -182,3 +182,24 @@ const handleSubmitServerError = (e) => {
         console.error("Erreur lors du traitement handleErrorsManyForm:", error,errorData);
     }
 };
+
+export function useCopyLink(slug) {
+    const [copied, setCopied] = React.useState(false);
+
+    const copyLink = React.useCallback(async (e) => {
+        e.stopPropagation(); // empêche d'ouvrir la modale en même temps
+        if (!slug) return;
+
+        const url = `${window.location.origin}/book/${slug}`;
+        try {
+            await navigator.clipboard.writeText(url);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2500);
+        } catch {
+            // Fallback
+            window.prompt('Copiez ce lien :', url);
+        }
+    }, [slug]);
+
+    return { copied, copyLink };
+}

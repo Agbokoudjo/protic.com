@@ -36,9 +36,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 #[AutoconfigureTag(
     name: 'sonata.admin',
     attributes: [
-        'id'           => 'app.admin.global_setting',
-        'code'         => 'app.admin.global_setting',
-        'admin_code'   => 'app.admin.global_setting',
+        'id'           => 'app.admin.globalSetting',
+        'code'         => 'app.admin.globalSetting',
+        'admin_code'   => 'app.admin.globalSetting',
         'model_class'  => GlobalSetting::class,
         'manager_type' => 'orm',
         'group'        => 'app.admin.group.configuration',
@@ -223,4 +223,5 @@ final class GlobalSettingAdmin extends WlindablaAdmin
             ->end()
             ;
     }
+
 }

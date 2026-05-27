@@ -28,11 +28,11 @@ final readonly class GenerateTemporaryPasswordHandler
         private EventDispatcherInterface $eventDispatcher,
         private UserManagerInterface $userManager,
         private UpdatePasswordUserHandler $updatePasswordService,
-        private GenerateTemporaryPasswordService $generateTemporatyPasswordService){}
+        private GenerateTemporaryPasswordService $generatePasswordService){}
 
     public function process(int|string $userId):void{
         try {
-            $plainTemporyPasswordUser = $this->generateTemporatyPasswordService->generateTemporaryPassword();
+            $plainTemporyPasswordUser = $this->generatePasswordService->generateTemporaryPassword();
 
             $this->updatePasswordService->handle($userId, $plainTemporyPasswordUser) ;
             

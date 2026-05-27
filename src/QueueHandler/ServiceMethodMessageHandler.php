@@ -24,6 +24,7 @@ use App\CommandHandler\TeamMemberSyncHandler;
 use App\CommandHandler\ToggleUserAccountHandler;
 use App\CommandHandler\UpdatePasswordUserHandler;
 use App\CommandHandler\UpdateUserProfileHandler;
+use App\Persistance\UserSessionManagerInterface;
 use App\Queue\Message\ServiceMethodMessage;
 use App\QueueHandler\ServiceMethodMessageHandlerInterface;
 use App\Service\ApplyEmailVerificationService;
@@ -73,7 +74,8 @@ final class ServiceMethodMessageHandler implements ServiceSubscriberInterface,Se
             UpdateUserProfileHandler::class,
             GenerateTemporaryPasswordHandler::class,
             TeamMemberSyncHandler::class,
-            UpdatePasswordUserHandler::class
+            UpdatePasswordUserHandler::class,
+            UserSessionManagerInterface::class
         ];
     }
 

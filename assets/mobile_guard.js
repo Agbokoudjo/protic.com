@@ -175,9 +175,6 @@
     return el;
   }
 
-  /* -----------------------------------------------------------------------
-   * Overlay mount / unmount helpers
-   * --------------------------------------------------------------------- */
   function mountOverlay() {
     if (document.getElementById(OVERLAY_ID)) return; // already mounted
 

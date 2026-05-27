@@ -54,19 +54,21 @@ final class TeamMemberVoter extends Voter implements Permission
        
         // Le SuperAdmin et le Fondateur ont tous les droits par défaut
         // SAUF si on veut protéger spécifiquement l'ID 1 même contre eux.
-        if ($admin_user->isSuperAdmin() || $admin_user->isFounder()) {
+        if ($admin_user->isSuperAdmin() || 
+            $admin_user->isFounder() ||
+            $admin_user->isDirector()) {
             // Optionnel : Empêcher même le SuperAdmin de supprimer l'ID 1
             if ($attribute === self::PERMISSION_DELETE && (int) $subject->getId() === 1) {
                 return false;
             }
-            return true;
+            return true; 
         }
         
         // PROTECTION CRITIQUE : Personne d'autre ne touche à l'ID 1
         if ((int) $subject->getId() === 1) {
             return false;
         }
-    
+
         //pour les autres 
         return $this->authorizationCheckerForUser->isGrantedForUser($admin_user, $attribute);
     }

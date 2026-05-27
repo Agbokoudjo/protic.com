@@ -1,0 +1,485 @@
+{# templates/book/show.html.twig #}
+{% extends 'base.html.twig' %}
+{% block title %}{{ og_title }}{% endblock %}
+
+{% block meta_description %}{{ meta_desc }}{% endblock %}
+
+{% block og_title %}{{ og_title }}{% endblock %}
+
+{% block og_description %}{{ meta_desc }}{% endblock %}
+
+{% block og_image %}
+    {% if cover_url %}{{ cover_url }}{% else %}{{ parent() }}{% endif %}
+{% endblock %}
+
+{% block head_extra %}
+    {{ vite_entry_link_tags('book_show',[],'app') }}
+    {# ── Canonical ── #}
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {# ── Open Graph complet ── #}
+    <meta property="og:type"        content="book">
+    <meta property="og:url"         content="{{ canonical_url }}">
+    <meta property="og:locale"      content="fr_FR">
+    <meta property="og:site_name"   content="ProTIC Éditions & Services">
+    {% if book.isbn %}
+    <meta property="books:isbn"     content="{{ book.isbn }}">
+    {% endif %}
+    <meta property="books:author"   content="{{ author_name }}">
+    {% if category_name %}
+    <meta property="books:genre"    content="{{ category_name }}">
+    {% endif %}
+
+    {# ── Twitter Card ── #}
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="{{ og_title }}">
+    <meta name="twitter:description" content="{{ meta_desc }}">
+    {% if cover_url %}
+    <meta name="twitter:image"       content="{{ cover_url }}">
+    {% endif %}
+
+    {# ── WhatsApp / iMessage (og:image suffit, mais on précise les dimensions) ── #}
+    {% if cover_url %}
+    <meta property="og:image:width"  content="600">
+    <meta property="og:image:height" content="900">
+    <meta property="og:image:alt"    content="Couverture du livre {{ book.title }}">
+    {% endif %}
+
+    {# ── Mots-clés SEO ── #}
+    <meta name="keywords" content="
+        {{ book.title }},
+        {{ author_name }},
+        {% if category_name %}{{ category_name }},{% endif %}
+        livre béninois,
+        édition Bénin,
+        ProTIC Éditions,
+        {% if year %}livre {{ year }},{% endif %}
+        acheter livre Cotonou,
+        auteur africain
+    ">
+
+    {# ── Schema.org Book (JSON-LD) ── #}
+    <script type="application/ld+json">
+    {
+        "@context"  : "https://schema.org",
+        "@type"     : "Book",
+        "name"      : {{ book.title|json_encode|raw }},
+        {% if book.subtitle %}
+        "alternativeHeadline": {{ book.subtitle|json_encode|raw }},
+        {% endif %}
+        "description": {{ meta_desc|json_encode|raw }},
+        {% if cover_url %}
+        "image"     : {{ cover_url|json_encode|raw }},
+        {% endif %}
+        {% if book.isbn %}
+        "isbn"      : {{ book.isbn|json_encode|raw }},
+        {% endif %}
+        {% if year %}
+        "datePublished": {{ year|json_encode|raw }},
+        {% endif %}
+        "author"    : {
+            "@type" : "Person",
+            "name"  : {{ author_name|json_encode|raw }}
+        },
+        "publisher" : {
+            "@type" : "Organization",
+            "name"  : "ProTIC Éditions & Services",
+            "url"   : "https://www.proticeditions.com"
+        },
+        "inLanguage": "fr",
+        "url"       : {{ canonical_url|json_encode|raw }},
+        {% if category_name %}
+        "genre"     : {{ category_name|json_encode|raw }},
+        {% endif %}
+        "potentialAction": {
+            "@type"  : "ReadAction",
+            "target" : {{ canonical_url|json_encode|raw }}
+        }
+    }
+    </script>
+
+    {# ── BreadcrumbList ── #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type"   : "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type"   : "ListItem",
+                "position": 1,
+                "name"    : "Accueil",
+                "item"    : "{{ absolute_url(path('app_home')) }}"
+            },
+            {
+                "@type"   : "ListItem",
+                "position": 2,
+                "name"    : "Catalogue",
+                "item"    : "{{ absolute_url(path('app_catalogue')) }}"
+            },
+            {
+                "@type"   : "ListItem",
+                "position": 3,
+                "name"    : {{ book.title|json_encode|raw }},
+                "item"    : {{ canonical_url|json_encode|raw }}
+            }
+        ]
+    }
+    </script>
+{% endblock %}
+
+{% block main %}
+
+<section class="bk-hero" aria-label="Présentation du livre {{ book.title }}">
+    <div class="bk-hero__bg"
+         {% if cover_url %}
+            style="background-image: url('{{ cover_url }}')"
+          {% else %}
+            style="background-image: url('{{asset('assets/images/book-hero-default.png','app')}}')"
+         {% endif %}            
+         role="img"
+         aria-label="Couverture du livre {{ book.title }} de {{ author_name }}"></div>
+    <div class="bk-hero__overlay"></div>
+
+    <div class="container bk-hero__inner">
+
+        {# Fil d'Ariane #}
+        <nav class="bk-breadcrumb" aria-label="Fil d'Ariane"
+             data-aos="fade-down" data-aos-duration="500">
+            <a href="{{ path('app_home') }}" class="bk-breadcrumb__link">Accueil</a>
+            <span class="bk-breadcrumb__sep" aria-hidden="true">›</span>
+            <a href="{{ path('app_catalogue') }}" class="bk-breadcrumb__link">Catalogue</a>
+            <span class="bk-breadcrumb__sep" aria-hidden="true">›</span>
+            <span class="bk-breadcrumb__current" aria-current="page">{{ book.title|u.truncate(40, '…') }}</span>
+        </nav>
+
+        {# Badges genre + année #}
+        <div class="bk-hero__badges"
+             data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
+            {% if category_name %}
+            <span class="bk-hero__badge bk-hero__badge--genre">{{ category_name }}</span>
+            {% endif %}
+            {% if year %}
+            <span class="bk-hero__badge bk-hero__badge--year">{{ year }}</span>
+            {% endif %}
+        </div>
+
+        {# Titre + sous-titre #}
+        <h1 class="bk-hero__title"
+            data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+            {{ book.title }}
+        </h1>
+
+        {% if book.subtitle %}
+        <p class="bk-hero__subtitle"
+           data-aos="fade-up" data-aos-duration="700" data-aos-delay="300">
+            {{ book.subtitle }}
+        </p>
+        {% endif %}
+
+        <p class="bk-hero__author"
+           data-aos="fade-up" data-aos-duration="700" data-aos-delay="350">
+            <i class="bi bi-person-fill" aria-hidden="true"></i>
+            {{ author_name }}
+        </p>
+
+        {# Boutons CTA hero #}
+        <div class="bk-hero__cta"
+             data-aos="zoom-in" data-aos-duration="600" data-aos-delay="500">
+            <a href="#bk-content"
+               class="bk-btn bk-btn--primary">
+                <i class="bi bi-book-fill" aria-hidden="true"></i>
+                Lire le résumé
+            </a>
+            <contact-form-modal
+                data-book-id="{{ book.id }}"
+                data-book-title="{{ book.title|e('html_attr') }}"
+                data-author-name="{{ author_name|e('html_attr') }}"
+                data-subject="Commande — {{ book.title|e('html_attr') }}"
+                data-label-btn-click="Commander ce livre"
+                data-class-name-btn-click="bi bi-send-fill bk-btn bk-btn--outline"
+            ></contact-form-modal>
+            {# Bouton copier le lien (React non requis ici, JS natif) #}
+            <button class="bk-btn bk-btn--ghost" id="bk-copy-btn"
+                    data-url="{{ canonical_url }}"
+                    aria-label="Copier le lien de cette page"
+                    type="button">
+                <i class="bi bi-link-45deg" aria-hidden="true"></i>
+                Copier le lien
+            </button>
+        </div>
+
+        {# Chevron scroll #}
+        <div class="bk-hero__scroll" aria-hidden="true">
+            <i class="bi bi-chevron-down"></i>
+        </div>
+    </div>
+</section>
+
+<section class="bk-content container" id="bk-content"
+         aria-labelledby="bk-book-title">
+
+    <div class="bk-layout">
+
+        {# ══ COLONNE GAUCHE — couverture + métadonnées ══ #}
+        <aside class="bk-aside"
+               data-aos="fade-right" data-aos-duration="800">
+
+            {# Couverture #}
+            <div class="bk-cover-wrap">
+                {% if cover_url %}
+                <img class="bk-cover"
+                     src="{{ cover_url }}"
+                     alt="Couverture du livre {{ book.title }} — {{ author_name }}"
+                     width="300" height="450"
+                     loading="eager">
+                {% else %}
+                <div class="bk-cover bk-cover--placeholder"
+                     role="img"
+                     aria-label="Couverture non disponible">
+                    <img class="bk-cover"
+                     src="{{ asset('assets/images/placeholder_before_load.png','app')}}"
+                     alt="Couverture du livre {{ book.title }} — {{ author_name }}"
+                     width="300" height="450"
+                     loading="eager">
+                </div>
+                {% endif %}
+                {# Reflet décoratif sous la couverture #}
+                <div class="bk-cover__shadow" aria-hidden="true"></div>
+            </div>
+
+            {# Fiche technique #}
+            <div class="bk-meta-card">
+                <h3 class="bk-meta-card__title">
+                    <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
+                    Informations
+                </h3>
+                <dl class="bk-meta-list">
+                    <dt>Auteur</dt>
+                    <dd>{{ author_name }}</dd>
+
+                    {% if category_name %}
+                    <dt>Genre</dt>
+                    <dd>{{ category_name }}</dd>
+                    {% endif %}
+
+                    {% if year %}
+                    <dt>Année</dt>
+                    <dd>{{ year }}</dd>
+                    {% endif %}
+
+                    {% if book.isbn %}
+                    <dt>ISBN</dt>
+                    <dd>{{ book.isbn }}</dd>
+                    {% endif %}
+                </dl>
+            </div>
+
+            {# Bouton Commander — CTA principal colonne gauche #}
+            <div 
+               data-aos="zoom-in" data-aos-duration="600" data-aos-delay="200">
+                <contact-form-modal
+                        data-book-id="{{ book.id }}"
+                        data-book-title="{{ book.title|e('html_attr') }}"
+                        data-author-name="{{ author_name|e('html_attr') }}"
+                        data-subject="Commande — {{ book.title|e('html_attr') }}"
+                        data-label-btn-click="Commander ce livre"
+                        data-class-name-btn-click="bi bi-bag-fill bk-btn bk-btn--primary bk-btn--full"
+                ></contact-form-modal>
+            </div>
+            {# Partager / Copier le lien #}
+            <div class="bk-share">
+                <button class="bk-share__btn" id="bk-copy-btn-2"
+                        data-url="{{ canonical_url }}"
+                        type="button">
+                    <i class="bi bi-clipboard" aria-hidden="true"></i>
+                    Copier le lien
+                </button>
+                {# Toast confirmation copie #}
+                <span class="bk-share__toast" id="bk-copy-toast" aria-live="polite" hidden>
+                    <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                    Lien copié !
+                </span>
+            </div>
+
+        </aside>
+
+        {# ══ COLONNE DROITE — résumé + biographie auteur ══ #}
+        <div class="bk-main"
+             data-aos="fade-left" data-aos-duration="800" data-aos-delay="100">
+
+            {# Titre accessible (sr-only car le H1 est dans le hero) #}
+            <h2 id="bk-book-title" class="bk-main__section-title">
+                <i class="bi bi-journal-text" aria-hidden="true"></i>
+                Résumé
+            </h2>
+
+            <div class="bk-summary">
+                {% if book.summary %}
+                    {# Afficher les 500 premiers caractères + "lire la suite" #}
+                    {% set summary_short = book.summary|slice(0, 500) %}
+                    {% set summary_rest  = book.summary|slice(500) %}
+                    <p class="bk-summary__text">
+                        {{ summary_short }}{% if summary_rest %}…{% endif %}
+                    </p>
+                    {% if summary_rest %}
+                    <div class="bk-summary__more" id="bk-summary-rest" hidden>
+                        <p class="bk-summary__text">{{ summary_rest }}</p>
+                    </div>
+                    <button class="bk-summary__toggle" id="bk-summary-toggle"
+                            type="button" aria-expanded="false"
+                            aria-controls="bk-summary-rest">
+                        <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                        Lire la suite
+                    </button>
+                    {% endif %}
+                {% else %}
+                    <p class="bk-summary__empty">Résumé à venir.</p>
+                {% endif %}
+            </div>
+
+            {# Séparateur #}
+            <hr class="bk-divider" aria-hidden="true">
+
+            {# Biographie de l'auteur #}
+            {% if book.author %}
+            <section class="bk-author" aria-labelledby="bk-author-heading">
+                <h2 id="bk-author-heading" class="bk-main__section-title">
+                    <i class="bi bi-person-lines-fill" aria-hidden="true"></i>
+                    À propos de l'auteur
+                </h2>
+                <div class="bk-author__card">
+                    <div class="bk-author__avatar" aria-hidden="true">
+                        {% if author.avatarName is not null %}
+                            <img class="bk-avatarName"
+                            src="{{ vich_uploader_asset(author,"avatarFile") }}"
+                            alt="Avatar  {{ book.title }} — {{ author_name }}"
+                            width="150" height="150"
+                            class="img-fluid"
+                            loading="eager">
+                     {% else %}
+                        <i class="bi bi-person-circle"></i>
+                    {% endif %}
+                    </div>
+                    <div class="bk-author__info">
+                        <p class="bk-author__name">{{ author_name }}</p>
+                        {% if book.author.bio is defined and book.author.bio %}
+                        <p class="bk-author__bio">{{ book.author.bio}}</p>
+                        {% else %}
+                        <p class="bk-author__bio bk-author__bio--empty">
+                            Biographie de l'auteur à venir.
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+            <div class="bk-contact-cta"
+                 data-aos="fade-up" data-aos-duration="700" data-aos-delay="200">
+                <i class="bi bi-envelope-heart-fill" aria-hidden="true"></i>
+                <contact-form-modal
+                    data-book-id="{{ book.id }}"
+                    data-book-title="{{ book.title|e('html_attr') }}"
+                    data-author-name="{{ author_name|e('html_attr') }}"
+                    data-subject="Commande — {{ book.title|e('html_attr') }}"
+                    data-label-btn-click="Intéressé(e) par ce livre ? Contactez l'auteur directement"
+                    data-class-name-btn-click=" text-white"
+                ></contact-form-modal>
+                {# Fallback si React ne monte pas #}
+                <noscript>
+                    <a href="{{ path('app_contact') }}"
+                       class="bk-btn bk-btn--primary">
+                        <i class="bi bi-envelope" aria-hidden="true"></i>
+                        Contacter l'auteur
+                    </a>
+                </noscript>
+            </div>
+
+        </div>{# /.bk-main #}
+    </div>{# /.bk-layout #}
+
+</section>
+
+<section class="bk-cta-band" aria-labelledby="bk-cta-title">
+    <div class="container bk-cta-band__inner">
+        <div class="bk-cta-band__text"
+             data-aos="fade-right" data-aos-duration="700">
+            <p class="bk-cta-band__eyebrow">
+                <i class="bi bi-pen-fill" aria-hidden="true"></i>
+                Vous êtes auteur ?
+            </p>
+            <h2 id="bk-cta-title" class="bk-cta-band__title">
+                Publiez votre livre avec ProTIC Éditions
+            </h2>
+            <p class="bk-cta-band__sub">
+                Accompagnement personnalisé · Dépôt légal inclus ·
+                Distribution au Bénin et en Afrique · Réponse sous 48h.
+            </p>
+        </div>
+        <div class="bk-cta-band__actions"
+             data-aos="fade-left" data-aos-duration="700" data-aos-delay="150">
+            <a href="{{ path('app_contact') }}"
+               class="bk-btn bk-btn--gold bk-btn--lg">
+                <i class="bi bi-send-fill" aria-hidden="true"></i>
+                Soumettre mon manuscrit
+            </a>
+            <a href="{{ path('app_catalogue') }}"
+               class="bk-btn bk-btn--outline bk-btn--lg">
+                <i class="bi bi-grid-3x3-gap-fill" aria-hidden="true"></i>
+                Voir tout le catalogue
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts_extra %}
+ {{ vite_entry_script_tags('book_show',[],'app') }}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // ── Boutons "Copier le lien" ──────────────────────────────
+    const toast   = document.getElementById('bk-copy-toast');
+    const buttons = document.querySelectorAll('[data-url]');
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const url = btn.dataset.url;
+            try {
+                await navigator.clipboard.writeText(url);
+                if (toast) {
+                    toast.hidden = false;
+                    setTimeout(() => { toast.hidden = true; }, 2500);
+                }
+                // Feedback visuel sur le bouton
+                btn.classList.add('is-copied');
+                setTimeout(() => btn.classList.remove('is-copied'), 2500);
+            } catch {
+                // Fallback pour navigateurs sans clipboard API
+                prompt('Copiez ce lien :', url);
+            }
+        });
+    });
+
+    // ── Lire la suite du résumé ──────────────────────────────
+    const toggleBtn = document.getElementById('bk-summary-toggle');
+    const restDiv   = document.getElementById('bk-summary-rest');
+    if (toggleBtn && restDiv) {
+        toggleBtn.addEventListener('click', () => {
+            const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+            restDiv.hidden = expanded;
+            toggleBtn.setAttribute('aria-expanded', String(!expanded));
+            const icon = toggleBtn.querySelector('i');
+            if (icon) {
+                icon.className = expanded
+                    ? 'bi bi-chevron-down'
+                    : 'bi bi-chevron-up';
+            }
+            toggleBtn.querySelector('i').nextSibling.textContent = expanded
+                ? ' Lire la suite'
+                : ' Réduire';
+        });
+    }
+});
+</script>
+{% endblock %}

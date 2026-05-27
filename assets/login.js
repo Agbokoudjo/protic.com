@@ -5,7 +5,7 @@ window.jQuery = jQuery;
 window.$ = jQuery;
 //import '@fortawesome/fontawesome-free/css/all.min.css';
 document.addEventListener('DOMContentLoaded', () => {
-    disableUserInteractions();
+    disableUserInteractions("prod","false");
 
 // ── Toggle afficher/masquer mot de passe ─────────────────────
 const toggleBtn = document.getElementById('togglePassword');

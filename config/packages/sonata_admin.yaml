@@ -20,7 +20,7 @@ sonata_admin:
 
     default_admin_services:
         route_generator: App\Route\SonataRouteGenerator
-        #security_handler: App\Security\Handler\AbstractRoleSecurityHandler
+        security_handler: App\Security\Handler\SonataRoleSecurityHandler
     default_controller: App\Controller\Admin\WlindablaAdminCRUDController
     
     dashboard:
@@ -31,25 +31,35 @@ sonata_admin:
                 label: Administration
                 icon: bi bi-people
                 keep_open: true
+                roles: ['ROLE_ADMIN']
             app.admin.group.catalogue:
                 keep_open: true
                 label: Catalogue
                 icon:  bi bi-book
+                roles: ['ROLE_ADMIN']
             app.admin.group.load:
                 keep_open: true
                 label: Demandes
                 icon: bi bi-envelope-fill
+                roles: ['ROLE_ADMIN']
             app.admin.group.configuration:
                  keep_open: true
                  icon: bi bi-gear-wide-connected
                  label: Configuration
+                 roles: ['ROLE_ADMIN']
             app.admin.group.faq:
                 label: Gestion du Contenu
                 keep_open: true
                 icon: bi bi-menu-button-wide-fill
+                roles: ['ROLE_ADMIN']
             app.admin.group.permission.manager:
                 label: Gestion des Permissions
                 icon: bi bi-backpack2
+                roles: ['ROLE_ADMIN']
+            sonata.admin.logger:
+                label: Journalisation & Audit
+                icon: bi bi-journals
+                roles: ['ROLE_ADMIN']
 
 sonata_block:
     blocks:
