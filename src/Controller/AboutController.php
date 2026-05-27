@@ -50,14 +50,18 @@ final class AboutController extends AbstractController
         ]);
 
         if ($this->getParameter('app.env') === 'prod') {
-            $hashContent= md5($response->getContent()) ;
+            $hashContent= md5($this->getParameter('CACHE_VERSION_CONTROLLER') . $response->getContent());
             $tag=sprintf("%s_%d",$hashContent,count($team)) ;
             $response->setEtag($tag);
             $response->setPublic();
             $response->setMaxAge(604800);        
-            $response->setSharedMaxAge(604800);  
-            $response->isNotModified($request);
+            $response->setSharedMaxAge(604800);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            if ($response->isNotModified($request)) {
+                return $response;
+            }
         }
+
         return $response;
     }
 }

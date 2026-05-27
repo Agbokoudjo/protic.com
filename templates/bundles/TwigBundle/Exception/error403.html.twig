@@ -207,10 +207,6 @@
     {% endif %}
 {% endblock %}
 
-{# ══════════════════════════════════════════════════════════════════════
-   BLOC ADMIN SONATA — inchangé par rapport à votre template actuel.
-   Ignoré côté public car base.html.twig ne déclare pas ce bloc.
-══════════════════════════════════════════════════════════════════════ #}
 {% block sonata_admin_content %}
     {% if is_admin %}
     <div class="container mt-5">
@@ -238,10 +234,6 @@
     {% endif %}
 {% endblock %}
 
-{# ══════════════════════════════════════════════════════════════════════
-   BLOC PUBLIC — ignoré côté admin car Sonata n'étend pas base.html.twig
-   de la même façon et ne rend pas ce bloc dans ce contexte.
-══════════════════════════════════════════════════════════════════════ #}
 {% block header %}{% endblock %}
  {% block nav %}{% endblock %}
  {% block script_aos %} {% endblock %}
@@ -328,3 +320,4 @@
     </main>
     {% endif %}
 {% endblock %}
+{% block footer %}{% endblock %}

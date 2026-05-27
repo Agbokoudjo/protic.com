@@ -80,7 +80,10 @@ final class BookShowController extends AbstractController
         $response->setPublic();
         $response->setMaxAge(604800);
         $response->setSharedMaxAge(604800);
-
+        $cache_tag = md5($this->getParameter('CACHE_VERSION_CONTROLLER'));
+        $response->setEtag($cache_tag);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        
         if ($this->getParameter('app.env') === 'prod' && $response->isNotModified($request)) {
             return $response;
         }

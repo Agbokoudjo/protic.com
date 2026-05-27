@@ -24,11 +24,11 @@ final class HomeController extends AbstractController
 
         if ($this->getParameter('app.env') === 'prod') {
             $response->setPublic();
-           // $response->setMaxAge(60400);        
-            //$response->setSharedMaxAge(60400);
-            $response->headers->addCacheControlDirective('no-cache', true);
+           $response->setMaxAge(604800);        
+            $response->setSharedMaxAge(604800);
             $response->headers->addCacheControlDirective('must-revalidate', true);
-            $response->setEtag(md5($response->getContent()) . "new content to cache"); 
+            $cache_tag= md5($this->getParameter('CACHE_VERSION_CONTROLLER') . $response->getContent()) ;
+            $response->setEtag($cache_tag);
         }
 
         if ($response->isNotModified($request)) {

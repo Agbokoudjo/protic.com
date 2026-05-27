@@ -5,6 +5,7 @@ parameters:
      app.site_name: "ProTIC Editions & Services"
      dkim_key: '%env(resolve:default::MAILER_DKIM)%'
      app.env: "%env(APP_ENV)%"
+     CACHE_VERSION_CONTROLLER: "v1.4.8"
      app.mail.from:
         system:
             address: '%env(APP_MAIL_FROM_SYSTEM)%'
