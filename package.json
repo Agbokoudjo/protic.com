@@ -8,8 +8,8 @@
         "build": "vite build -c vite.app.config.js && vite build -c vite.admin.config.js"
     },
     "devDependencies": {
-        "@babel/core": "^7.29.0",
-        "@babel/preset-react": "^7.28.5",
+        "@babel/core": "^7.29.7",
+        "@babel/preset-react": "^7.29.7",
         "@hotwired/turbo": "^8.0.23",
         "@rollup/plugin-inject": "^5.0.5",
         "@symfony/stimulus-bridge": "^4.0.1",
