@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -17,14 +18,19 @@ use Symfony\Component\Routing\Attribute\Route;
 ]
 final class HomeController extends AbstractController
 {
-    public function __invoke(): Response
+    public function __invoke(Request $request): Response
     {
         $response = $this->render('index.html.twig');
 
         if ($this->getParameter('app.env') === 'prod') {
             $response->setPublic();
-            $response->setMaxAge(604800);        
-            $response->setSharedMaxAge(604800);  
+            $response->setMaxAge(604801);        
+            $response->setSharedMaxAge(604801);
+            $response->setEtag(md5($response->getContent())); 
+        }
+
+        if ($response->isNotModified($request)) {
+            return $response;
         }
 
         return $response;
