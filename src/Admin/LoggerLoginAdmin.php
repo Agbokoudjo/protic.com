@@ -23,12 +23,10 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\StringFilter;
 use Sonata\Form\Type\DateRangeType;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -198,7 +196,7 @@ final class LoggerLoginAdmin extends WlindablaAdmin
         return 'logger_login_user';
     }
 
-     public function toString(object $object): string
+    public function toString(object $object): string
     {
         return $object instanceof LoggerLoginUser && $object->getUsername()
             ? $object->getUsername()
