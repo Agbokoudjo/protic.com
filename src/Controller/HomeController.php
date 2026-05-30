@@ -23,9 +23,10 @@ final class HomeController extends AbstractController
         $response = $this->render('index.html.twig');
 
         if ($this->getParameter('app.env') === 'prod') {
+            $cache_ttl_public = $this->getParameter('CACHE_TTL_PUBLIC') ?? 3600;
             $response->setPublic();
-           $response->setMaxAge(604800);        
-            $response->setSharedMaxAge(604800);
+            $response->setMaxAge($cache_ttl_public);
+            $response->setSharedMaxAge($cache_ttl_public);
             $response->headers->addCacheControlDirective('must-revalidate', true);
             $cache_tag= md5($this->getParameter('CACHE_VERSION_CONTROLLER') . $response->getContent()) ;
             $response->setEtag($cache_tag);

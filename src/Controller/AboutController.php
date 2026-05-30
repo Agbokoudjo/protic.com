@@ -53,9 +53,10 @@ final class AboutController extends AbstractController
             $hashContent= md5($this->getParameter('CACHE_VERSION_CONTROLLER') . $response->getContent());
             $tag=sprintf("%s_%d",$hashContent,count($team)) ;
             $response->setEtag($tag);
+            $cache_ttl_public = $this->getParameter('CACHE_TTL_PUBLIC') ?? 3600;
             $response->setPublic();
-            $response->setMaxAge(604800);        
-            $response->setSharedMaxAge(604800);
+            $response->setMaxAge($cache_ttl_public);
+            $response->setSharedMaxAge($cache_ttl_public);
             $response->headers->addCacheControlDirective('must-revalidate', true);
             if ($response->isNotModified($request)) {
                 return $response;
