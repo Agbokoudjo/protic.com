@@ -77,7 +77,7 @@ final class BookShowController extends AbstractController
         };
         
         $response->setLastModified($dataLastModified);
-        $cache_ttl_public = $this->getParameter('CACHE_TTL_PUBLIC') ?? 3600;
+        $cache_ttl_public = (int) $this->getParameter('CACHE_TTL_PUBLIC') ?? 3600;
         $response->setPublic();
         $response->setMaxAge($cache_ttl_public);
         $response->setSharedMaxAge($cache_ttl_public);
