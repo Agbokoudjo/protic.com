@@ -19,6 +19,7 @@ nelmio_security:
                 - 'unsafe-inline' 
                 - 'unpkg.com'
                 - 'fonts.googleapis.com'
+                - 'cdn.jsdelivr.net'
             img-src:
                 - 'self'
                 - 'data:'
@@ -83,8 +84,7 @@ when@prod:
         csp:
             enforce:
                 script-src:
-                    - 'self'
-                    - 'nonce'       
+                    - 'self'  
                     - 'unsafe-inline'    # nécessaire pour SonataAdmin
                     - 'cdn.jsdelivr.net'
                     - 'cdnjs.cloudflare.com'
