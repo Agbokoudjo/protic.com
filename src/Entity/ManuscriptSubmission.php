@@ -332,4 +332,22 @@ class ManuscriptSubmission
     }
 
     public function __toString():string{ return $this->fullName ;}
+
+    /**
+     * Get the value of updatedAt
+     */
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set the value of updatedAt
+     */
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
 }

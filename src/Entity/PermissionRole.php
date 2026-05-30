@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Domain\BaseUserInterface;
 use App\Entity\PermissionRoleInterface;
 use App\Entity\SonataUser;
 use App\Repository\PermissionRoleRepository;

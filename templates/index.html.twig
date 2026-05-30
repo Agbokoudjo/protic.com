@@ -74,7 +74,13 @@ maison édition Bénin, publier livre Bénin, édition Abomey-Calavi, ProTIC éd
                 <img src="{{ asset('assets/images/hero-bg4.png','app') }}" class="img-fluid d-block w-100" alt="Bibliothèque africaine moderne — Maison d'édition ProTIC Bénin Abomey-Calavi">
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('assets/images/hero-bg-2.png','app') }}" class="img-fluid d-block w-100" alt="Bibliothèque africaine moderne — Maison d'édition ProTIC Bénin Abomey-Calavi" loading="lazy">
+                <img src="{{ asset('assets/images/hero-bg-2.png','app') }}" class="img-fluid d-block w-100" alt="Bibliothèque africaine moderne — Maison d'édition ProTIC Bénin Abomey-Calavi">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ asset('assets/images/book-hero-default.png','app') }}" class="img-fluid d-block w-100" alt="Bibliothèque africaine moderne — Maison d'édition ProTIC Bénin Abomey-Calavi">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ asset('assets/images/book-hero-default_2.png','app') }}" class="img-fluid d-block w-100" alt="Bibliothèque africaine moderne — Maison d'édition ProTIC Bénin Abomey-Calavi">
             </div>
         </div>
     </div>
@@ -647,7 +653,7 @@ maison édition Bénin, publier livre Bénin, édition Abomey-Calavi, ProTIC éd
 
 {% block threejs %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
+<script nonce="{{ csp_nonce('script') }}">
 {# Hero canvas Three.js — particules flottantes façon pages de livre #}
  function initHeroThreeJS() {
     const canvas = document.getElementById('hero-canvas');

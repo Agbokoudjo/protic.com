@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace App\EventSubscriber;
 
 use App\CommandHandler\UpdateUserProfileHandler;
-use App\Entity\BaseUserInterface;
+use App\Domain\BaseUserInterface;
 use App\Exception\EmailAlreadyVerifiedException;
 use App\Persistance\UserManagerInterface;
 use App\Queue\Message\ServiceMethodMessage;

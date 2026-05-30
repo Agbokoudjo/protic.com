@@ -213,21 +213,6 @@ cp .env .env.local
 nano .env.local
 ```
 
-Variables minimales pour le dev :
-```bash
-APP_ENV=dev
-APP_SECRET=une_chaine_aleatoire_32_caracteres
-DATABASE_URL="postgresql://user:pass@127.0.0.1:5432/protic_db?serverVersion=17"
-REDIS_HOST=127.0.0.1
-REDIS_PORT=6379
-SYSTEM_MAILER_DSN="smtp://user:pass@sandbox.smtp.mailtrap.io:2525"
-SUPPORT_MAILER_DSN="smtp://user:pass@sandbox.smtp.mailtrap.io:2525"
-APP_MAIL_FROM_SYSTEM="system@protic.com"
-APP_MAIL_FROM_SYSTEM_NAME="ProTIC Editions — Système"
-APP_MAIL_FROM_SUPPORT="direction@protic.com"
-APP_MAIL_FROM_SUPPORT_NAME="Direction ProTIC Editions & Services"
-```
-
 ### 3. Installer les dépendances
 
 ```bash

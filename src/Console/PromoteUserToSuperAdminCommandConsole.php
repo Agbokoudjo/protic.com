@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace App\Console;
 
-use App\Entity\BaseUserInterface;
+use App\Domain\BaseUserInterface;
 use App\Persistance\UserManagerInterface;
 use DomainException;
 use Symfony\Component\Console\Attribute\AsCommand;

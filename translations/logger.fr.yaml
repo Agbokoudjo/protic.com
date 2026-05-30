@@ -1,0 +1,26 @@
+login:
+  id: ID Log
+  username: |
+    Nom d'Utilisateur
+  email: Adresse Email
+  user_class: Classe Utilisateur
+  userClass: Classe Utilisateur
+  lastLoginIp: Adresse IP de Connexion
+  ip_address: Adresse IP de Connexion
+  createdAt: Date & Heure de Connexion
+  actions: Audit
+  audit_info: Audit Info
+  info_user: Informations Utilisateur
+  context: Contexte Technique
+
+audit.id: "ID Audit"
+audit.created_at: "Date & Heure de l'Action"
+audit.user: "Informations sur Auteur"
+audit.user_details: "Détails de l'Auteur"
+audit.user_id: "ID Utilisateur (Context)"
+audit.action: "Action Enregistrée"
+audit.method: "Méthode HTTP"
+audit.route: "Route/Page Ciblée"
+audit.ip_address: "Adresse IP Source"
+global.audit: "Audit Global"
+audit.context_data: "Données de Contexte (Détails, Changements)"

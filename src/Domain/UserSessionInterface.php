@@ -14,7 +14,7 @@ declare(strict_types=1);
  * For more information, please feel free to contact the author.
  */
 
-namespace App\Entity;
+namespace App\Domain;
 
 interface UserSessionInterface
 {

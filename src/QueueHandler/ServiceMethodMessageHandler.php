@@ -35,7 +35,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
-
+use App\Persistance\LoggerLoginUserManagerInterface ;
 /**
  * Classe ServiceMethodMessageHandler
  *
@@ -75,7 +75,8 @@ final class ServiceMethodMessageHandler implements ServiceSubscriberInterface,Se
             GenerateTemporaryPasswordHandler::class,
             TeamMemberSyncHandler::class,
             UpdatePasswordUserHandler::class,
-            UserSessionManagerInterface::class
+            UserSessionManagerInterface::class,
+            LoggerLoginUserManagerInterface::class
         ];
     }
 

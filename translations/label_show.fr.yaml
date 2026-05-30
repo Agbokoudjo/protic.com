@@ -10,3 +10,4 @@ user_permission_role: "DÉTAIL SUR LA RESPONSABILTÉ ATTRIBUÉE  "
 user_permission_role_admin: À L'ADMINISTRATEUR
 user_permission_role_member: AU MEMBRE
 user_session: "Détails de la session utilisateur de %name% "
+label_show_logger_login: "Fiche d'Audit de Connexion de l'utilisateur de %name%"

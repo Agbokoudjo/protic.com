@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace App\Security\Authorization;
 
-use App\Entity\BaseUserInterface;
+use App\Domain\BaseUserInterface;
 use App\Repository\UserPermissionRoleRepository;
 use App\Security\Authorization\AuthorizationCheckerForUserInterface;
 

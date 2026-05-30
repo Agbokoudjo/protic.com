@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace App\Security\Voter;
 
-use App\Entity\BaseUserInterface;
 use App\Entity\SonataUser;
 use App\Security\Authorization\AuthorizationCheckerForUser;
 use App\Security\Voter\Permission;
@@ -38,7 +37,7 @@ final class AdminUserVoter extends Voter implements Permission
     {
 
         return in_array($attribute, self::ADMIN_USER_PERMISSION)
-            && $subject instanceof BaseUserInterface;
+            && $subject instanceof SonataUser;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool

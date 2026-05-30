@@ -15,18 +15,20 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\AbstractUser;
+use App\Domain\AbstractUser;
 use App\Repository\SonataUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use libphonenumber\PhoneNumber;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Attribute as Vich;
-
 /**
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
  * @package <https://github.com/Agbokoudjo/>
@@ -36,7 +38,10 @@ use Vich\UploaderBundle\Mapping\Attribute as Vich;
 #[Vich\Uploadable]
 #[Gedmo\SoftDeleteable]
 class SonataUser extends AbstractUser implements
-    UserInterface
+    UserInterface,
+    LegacyPasswordAuthenticatedUserInterface,
+    PasswordAuthenticatedUserInterface,
+    EquatableInterface
 {
     use SoftDeleteableEntity ;
     public const ROLE_DEFAULT = 'ROLE_ADMIN';

@@ -190,7 +190,7 @@ export function useCopyLink(slug) {
         e.stopPropagation(); // empêche d'ouvrir la modale en même temps
         if (!slug) return;
 
-        const url = `${window.location.origin}/book/${slug}`;
+        const url = `${window.location.origin}/book_show/${slug}`;
         try {
             await navigator.clipboard.writeText(url);
             setCopied(true);

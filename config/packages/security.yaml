@@ -27,6 +27,7 @@ security:
             - ROLE_APP_ADMIN_GLOBALSETTING_ALL
             - ROLE_APP_ADMIN_MANUSCRIPTSUBMISSION_ALL
             - ROLE_APP_ADMIN_FAQ_ALL
+            - ROLE_SONATA_ADMIN_LOGGER_LOGIN_EXPORT
         # Niveau 2 — Responsables de pôle
         ROLE_EDITORIAL_MGR:  [ROLE_EDITOR_SENIOR, ROLE_ADMIN]
         ROLE_CONTENT_MGR:    [ROLE_REDACTEUR, ROLE_ADMIN]
@@ -58,11 +59,13 @@ security:
             - ROLE_APP_ADMIN_FAQ_VIEW
             - ROLE_APP_ADMIN_FAQ_LIST
             - ROLE_APP_ADMIN_GLOBALSETTING_VIEW
-            - ROLE_APP_ADMIN_GLOBALSETTING_LIST
+            - ROLE_APP_ADMIN_GLOBALSETTING_LIST 
             - ROLE_APP_ADMIN_MANUSCRIPTSUBMISSION_LIST
             - ROLE_APP_ADMIN_MANUSCRIPTSUBMISSION_VIEW
             - ROLE_SONATA_ADMIN_USER_SESSION_LIST  
-            - ROLE_SONATA_ADMIN_USER_SESSION_VIEW  
+            - ROLE_SONATA_ADMIN_USER_SESSION_VIEW 
+            - ROLE_SONATA_ADMIN_LOGGER_LOGIN_LIST
+            - ROLE_SONATA_ADMIN_LOGGER_LOGIN_VIEW 
     providers:
         users_in_memory: { memory: null }
         admin_user_provider:
@@ -93,7 +96,7 @@ security:
                 secret: '%env(APP_SECRET)%'
                 lifetime: 604800
                 path: /admin
-                always_remember_me: true
+                always_remember_me: false
             logout:
                path: sonata_user_admin_security_logout
                target: app_admin_user_login

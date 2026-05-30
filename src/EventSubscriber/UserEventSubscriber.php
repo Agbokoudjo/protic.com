@@ -19,7 +19,7 @@ namespace App\EventSubscriber;
 use App\CommandHandler\TeamMemberSyncHandler;
 use App\CommandHandler\UpdatePasswordUserHandler;
 use App\CommandHandler\UpdateUserProfileHandler;
-use App\Entity\BaseUserInterface;
+use App\Domain\BaseUserInterface;
 use App\Entity\SonataUser;
 use App\Entity\TeamMember;
 use App\Queue\AsyncMethodDispatcherInterface;

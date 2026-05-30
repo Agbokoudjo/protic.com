@@ -7,3 +7,4 @@ list__app.admin.global_setting: "Gestion des Paramètres Généraux "
 list__app_admin_faq: Liste des FAQ
 permission_role: "Liste des rôles et permissions disponibles"
 permission_user: "Liste des rôles et permissions attribués aux utilisateurs"
+label_list_logger_login: Traçabilité des Authentifications

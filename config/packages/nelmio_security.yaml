@@ -1,0 +1,148 @@
+nelmio_security:
+    csp:
+        enforce:
+            level1_fallback: false
+            browser_adaptive:
+                enabled: false
+            default-src:
+                - 'self'
+            script-src:
+                - 'self'
+                - 'unpkg.com'
+                - 'www.googletagmanager.com'
+                - 'www.google-analytics.com'
+                - 'cdnjs.cloudflare.com'
+                - 'unpkg.com'
+                - 'cdn.jsdelivr.net'
+            style-src:
+                - 'self'
+                - 'unsafe-inline' 
+                - 'unpkg.com'
+                - 'fonts.googleapis.com'
+            img-src:
+                - 'self'
+                - 'data:'
+                - 'https:'
+                - 'www.googletagmanager.com'
+                - 'www.google-analytics.com'
+
+            font-src:
+                - 'self'
+                - 'cdn.jsdelivr.net'
+                - 'fonts.gstatic.com' 
+            frame-ancestors:
+                - 'none'
+            form-action:
+                - 'self'
+            connect-src:
+                - 'self'
+                - 'www.google-analytics.com'
+                - 'region1.google-analytics.com'
+
+    # prevents framing of the entire site
+    clickjacking:
+        paths:
+            '^/.*': DENY
+    external_redirects:
+        abort: true
+        log: true
+    # disables content type sniffing for script resources
+    content_type:
+        nosniff: true
+    referrer_policy:
+        enabled: true
+        policies:
+            - 'no-referrer'
+            - 'strict-origin-when-cross-origin'
+
+    permissions_policy:
+        enabled: true
+        policies:
+            camera: []
+            microphone: []
+            geolocation: []
+            accelerometer: []
+            gyroscope: []
+            interest_cohort: []
+            payment: ['self']
+            fullscreen: ['self']
+            autoplay: []
+            publickey_credentials_get: ['self']
+
+    cross_origin_isolation:
+        enabled: true
+        paths:
+            '^/.*':
+                coep: unsafe-none   
+                coop: same-origin
+                corp: same-origin
+    
+
+when@prod:
+    nelmio_security:
+        csp:
+            enforce:
+                script-src:
+                    - 'self'
+                    - 'nonce'       
+                    - 'unsafe-inline'    # nécessaire pour SonataAdmin
+                    - 'cdn.jsdelivr.net'
+                    - 'cdnjs.cloudflare.com'
+                block-all-mixed-content: true
+        forced_ssl:
+            enabled: true
+
+when@dev:
+    nelmio_security:
+        csp:
+            enforce:
+                default-src:
+                    - 'self'
+                script-src:
+                    - 'self'
+                    - 'unsafe-inline'      # pas de nonce en dev
+                    - 'unsafe-eval'        # Vite en a besoin
+                    - 'http://127.0.0.1:5174'
+                    - 'http://localhost:5174'
+                    - 'http://127.0.0.1:5173'
+                    - 'http://localhost:5173'
+                    - 'www.googletagmanager.com'
+                    - 'www.google-analytics.com'
+                    - 'cdnjs.cloudflare.com'
+                    - 'unpkg.com'
+                    - 'cdn.jsdelivr.net'
+                   
+                style-src:
+                    - 'self'
+                    - 'unsafe-inline'
+                    - 'http://127.0.0.1:5174'
+                    - 'http://localhost:5174'
+                    - 'http://127.0.0.1:5173'
+                    - 'http://localhost:5173'
+                    - 'cdn.jsdelivr.net'
+                    - 'cdnjs.cloudflare.com'
+                    - 'unpkg.com'
+                    - 'fonts.googleapis.com'  
+                connect-src:
+                    - 'self'
+                    - 'http://127.0.0.1:5174'
+                    - 'ws://127.0.0.1:5174'    # HMR websocket Vite
+                    - 'http://localhost:5174'
+                    - 'ws://localhost:5174'
+                    - 'http://127.0.0.1:5173'
+                    - 'ws://127.0.0.1:5173'    # HMR websocket Vite
+                    - 'http://localhost:5173'
+                    - 'ws://localhost:5173'
+                    - 'www.google-analytics.com'
+                img-src:
+                    - 'self'
+                    - 'data:'
+                    - 'https:'
+                    - 'http:'                   # images HTTP en dev local
+                font-src:
+                    - 'self'
+                    - 'cdn.jsdelivr.net'
+                    - 'http://127.0.0.1:5174'
+                    - 'http://127.0.0.1:5173'
+                    - 'fonts.gstatic.com' 
+

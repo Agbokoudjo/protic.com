@@ -17,7 +17,7 @@ namespace App\Controller\Admin;
 
 use App\CommandHandler\GenerateTemporaryPasswordHandler;
 use App\CommandHandler\ToggleUserAccountHandler;
-use App\Entity\BaseUserInterface;
+use App\Domain\BaseUserInterface;
 use App\Exception\InvalidTokenException;
 use App\Persistance\UserManagerInterface;
 use App\Queue\AsyncMethodDispatcherInterface;

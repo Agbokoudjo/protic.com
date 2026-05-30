@@ -37,21 +37,38 @@ use Symfony\Component\HttpFoundation\Request;
 final class BrowserRequestValidator
 {
     /**
-     * User-Agents des outils automatisés à bloquer.
-     *
-     * @var list<non-empty-string>
+     * Crawlers légitimes autorisés sur les pages publiques.
+     * Ces UAs sont bloqués sur les routes sensibles mais autorisés sur les pages publiques.
      */
-    private const BLOCKED_USER_AGENTS = [
-        // Outils de ligne de commande
-        'curl',
-        'wget',
-        'python-requests',
-        'httpie',
-        'postman',
-        'insomnia',
-        'paw/',
+    private const ALLOWED_CRAWLERS = [
+        // Bots et crawlers (hors navigateurs)
+        'bot/',
+        'crawler',
+        'spider',
+        'scraper',
+        'slurp',
+        'googlebot',
+        'bingbot',
+        'yandexbot',
+        'semrushbot',
+        'ahrefsbot',
+        'mj12bot',
+        'dotbot',
+        'bytespider',
+        'facebookexternalhit',  // Partage Facebook
+        'twitterbot',           // Partage Twitter/X
+        'linkedinbot',          // Partage LinkedIn
+        'slackbot',             // Aperçu Slack
+        'whatsapp',             // Aperçu WhatsApp
+        'applebot',             // Apple Search
+        'petalbot',             // Huawei
+    ];
 
-        // Outils de pentest
+    /**
+     * Outils de pentest à bloquer même sur les pages publiques.
+     */
+    private const BLOCKED_PENTEST_TOOLS = [
+        // Outils de pentest 
         'burpsuite',
         'burp',
         'zaproxy',
@@ -68,22 +85,22 @@ final class BrowserRequestValidator
         'nuclei',
         'hydra',
         'ffuf',
-
-        // Bots et crawlers (hors navigateurs)
-        'bot/',
-        'crawler',
-        'spider',
-        'scraper',
-        'slurp',
-        'googlebot',
-        'bingbot',
-        'yandexbot',
-        'semrushbot',
-        'ahrefsbot',
-        'mj12bot',
-        'dotbot',
-        'petalbot',
-        'bytespider',
+    ];
+    
+    /**
+     * User-Agents des outils automatisés à bloquer.
+     *
+     * @var list<non-empty-string>
+     */
+    private const BLOCKED_USER_AGENTS = [
+        // Outils de ligne de commande
+        'curl',
+        'wget',
+        'python-requests',
+        'httpie',
+        'postman',
+        'insomnia',
+        'paw/',
 
         // Runtimes et frameworks HTTP
         'java/',
@@ -134,13 +151,60 @@ final class BrowserRequestValidator
     ];
 
     /**
-     * Valide si la requête provient d'un navigateur réel.
+     * Validation légère pour les pages publiques.
+     * Bloque les outils de pentest mais autorise les crawlers légitimes.
      *
+     * @return bool true = autorisé, false = à bloquer
+     */
+    public function isValidPublicRequest(Request $request): bool
+    {
+        // IPs de confiance → toujours autorisées
+        if ($this->isTrustedIp($request)) {
+            return true;
+        }
+
+        $ua      = $request->headers->get('User-Agent', '');
+        $uaLower = strtolower($ua);
+
+        // 1. Bloquer si User-Agent absent
+        if (empty($ua)) {
+            return false;
+        }
+
+        // 2. Bloquer les outils de pentest (priorité absolue)
+        foreach (self::BLOCKED_PENTEST_TOOLS as $tool) {
+            if (str_contains($uaLower, $tool)) {
+                return false;
+            }
+        }
+
+        // 3. Autoriser les crawlers légitimes
+        foreach (self::ALLOWED_CRAWLERS as $crawler) {
+            if (str_contains($uaLower, $crawler)) {
+                return true; // Crawler légitime → laisser passer
+            }
+        }
+
+        // 4. Pour les autres, vérifier qu'il y a au moins un User-Agent non-vide
+        //    (bloquer curl, wget, python-requests, etc.)
+        foreach (self::BLOCKED_USER_AGENTS as $blocked) {
+            if (str_contains($uaLower, strtolower($blocked))) {
+                return false;
+            }
+        }
+
+        // Accepter tout ce qui ressemble à un navigateur OU un UA inconnu
+        //    (on est permissif sur les pages publiques)
+        return true;
+    }
+
+    /**
+     * Valide si la requête provient d'un navigateur réel.
      * @return bool true = requête valide, false = requête suspecte/à bloquer
      */
     public function isValidBrowserRequest(Request $request): bool
     {
-        // 0. IPs de confiance → toujours autorisées
+        // IPs de confiance → toujours autorisées
         if ($this->isTrustedIp($request)) {
             return true;
         }
@@ -293,7 +357,6 @@ final class BrowserRequestValidator
      * Format BCP 47 supporté : "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7"
      * Supporte aussi : zh-Hans, zh-Hant-TW, q=1, q=1.0, q=0.999
      *
-     * CORRECTION v2 : bug $lanages corrigé + regex BCP 47 complète
      */
     private function isUserAgentLanguageConsistent(Request $request): bool
     {
@@ -364,8 +427,6 @@ final class BrowserRequestValidator
 
     /**
      * Vérifie les caractéristiques HTTP d'une requête de navigateur.
-     *
-     * CORRECTION v2 :
      * - Les appels fetch() natifs (React, Axios sans config) ne définissent PAS
      *   X-Requested-With → isXmlHttpRequest() retourne false pour eux.
      *   On détecte aussi les routes API pour adapter la règle Accept.
@@ -421,9 +482,6 @@ final class BrowserRequestValidator
      * Indicateurs analysés :
      * - Présence/cohérence des headers Sec-Fetch-*
      * - Cookies absents sur une requête POST non-GET
-     *
-     * CORRECTION v2 : la méthode ne retourne plus true par accident
-     * à cause de hasValidHeaderOrder() qui retournait toujours false.
      */
     private function isSimulatedBrowser(Request $request): bool
     {

@@ -36,7 +36,8 @@ export default defineConfig({
                 sonata: "./assets/sonata.js",
                 base_sonata_admin: "./assets/base_sonata_admin.js",
                 login: "./assets/login.js",
-                mobile_guard: "./assets/mobile_guard.js"
+                mobile_guard: "./assets/mobile_guard.js",
+                form: 'assets/form.js'
             },
         }
     },
@@ -49,6 +50,7 @@ export default defineConfig({
                 "https://protic.local",
                 "http://protic.local",
                 "http://127.0.0.1:8081",
+                "https://proticeditions.com",
                 /\.ngrok-free\.app$/
             ]
         },

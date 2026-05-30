@@ -14,6 +14,7 @@
         "doctrine/orm": "^3.6.6",
         "gedmo/doctrine-extensions": ">=3.22",
         "nelmio/cors-bundle": "^2.6.1",
+        "nelmio/security-bundle": "*",
         "odolbeau/phone-number-bundle": ">=4.2.5",
         "pentatrion/vite-bundle": ">=8.2.4",
         "phpdocumentor/reflection-docblock": "^6.0.3",

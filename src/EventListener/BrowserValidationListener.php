@@ -30,7 +30,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * Priorité 1000 → s'exécute en premier, avant le RateLimitListener (900).
  *
- * CORRECTIONS v2 :
  * - Utilisation de getBlockReasonCode() dans les logs (raison détaillée)
  * - getBlockReasonMessage() utilisé uniquement pour la réponse client
  * - shouldValidatePath() enrichi (routes Sonata Admin, webhook Stripe, etc.)
@@ -58,14 +57,21 @@ final readonly class BrowserValidationListener
 
         $request = $event->getRequest();
         $path    = $request->getPathInfo();
+        $validation = $this->shouldValidatePath($path); // 'none' | 'public' | 'sensitive'
 
-        // N'appliquer la validation qu'aux routes sensibles
-        if (!$this->shouldValidatePath($path)) {
+        if ($validation === 'none') {
             return;
         }
 
-        if ($this->validator->isValidBrowserRequest($request)) {
-            return; // Requête valide → on laisse passer
+        $isValid = match ($validation) {
+            'sensitive' => $this->validator->isValidBrowserRequest($request),
+            'public'    => $this->validator->isValidPublicRequest($request),
+            default     => true,
+        };
+
+
+        if($isValid) {
+            return;
         }
 
         // --- Requête bloquée ---
@@ -95,9 +101,9 @@ final readonly class BrowserValidationListener
      * STRATÉGIE :
      * 1. Exclure d'abord les chemins exemptés (assets, callbacks, health, etc.)
      * 2. Inclure ensuite les chemins sensibles (API, admin, auth, etc.)
-     * 3. Par défaut : ne pas valider (permissif sur les pages publiques)
+     * 3. Par défaut : ne pas valider (permissif sur les pages publiques) pour les bots ou crawlers
      */
-    private function shouldValidatePath(string $path): bool
+    private function shouldValidatePath(string $path): string
     {
         // ── Chemins toujours exemptés (webhooks, assets, health checks…) ──────
         $excludedPrefixes = [
@@ -118,7 +124,7 @@ final readonly class BrowserValidationListener
 
         foreach ($excludedPrefixes as $prefix) {
             if (str_starts_with($path, $prefix)) {
-                return false;
+                return 'none';
             }
         }
 
@@ -139,16 +145,28 @@ final readonly class BrowserValidationListener
             '/change-password',
             '/2fa',
             '/toggle_enabled_user_account',
+            '/verify-email',
+            '/session-conflit'
         ];
 
         foreach ($sensitivePrefixes as $prefix) {
             if (str_starts_with($path, $prefix) || $path === $prefix) {
-                return true;
+                return 'sensitive';
             }
         }
 
-        // Par défaut : ne pas valider les pages publiques (accueil, blog…)
-        return false;
+        // Pages publiques → validation légère
+        $publicPrefixes = ['/', '/about', '/contact', '/catalogue',
+            '/book_show','/request-api/contact-author'
+            ];
+        foreach ($publicPrefixes as $prefix) {
+            if (str_starts_with($path, $prefix) || $path === $prefix) {
+                return 'public';
+            }
+        }
+
+        // Par défaut : ne pas valider les pages publiques (accueil, blog…) pour les bots ou craweler
+        return 'none';
     }
 
     /**

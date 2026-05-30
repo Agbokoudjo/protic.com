@@ -16,8 +16,8 @@ declare(strict_types=1);
 
 namespace App\Persistance;
 
-use App\Entity\BaseUserInterface;
-use App\Entity\UserSessionInterface;
+use App\Domain\BaseUserInterface;
+use App\Domain\UserSessionInterface;
 
 /**
  * Contrat du service de gestion des sessions utilisateur uniques.

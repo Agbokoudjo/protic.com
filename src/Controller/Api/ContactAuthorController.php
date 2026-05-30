@@ -20,9 +20,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('api/contact-author', name: 'api_contact_author', methods: ['POST'])]
+#[Route('/request-api/contact-author', name: 'api_contact_author', methods: ['POST'])]
 final class ContactAuthorController extends AbstractController
-{
+{ 
     public function __construct(
         private readonly DenormalizerInterface  $denormalizer,
         private readonly ValidatorInterface     $validator,

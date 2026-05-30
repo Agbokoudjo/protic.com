@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Domain\AbstractUserSession;
 use App\Repository\UserSessionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;

@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\BaseUserInterface;
+use App\Domain\BaseUserInterface;
 use App\Entity\PermissionRole;
 use App\Infrastructure\Doctrine\Entity\Security\PermissionRoleEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

@@ -13,22 +13,15 @@ declare(strict_types=1);
  * For more information, please feel free to contact the author.
  */
 
-namespace App\Entity;
+namespace App\Domain;
 
-use App\Entity\BaseUserInterface;
-use Symfony\Component\Security\Core\User\EquatableInterface;
-use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Domain\BaseUserInterface;
 
 /**
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
  * @package <https://github.com/Agbokoudjo/>
  */
-abstract class AbstractUser implements BaseUserInterface ,\Stringable,
-    LegacyPasswordAuthenticatedUserInterface,
-    PasswordAuthenticatedUserInterface,
-    EquatableInterface
+abstract class AbstractUser implements BaseUserInterface ,\Stringable
 {
     public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
     
@@ -418,23 +411,6 @@ abstract class AbstractUser implements BaseUserInterface ,\Stringable,
     public function setSlug(?string $slug): void
     {
         $this->slug = $slug;
-    }
-
-    public function isEqualTo(UserInterface $user): bool
-    {
-        if (!$user instanceof self) {
-            return false;
-        }
-
-        if ($this->password !== $user->getPassword()) {
-            return false;
-        }
-
-        if ($this->getUserIdentifier() !== $user->getUserIdentifier()) {
-            return false;
-        }
-
-        return true;
     }
 
     public function isSuperAdmin(): bool

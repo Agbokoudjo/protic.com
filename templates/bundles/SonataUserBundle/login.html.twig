@@ -33,7 +33,7 @@
 
 {% block javascripts %}  
     {{ vite_entry_script_tags('login',[],'admin') }} 
-    {{ vite_entry_script_tags('form',[],'app') }} 
+    {{ vite_entry_script_tags('form',[],'admin') }} 
 {% endblock %}
 
 {% block sonata_wrapper %}
@@ -136,7 +136,7 @@
                     </div>
                 </div>
 
-                <div class="login-remember">
+                {# <div class="login-remember">
                     <label class="login-checkbox-label">
                         <input type="checkbox"
                                name="_remember_me"
@@ -145,7 +145,7 @@
                         <span class="login-checkbox-custom"></span>
                         <span>Se souvenir de moi</span>
                     </label>
-                </div>
+                </div> #}
                  <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
                 <button type="submit" class="login-btn">
                     <span class="login-btn-text">Se connecter</span>

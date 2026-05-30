@@ -38,7 +38,7 @@ export default function ContactFormModal({
     const phoneRef = useRef(null);
     const messageRef = useRef(null);
 
-    const { submit, isLoading } = useFormSubmission(formRef, addParamToUrl("/api/contact-author"),isOpen);
+    const { submit, isLoading } = useFormSubmission(formRef, addParamToUrl("/request-api/contact-author"),isOpen);
 
     const validateField = async (fieldName, value, type, options) => {
         await formInputValidator.allTypesValidator(value, fieldName, type, options);

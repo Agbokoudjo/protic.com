@@ -4,6 +4,9 @@ Allow: /
 # Bloquer l'espace admin
 Disallow: /admin/
 Disallow: /api/
+Disallow: /admin/form/login
+Disallow: /register
+Disallow: /dashboard
 
 # Sitemap
 Sitemap: https://proticeditions.com/sitemap.xml

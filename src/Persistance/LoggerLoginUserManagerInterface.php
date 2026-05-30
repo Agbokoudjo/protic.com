@@ -14,31 +14,15 @@ declare(strict_types=1);
  * For more information, please feel free to contact the author.
  */
 
-namespace App\Event;
+namespace App\Persistance;
 
-use App\Domain\BaseUserInterface;
+use App\Entity\LoggerLoginUser;
 
 /**
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>
  * @package <https://github.com/Agbokoudjo/>
  */
-final readonly class UpdatePasswordUserEvent
+interface LoggerLoginUserManagerInterface
 {
-    public function __construct(
-        private BaseUserInterface $_user,
-        private string $generatePassword,
-    ) {}
-
-    public function getUser(): BaseUserInterface
-    {
-        return $this->_user;
-    }
-
-    /**
-     * Get the value of generatePassword
-     */
-    public function getGeneratePassword(): string
-    {
-        return $this->generatePassword;
-    }
+    public function save(LoggerLoginUser $log,bool $flush):LoggerLoginUser ;
 }

@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\BaseUserInterface;
+use App\Domain\BaseUserInterface;
 use App\Event\UserAccountEmailVerificationEvent;
 use App\Exception\EmailAlreadyVerifiedException;
 use App\Exception\InvalidTokenException;

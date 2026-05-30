@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace App\Event;
 
-use App\Entity\BaseUserInterface;
+use App\Domain\BaseUserInterface;
 
 /**
  * @author AGBOKOUDJO Franck <internationaleswebservices@gmail.com>

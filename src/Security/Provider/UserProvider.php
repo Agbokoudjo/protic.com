@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace App\Security\Provider;
 
-use App\Entity\BaseUserInterface;
+use App\Domain\BaseUserInterface;
 use App\Persistance\UserManagerInterface;
 use App\Queue\AsyncMethodDispatcherInterface;
 use App\Serializer\SerializerFacade;

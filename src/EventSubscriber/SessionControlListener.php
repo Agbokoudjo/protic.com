@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
-use App\Entity\BaseUserInterface;
+use App\Domain\BaseUserInterface;
 use App\Persistance\UserSessionManagerInterface;
 use App\Queue\AsyncMethodDispatcherInterface;
 use App\Security\Encryption\IdEncryptionInterface;

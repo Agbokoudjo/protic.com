@@ -21,7 +21,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
-use App\Domain\User\Model\BaseUserInterface;
 use Doctrine\ORM\QueryBuilder ;
 
 /**
@@ -80,7 +79,7 @@ final class SonataUserRepository extends ServiceEntityRepository
 
             $userChoices = [];
 
-            /** @var BaseUserInterface $user */
+            /** @var SonataUser $user */
             foreach ($users as $user) {
                 $userChoices[$user->getUsername()] = $user->getId();
             }

@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Domain\BaseUserInterface;
 use App\Entity\PermissionRole;
 use App\Entity\PermissionRoleInterface;
 use App\Entity\UserPermissionRoleInterface;

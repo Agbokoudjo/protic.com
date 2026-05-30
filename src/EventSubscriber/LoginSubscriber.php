@@ -16,8 +16,9 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
-use App\Entity\BaseUserInterface;
+use App\Domain\BaseUserInterface;
 use App\Persistance\UserSessionManagerInterface;
+use App\Persistance\LoggerLoginUserManagerInterface ;
 use App\Queue\AsyncMethodDispatcherInterface;
 use App\Service\DeviceFingerprintUserAgent ;
 use App\Service\UserContextTrait;
@@ -27,6 +28,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
+use App\Entity\LoggerLoginUser ;
 
 /**
  * Subscriber pour l'enregistrement des tentatives de connexion (succès et échecs).
@@ -97,11 +99,44 @@ final class LoginSubscriber implements EventSubscriberInterface
 
     /**
      * Met à jour la date et l'IP de dernière connexion.
-     * (Désactivé temporairement — décommenter pour activer)
      */
     public function onLastLoginUpdate(InteractiveLoginEvent $event): void
     {
-        // TODO : activer le dispatch asynchrone vers LoggerLoginUseCase
+        $user = $event->getAuthenticationToken()->getUser();
+        
+        if (!$user instanceof BaseUserInterface) {
+            $this->logger?->debug('Utilisateur non valide pour mise à jour lastLogin', [
+                'user_class' => $user ? $user::class : 'null',
+            ]);
+            return;
+        }
+
+        try {
+            $loggerLoginUser=new LoggerLoginUser() ;
+            $loggerLoginUser
+                ->setUsername($user->getUsername())
+                ->setEmail($user->getEmail())
+                ->setLastLoginIp($event->getRequest()->getClientIp())
+                ->setCreatedAt(new \DateTimeImmutable('now',new \DateTimeZone('UTC')))
+                ;
+            $this->asyncMethodDispatcher->dispatch(
+                LoggerLoginUserManagerInterface::class,
+                'save',
+                [$loggerLoginUser,true]
+            );
+
+            $this->logger?->info('Mise à jour lastLogin dispatchée', [
+                'user_id' => $user->getId(),
+                'ip' => $event->getRequest()->getClientIp(),
+            ]);
+        } catch (\Exception $e) {
+           $this->logger->error('Échec de la persistance du journal de connexion.', [
+                'exception' => $e->getMessage(),
+                'username'  => $user->getUsername() ,
+            ]);
+        }
+
+
     }
 
     /**

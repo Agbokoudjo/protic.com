@@ -18,7 +18,6 @@ namespace App\Admin;
 
 use App\Controller\Admin\AdminUserCRUDController;
 use App\DataTransformer\RoleArrayTransformer;
-use App\Entity\BaseUserInterface;
 use App\Entity\RoleUser;
 use App\Entity\SonataUser;
 use App\Security\Handler\AdminUserRoleSecurityHandler;
@@ -431,10 +430,10 @@ final class SonataUserAdmin extends WlindablaAdmin
     /**
      * Crée la configuration (data) de l'action "Générer Mot de Passe Temporaire".
      *
-     * @param BaseUserInterface $object L'entité utilisateur (BaseUserInterface)
+     * @param SonataUser $object L'entité utilisateur (BaseUserInterface)
      * @return array|null Le tableau de configuration pour le template, ou null si la condition n'est pas remplie.
      */
-    final public function createActionGeneratePassword(BaseUserInterface $object): ?array
+    final public function createActionGeneratePassword(SonataUser $object): ?array
     {
         if (!$object->isEnabled()) {
             return null;
@@ -461,7 +460,7 @@ final class SonataUserAdmin extends WlindablaAdmin
      * Le bouton n'est affiché que si l'email de l'utilisateur n'est PAS vérifié.
      *
      */
-    final public function createResendEmailVerificationAction(BaseUserInterface $object): ?array
+    final public function createResendEmailVerificationAction(SonataUser $object): ?array
     {
         // Condition d'affichage : Si l'email est déjà vérifié, ne pas afficher le bouton.
         if ($object->isEmailVerified()) {
@@ -485,7 +484,7 @@ final class SonataUserAdmin extends WlindablaAdmin
      * Crée la configuration de l'action toggle pour l'affichage
      *
      */
-    final public function createToggleEnabledAction(BaseUserInterface $object): array
+    final public function createToggleEnabledAction(SonataUser $object): array
     {
         $isEnabled = $object->isEnabled();
 

@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 #[Route(
-    path: '/book/{slug}',
+    path: '/book_show/{slug}',
     name: 'app_book_show',
     requirements: ['slug' => '[a-z0-9]+(?:-[a-z0-9]+)*'],
     methods: ['GET'],
