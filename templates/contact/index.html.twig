@@ -348,7 +348,7 @@ Vous êtes auteur ? Soumettez votre manuscrit à ProTIC Éditions & Services. No
 {{ vite_entry_script_tags('contact') }}
 {{ vite_entry_script_tags('form',[],'app') }} 
 {% if app.flashes('contact_success') is not empty %}
-    <script nonce="{{ csp_nonce('script') }}">
+    <script>
         window.addEventListener('load', function() {
             const el = document.getElementById('container-succcess');
             if (el) {

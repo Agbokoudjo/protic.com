@@ -435,7 +435,7 @@
 
 {% block scripts_extra %}
  {{ vite_entry_script_tags('book_show',[],'app') }}
-<script nonce="{{ csp_nonce('script') }}">
+<script>
 document.addEventListener('DOMContentLoaded', () => {
 
     // ── Boutons "Copier le lien" ──────────────────────────────
