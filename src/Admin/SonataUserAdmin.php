@@ -708,9 +708,9 @@ final class SonataUserAdmin extends WlindablaAdmin
                         'data-error-message-input'           => 'Maximum 1000 caractères.',
                         'class'                              => 'js-member-field',
                         'data-type'                          => 'textarea',
-                        'data-pattern'      => '<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{',
-                        'data-match'        => 'false',
-                        'data-flag-pattern' => 'ius',
+                        'data-pattern' => '^[\p{L}\p{N}\p{M}\p{P}\s\-\.]+$',
+                        'data-match'        => 'true',
+                        'data-flag-pattern' => 'iu',
                     ],
                     'help' => 'Différente du profil admin. Max 1000 caractères.',
                 ])

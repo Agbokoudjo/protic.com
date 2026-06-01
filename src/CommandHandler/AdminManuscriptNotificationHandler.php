@@ -27,7 +27,7 @@ final class AdminManuscriptNotificationHandler
     public function __construct(
         private ManuscriptSubmissionRepository $submissionRequestRepo,
         private SupportMailer $supportMailer,
-        private readonly GlobalSettingProvider $settingProvider,
+        private readonly GlobalSettingProvider $globalSettingProvider,
         private readonly ParameterBagInterface $params,
     ) {}
 
@@ -42,7 +42,7 @@ final class AdminManuscriptNotificationHandler
             return;
         }
 
-        $emailContact = $this->settingProvider->getSettings()->getEmailContact();
+        $emailContact = $this->globalSettingProvider->getSettings()->getEmailContact();
 
         // Préparation des pièces jointes (seulement si le fichier existe)
         $attachments = [];

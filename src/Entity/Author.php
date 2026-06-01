@@ -93,9 +93,9 @@ class Author
         maxMessage: 'La biographie ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\Regex(
-        pattern: '/<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{/ius',
+        pattern: '/^[\p{L}\p{N}\p{M}\p{P}\s\-\.]$/iu',
         message: 'La biographie ne peut pas contenir de balises HTML, PHP ou JavaScript.',
-        match: false,
+        match: true,
     )]
     #[ORM\Column(type: Types::TEXT,length: 4000)]
     #[Groups(['author:read', 'book:read'])]
@@ -106,8 +106,6 @@ class Author
      * Exemples valides   : auteur@example.com, victor.hugo+livres@mail.fr
      * Exemples invalides : auteur@, @example.com, auteur @example.com
      */
-    #[Assert\NotBlank(message: 'L\'adresse email est obligatoire.')]
-    #[Assert\NotNull(message: 'L\'email ne peut pas être nul.')]
     #[Assert\Length(
         min: 6,
         max: 200,
@@ -119,7 +117,7 @@ class Author
         mode: 'html5',
     )]
     #[Groups(['author:read', 'book:read', 'book:list'])]
-    #[ORM\Column(type: "string", length: 200, unique: true)]
+    #[ORM\Column(type: "string", length: 200,nullable: true)]
     protected ?string $email = null;
 
     #[ORM\Column(type: "datetime_immutable")]
@@ -325,7 +323,7 @@ class Author
     /**
      * Set the value of email
      */
-    public function setEmail(?string $email): self
+    public function setEmail(?string $email): static
     {
         $this->email = $email;
 

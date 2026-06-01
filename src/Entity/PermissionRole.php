@@ -56,9 +56,9 @@ class PermissionRole implements PermissionRoleInterface
     #[Assert\Length(min: 20, max: 10000)]
     #[Assert\NotNull]
     #[Assert\Regex(
-        pattern: '/<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{/ius',
+        pattern: '/^[\p{L}\p{N}\p{M}\p{P}\s\-\.]$/iu',
         message: 'Le contenu ne peut pas contenir de balises HTML, PHP ou JavaScript.',
-        match: false,
+        match: true,
     )]
     #[ORM\Column(type: 'text')]
     protected ?string $description = null;

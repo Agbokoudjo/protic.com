@@ -21,7 +21,7 @@ class ContactInfo
     public ?GlobalSetting $setting = null;
 
     public function __construct(
-        private readonly GlobalSettingProvider $globalSettingProivder
+        private readonly GlobalSettingProvider $globalSettingProvider
     ) {}
 
     private function getSetting(): ?GlobalSetting
@@ -30,7 +30,7 @@ class ContactInfo
             return $this->setting;
         }
 
-        return $this->globalSettingProivder->getSettings();
+        return $this->globalSettingProvider->getSettings();
     }
 
     public function getAddresses(): array

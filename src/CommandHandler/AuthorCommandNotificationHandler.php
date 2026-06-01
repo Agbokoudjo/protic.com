@@ -19,13 +19,15 @@ namespace App\CommandHandler;
 use App\Entity\Book;
 use App\Entity\ContactRequest;
 use App\Repository\ContactRequestRepository;
+use App\Service\GlobalSettingProvider;
 use App\Service\Mailing\SupportMailer;
 
 final class AuthorCommandNotificationHandler{
 
     public function __construct(
         private readonly ContactRequestRepository $contactRequestModel,
-        private readonly SupportMailer $supportMailer
+        private readonly SupportMailer $supportMailer,
+        private readonly GlobalSettingProvider $globalSettingProvider
     ) {}
 
     public function handle(string|int $id):void{
@@ -44,7 +46,7 @@ final class AuthorCommandNotificationHandler{
             $author = $book?->getAuthor();
 
             $this->supportMailer->sendManager(
-                recipientEmail: $author->getEmail(),
+                recipientEmail: $author->getEmail() ?? $this->globalSettingProvider->getSettings()->getEmailContact(),
                 subject: '[ProTIC] Nouvelle demande — ' . $contactRequest->getSubject(),
                 htmlTemplate: 'email/contact_author_notification.html.twig',
                 context: [
@@ -59,5 +61,5 @@ final class AuthorCommandNotificationHandler{
             /* L'email échoue silencieusement — la demande est déjà sauvegardée */
         }
 
-    }
+    }     
 }

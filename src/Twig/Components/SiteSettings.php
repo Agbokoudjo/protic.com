@@ -21,13 +21,13 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class SiteSettings
 {
     public function __construct(
-        private readonly GlobalSettingProvider $globalSettingProivder){}
+        private readonly GlobalSettingProvider $globalSettingProvider){}
 
     /**
      * Récupère les paramètres (depuis le cache ou la DB)
      */
     public function getSettings(): ?GlobalSetting
     {
-        return $this->globalSettingProivder->getSettings() ;
+        return $this->globalSettingProvider->getSettings() ;
     }
 }

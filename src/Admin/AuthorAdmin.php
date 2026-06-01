@@ -304,13 +304,14 @@ final class AuthorAdmin extends WlindablaAdmin
             ])
             ->add('email', EmailType::class, [
                 'label'    => 'Adresse email',
-                'required' => true,
+                'required' => false,
                 'attr'     => [
                     'placeholder' => 'Ex: auteur@example.com',
                     'minlength' => 6,
                     'data-type' => "email",
                     'autocomplete'                      => 'email',
                     'maxlength'                         => 200,
+                    'data-required'=>'false',
                     'data-escapestrip-html-and-php-tags' => 'true',
                     'data-event-validate-blur'          => 'blur',
                     'data-event-validate-input'         => 'input',
@@ -345,9 +346,9 @@ final class AuthorAdmin extends WlindablaAdmin
                     'minlength'                          => 20,
                     'maxlength'                          => 4000,
                     'data-type'                          => 'textarea',
-                     'data-pattern'      => '<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{',
-                    'data-match'        => 'false',
-                    'data-flag-pattern' => 'ius',
+                    'data-pattern' => '^[\p{L}\p{N}\p{M}\p{P}\s\-\.]+$',
+                    'data-match'        => 'true',
+                    'data-flag-pattern' => 'iu',
                     'data-escapestrip-html-and-php-tags' => 'true',
                     'data-event-validate-blur'           => 'blur',
                     'data-event-validate-input'          => 'input',
@@ -403,7 +404,7 @@ final class AuthorAdmin extends WlindablaAdmin
                 'choice_translation_domain' => false,
                 'multiple'=>false,
                 'attr' => [
-                    'data-escapestrip-html-and-php-tags' => true,
+                    'data-escapestrip-html-and-php-tags' => 'true',
                     'data-event-validate-change' => 'change',
                     'data-event-validate-blur' => 'blur',
                     'class' => 'form-control select2 form-select-lg form-control-lg',

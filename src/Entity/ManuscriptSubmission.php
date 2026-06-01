@@ -121,9 +121,9 @@ class ManuscriptSubmission
         maxMessage: 'Votre message ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\Regex(
-        pattern: '/<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{/ius',
+        pattern: '/^[\p{L}\p{N}\p{M}\p{P}\s\-\.]$/iu',
         message: 'Le contenu ne peut pas contenir de balises HTML, PHP ou JavaScript.',
-        match: false,
+        match: true,
     )]
     #[ORM\Column(type: Types::TEXT, length: 5000)]
     private ?string $message = null;

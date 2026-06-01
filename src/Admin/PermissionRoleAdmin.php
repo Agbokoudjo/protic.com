@@ -301,9 +301,9 @@ final class PermissionRoleAdmin extends WlindablaAdmin
                     'data-escapestrip-html-and-php-tags' => 'true',  
                     'data-event-validate-blur' => 'blur',
                     'data-event-validate-input' => 'input',
-                    'data-pattern'      => '<[^>]*>|<\/[^>]+>|&[#a-zA-Z0-9]+;|javascript\s*:|data\s*:|vbscript\s*:|on\w+\s*=|<\?(?:php)?|\?>|\{\{.*?\}\}|\$\{',
-                    'data-match'        => 'false',
-                    'data-flag-pattern' => 'ius',
+                    'data-pattern' => '^[\p{L}\p{N}\p{M}\p{P}\s\-\.]+$',
+                    'data-match'        => 'true',
+                    'data-flag-pattern' => 'iu',
                     'data-error-message-input' =>'Le contenue de la description est invalide',
                     'rows' => 6
                 ],
