@@ -92,11 +92,11 @@ class Author
         minMessage: 'La biographie doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'La biographie ne peut pas dépasser {{ limit }} caractères.',
     )]
-    #[Assert\Regex(
+    /*#[Assert\Regex(
         pattern: '/^[\p{L}\p{N}\p{M}\p{P}\s\-\.]$/iu',
         message: 'La biographie ne peut pas contenir de balises HTML, PHP ou JavaScript.',
         match: true,
-    )]
+    )]*/
     #[ORM\Column(type: Types::TEXT,length: 4000)]
     #[Groups(['author:read', 'book:read'])]
     private ?string $bio = null;

@@ -93,11 +93,11 @@ final class Book
         minMessage: 'Le résumé doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le résumé ne peut pas dépasser {{ limit }} caractères.',
     )]
-    #[Assert\Regex(
+    /*#[Assert\Regex(
         pattern: '/^[\p{L}\p{N}\p{M}\p{P}\s\-\.]$/iu',
         message: 'Le contenu ne peut pas contenir de balises HTML, PHP ou JavaScript.',
         match: true,
-    )]
+    )]*/
     #[ORM\Column(type: Types::TEXT,length:10000)]
     private ?string $summary = null;
 
