@@ -63,11 +63,11 @@ final class Book
         minMessage: 'Le titre doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le titre ne peut pas dépasser {{ limit }} caractères.',
     )]
-    #[Assert\Regex(
+    /*#[Assert\Regex(
         pattern: '/[<>`\x00-\x1F\x7F\x{200B}-\x{200D}\x{FEFF}#$^{|}]/u',
         message: 'Le titre contient des caractères interdits.',
         match: false,
-    )]
+    )]*/
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
@@ -76,11 +76,11 @@ final class Book
         max: 255,
         maxMessage: 'Le sous-titre ne peut pas dépasser {{ limit }} caractères.',
     )]
-    #[Assert\Regex(
+   /* #[Assert\Regex(
         pattern: '/[<>`\x00-\x1F\x7F\x{200B}-\x{200D}\x{FEFF}#$^{|}]/u',
         message: 'Le sous-titre contient des caractères interdits.',
         match: false,
-    )]
+    )]*/
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $subtitle = null;
 
