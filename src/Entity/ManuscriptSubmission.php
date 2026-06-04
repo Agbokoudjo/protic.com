@@ -83,10 +83,6 @@ class ManuscriptSubmission
         message: '{{ value }} n\'est pas une adresse email valide.',
         mode: 'html5',
     )]
-    #[Assert\Regex(
-        pattern: '/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/',
-        message: 'L\'adresse email contient des caractères non autorisés.',
-    )]
     #[ORM\Column(type: "string", length: 200)]
     protected ?string $email = null;
 

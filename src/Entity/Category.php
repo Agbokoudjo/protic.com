@@ -70,11 +70,11 @@ class Category
         minMessage: 'Le nom doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères.',
     )]
-    #[Assert\Regex(
+   /* #[Assert\Regex(
         pattern: '/[<>`\x00-\x1F\x7F\x{200B}-\x{200D}\x{FEFF}#$^{|}]/u',
         message: 'Le nom contient des caractères interdits.',
-        match: false,
-    )]
+        match: false, 
+    )]*/
     #[ORM\Column(length: 100, unique: true)]
     private ?string $name = null;
 
@@ -124,7 +124,7 @@ class Category
         max: 100,
         maxMessage: 'L\'icône ne peut pas dépasser {{ limit }} caractères.',
     )]
-    #[Assert\When(
+    /*#[Assert\When(
         expression: 'this.getIcon() !== null && this.getIcon() !== ""',
         constraints: [
             new Assert\Length(
@@ -136,7 +136,7 @@ class Category
                 message: 'L\'icône doit être un ou plusieurs emojis valides.',
             ),
         ]
-    )]
+    )]*/
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $icon = null;
 
